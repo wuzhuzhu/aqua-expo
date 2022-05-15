@@ -1,31 +1,50 @@
-import { StyleSheet } from 'react-native';
+import React, { useReducer } from 'react'
+import { StyleSheet, Pressable } from 'react-native'
+import { MotiView } from 'moti'
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-
-export default function TabTwoScreen() {
+function Shape() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
-  );
+    <MotiView
+      from={{
+        opacity: 0,
+        scale: 0.5,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+      }}
+      transition={{
+        type: 'timing',
+      }}
+      style={styles.shape}
+    />
+  )
+}
+
+export default function HelloWorld() {
+  const [visible, toggle] = useReducer((s) => !s, true)
+
+  return (
+    <Pressable onPress={toggle} style={styles.container}>
+      {visible && <Shape />}
+    </Pressable>
+  )
 }
 
 const styles = StyleSheet.create({
+  shape: {
+    justifyContent: 'center',
+    height: 250,
+    width: 250,
+    borderRadius: 25,
+    marginRight: 10,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#9c1aff',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+})
