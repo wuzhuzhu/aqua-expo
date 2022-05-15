@@ -95,7 +95,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="MotiDemo"
-        component={TabTwoScreen}
+        component={MotiScreen}
         options={{
           title: '动画demo',
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
