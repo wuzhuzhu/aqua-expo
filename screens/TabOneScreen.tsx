@@ -9,7 +9,7 @@ import { usePosts } from '../api/demo'
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const { data, isLoading, isSuccess } = usePosts()
-  if (isLoading) return <p>加载中</p>
+  if (isLoading) return <Text>加载中</Text>
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
