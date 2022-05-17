@@ -1,29 +1,30 @@
 import React, { useReducer } from 'react'
 import { StyleSheet, Pressable } from 'react-native'
-import { MotiView } from 'moti'
+import { motify } from 'moti'
+import {Box, HStack, Factory} from 'native-base'
+
+const MotifiedBox = motify(Box)()
 
 function Shape() {
   return (
-    <MotiView
-      from={{
-        opacity: 0,
-        scale: 0.5,
-      }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-      }}
-      transition={{
-        type: 'timing',
-      }}
-      style={styles.shape}
-    />
+    <Box m={2}>
+      <HStack justifyContent="center" space={2}>
+        <Box bg="emerald.400" borderRadius={4} size={16}></Box>
+        <Box bg="emerald.400" borderRadius={4} size={16}></Box>
+        <Box bg="emerald.400" borderRadius={4} size={16}></Box>
+        <MotifiedBox bg="emerald.400" borderRadius={4} size={16} animate={{ scale: [1.2, 0.8] }} transition={{
+          loop: true,
+          type: 'timing',
+          duration: 500,
+          delay: 100,
+        }}></MotifiedBox>
+      </HStack>
+    </Box>
   )
 }
 
 export default function HelloWorld() {
   const [visible, toggle] = useReducer((s) => !s, true)
-
   return (
     <Pressable onPress={toggle} style={styles.container}>
       {visible && <Shape />}
@@ -34,8 +35,8 @@ export default function HelloWorld() {
 const styles = StyleSheet.create({
   shape: {
     justifyContent: 'center',
-    height: 250,
-    width: 250,
+    height: 220,
+    width: 220,
     borderRadius: 25,
     marginRight: 10,
     backgroundColor: 'white',
