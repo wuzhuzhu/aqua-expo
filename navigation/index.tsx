@@ -71,12 +71,12 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Members"
         component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        options={({ navigation }: RootTabScreenProps<'Members'>) => ({
           title: 'Tab One',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('Modal1')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
