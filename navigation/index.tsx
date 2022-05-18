@@ -14,6 +14,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import HomeScreen from '../screens/home';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import MotiScreen from '../screens/moti-demo';
@@ -39,10 +40,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Group screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Tab" component={BottomTabNavigator} />
+      </Stack.Group>
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Modal1" component={ModalScreen} />
+        <Stack.Screen name="Modal2" component={ModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -59,12 +64,12 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Members"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Members"
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: 'Tab One',
@@ -86,7 +91,7 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Lectures"
         component={TabTwoScreen}
         options={{
           title: 'Tab Two',
@@ -94,10 +99,18 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="MotiDemo"
+        name="Publications"
         component={MotiScreen}
         options={{
           title: '动画demo',
+          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Database"
+        component={MotiScreen}
+        options={{
+          title: 'Database',
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
         }}
       />

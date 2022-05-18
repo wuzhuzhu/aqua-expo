@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native'
-import {useQuery} from 'react-query'
 import {FlatList, TouchableOpacity} from 'react-native'
-import {MotiText, MotiView} from 'moti'
+import {MotiView} from 'moti'
 
 import EditScreenInfo from '../components/EditScreenInfo'
 import {Text, View} from '../components/Themed'

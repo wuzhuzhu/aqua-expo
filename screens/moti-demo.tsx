@@ -1,9 +1,7 @@
 import React, { useReducer } from 'react'
 import { StyleSheet, Pressable } from 'react-native'
-import { motify } from 'moti'
+import { MotifiedBox } from '../utils/motify'
 import {Box, HStack, Factory} from 'native-base'
-
-const MotifiedBox = motify(Box)()
 
 function Shape() {
   return (

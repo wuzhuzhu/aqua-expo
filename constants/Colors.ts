@@ -17,3 +17,8 @@ export default {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const COLOR_SCHEME = {
+  NARA_BlUE: "#1469a8",
+  NARA_GREEN: "#37b055"
+}
