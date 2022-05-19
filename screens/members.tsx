@@ -24,7 +24,7 @@ export default function MembersScreen({
         contentContainerStyle={{ width: "100%" }}
         showsVerticalScrollIndicator={false}
       >
-        <Heading mt={2} ml={2} mb={6} size="xl" maxWidth="70%" fontWeight="semibold" color="trueGray.900">NARA Membership Directory</Heading>
+        <Heading onPress={() => navigation.navigate('Home')} mt={2} ml={2} mb={6} size="xl" maxWidth="70%" fontWeight="semibold" color="trueGray.900">NARA Membership Directory</Heading>
         <MasonryList
           data={data}
           keyExtractor={(item): string => item.id}
