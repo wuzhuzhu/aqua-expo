@@ -20,6 +20,8 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import MembersScreen from '../screens/members';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import MotiScreen from '../screens/moti-demo';
+import WebModal from '../screens/modals/web-modal'
+
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -48,7 +50,11 @@ function RootNavigator() {
       </Stack.Group>
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal1" component={ModalScreen} />
+        <Stack.Screen
+          name="WebModal"
+          component={WebModal}
+          options={({ route }) => ({ title: route?.params?.title })}
+        />
         <Stack.Screen name="Modal2" component={ModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
@@ -80,20 +86,6 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Members'>) => ({
           title: 'Membership',
           tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal1')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
         })}
       />
       <BottomTab.Screen
@@ -119,6 +111,7 @@ function BottomTabNavigator() {
           title: 'Database',
           tabBarIcon: ({ color }) => <TabBarIcon name="server" color={color} />,
         }}
+
       />
     </BottomTab.Navigator>
   );

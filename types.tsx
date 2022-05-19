@@ -18,7 +18,10 @@ export type RootStackParamList = {
   Home: {
     screen?: string
   } | undefined;
-  Modal1: undefined;
+  WebModal: {
+    url?: string
+    name?: string
+  };
   Modal2: undefined;
   NotFound: undefined;
 };
@@ -44,4 +47,5 @@ export type MemberType = {
   id: string;
   name: string;
   logo?: string;
+  url?: string;
 }
