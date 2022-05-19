@@ -5,7 +5,7 @@ import MasonryList from '@react-native-seoul/masonry-list';
 
 import {useMembers} from "../api/members"
 import Logo from '../components/home/logo'
-import {MasoryLoading} from '../components/loading'
+import {MasoryLoading} from '../components/common/loading'
 import MasonryCard from '../components/members/masonry-card'
 
 export default function MembersScreen({
