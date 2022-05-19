@@ -17,7 +17,6 @@ function parseData(data: any) : MemberType[] {
 
 const fetchMembers = async () => {
   const { data } = await axios.get('https://jsonplaceholder.typicode.com/albums/1/photos');
-
   return parseData(data);
 };
 

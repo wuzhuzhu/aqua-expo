@@ -18,7 +18,7 @@ import HomeScreen from '../screens/home';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import MembersScreen from '../screens/members';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import Lectures from '../screens/lectures';
 import MotiScreen from '../screens/moti-demo';
 import WebModal from '../screens/modals/web-modal'
 
@@ -90,7 +90,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Lectures"
-        component={TabTwoScreen}
+        component={Lectures}
         options={{
           title: 'Lectures',
           tabBarIcon: ({ color }) => <TabBarIcon name="play" color={color} />,

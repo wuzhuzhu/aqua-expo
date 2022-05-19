@@ -5,14 +5,11 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated'
 
 import {useMembers} from "../api/members"
-import Logo from '../components/home/logo'
 import {MasoryLoading} from '../components/common/loading'
 import MasonryCard from '../components/members/masonry-card'
 import logoImg from "../assets/images/logo.png"
 
-import {RootTabParamList} from '../types'
-
-export default function MembersScreen({
+export default function LecturesScreen({
   navigation,
 }: {
   navigation: NativeStackNavigationProp<any>
@@ -44,7 +41,7 @@ export default function MembersScreen({
   return (
     <Box safeAreaTop>
       <Box height={180} position="absolute" right={0} top={-4} opacity={0.35}>
-        <Animated.Image style={[{flex: 1, maxWidth: 280}, animatedStyle]} resizeMode="contain" source={logoImg} />
+        <Animated.Image style={[animatedStyle, { flex: 1, maxWidth: 280 }]} resizeMode="contain" source={logoImg} />
       </Box>
       <Animated.ScrollView
         contentContainerStyle={{ width: "100%" }}
