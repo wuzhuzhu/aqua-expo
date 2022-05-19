@@ -1,6 +1,5 @@
 import {AspectRatio, Center, Text, Pressable} from "native-base"
 import {MotifiedCenter} from '../../utils/motify'
-import {RootStackScreenProps, RootTabScreenProps} from "../../types"
 
 type IHomeScreenCardProps = {
   bg: string,
