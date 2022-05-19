@@ -7,7 +7,7 @@ import {Text, View} from '../components/Themed'
 import {RootTabScreenProps} from '../types'
 import {usePosts} from '../api/demo'
 
-export default function TabOneScreen({navigation}: RootTabScreenProps<'TabOne'>) {
+export default function TabOneScreen({navigation}: RootTabScreenProps<'Members'>) {
   const {data, isLoading, isSuccess} = usePosts()
   return (
     <>

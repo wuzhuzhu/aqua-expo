@@ -39,3 +39,9 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   BottomTabScreenProps<RootTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
 >;
+
+export type MemberType = {
+  id: string;
+  name: string;
+  logo?: string;
+}

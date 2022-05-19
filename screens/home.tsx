@@ -1,21 +1,17 @@
 import {Box, Column, Flex, Center, Text, Image, Input, AspectRatio, Icon} from 'native-base'
 import {MaterialIcons} from "@expo/vector-icons"
 
+import {HOMEPAGE_BTNS} from '../constants/Basic'
 import {RootStackScreenProps} from "../types"
 import logoImg from '../assets/images/logo.png'
-import {windowWidth} from "../utils/helper"
 import HomeScreenCard from '../components/home/card-btn'
-import {COLOR_SCHEME} from "../constants/Colors"
-import {HOMEPAGE_BTNS} from '../constants/Basic'
+import Logo from '../components/home/logo'
 
 export default function HomeScreen({navigation}: RootStackScreenProps<'Home'>) {
-  console.log(windowWidth)
   return (
     <Box safeArea>
       <Column justifyContent="center" space={4}>
-        <Center height="200" mt={4}>
-          <Image resizeMode="contain" source={logoImg} flex={1} maxWidth="70%" alt="Picture of a Flower" />
-        </Center>
+        <Logo imageMaxWidth="70%" mt={4} />
         <Center>
           <Text textAlign="center" maxWidth="60%" color="trueGray.600">Premium Rendered Proteins for Sustainable Aquaculture in the World</Text>
         </Center>

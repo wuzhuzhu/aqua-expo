@@ -69,6 +69,7 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Members"
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarStyle: { height: 48 + insets.bottom, paddingTop: 8 }
       }}
