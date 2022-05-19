@@ -1,4 +1,4 @@
-import {Center, Image} from 'native-base'
+import {Center, Image, PresenceTransition} from 'native-base'
 import logoImg from "../../assets/images/logo.png"
 
 type ILogoProps = {
@@ -23,6 +23,17 @@ export default function Logo({height=200, mt=0, mb=0, imageMaxWidth="100%", isAb
     ...(isAbsolute ? absolutProps : {})
   }
   return <Center {...wrapperProps}>
+    <PresenceTransition visible initial={{
+      opacity: 0,
+      translateY: -25
+    }} animate={{
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        duration: 600
+      }
+    }}>
     <Image resizeMode="contain" source={logoImg} flex={1} maxWidth={imageMaxWidth} alt="NARA Logo" />
+    </PresenceTransition>
   </Center>
 }
