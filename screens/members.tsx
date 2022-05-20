@@ -42,7 +42,7 @@ export default function MembersScreen({
 
   if (isLoading) return <MasoryLoading />
   return (
-    <Box safeAreaTop>
+    <Box safeAreaTop px={2}>
       <Box height={180} position="absolute" right={0} top={-4} opacity={0.35}>
         <Animated.Image style={[{flex: 1, maxWidth: 280}, animatedStyle]} resizeMode="contain" source={logoImg} />
       </Box>
@@ -53,8 +53,8 @@ export default function MembersScreen({
         scrollEventThrottle={15}
       >
         <Heading
-          onPress={() => navigation.navigate('Home')} mt={2} ml={2} mb={6} size="xl" maxWidth="70%" fontWeight="semibold" color="trueGray.900"
-          style={{ shadowOffset: { height: 2, width: 2 }, shadowOpacity:0.2, shadowRadius:3 }}
+          onPress={() => navigation.navigate('Home')} mt={2} ml={2} mb={6} size="xl" maxWidth="70%" fontWeight="medium" color="trueGray.900"
+          // style={{ shadowOffset: { height: 2, width: 2 }, shadowOpacity:0.2, shadowRadius:3 }}
         >NARA Membership Directory</Heading>
         <MasonryList
           data={data}

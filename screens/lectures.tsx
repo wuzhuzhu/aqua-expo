@@ -4,9 +4,9 @@ import {Center, Box, Column, ScrollView, Text, Heading, PresenceTransition, Imag
 import MasonryList from '@react-native-seoul/masonry-list';
 import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated'
 
-import {useMembers} from "../api/members"
+import {useLectures} from "../api/lectures"
 import {MasoryLoading} from '../components/common/loading'
-import MasonryCard from '../components/members/masonry-card'
+import MasonryCard from '../components/lectures/lecture-card'
 import logoImg from "../assets/images/logo.png"
 
 export default function LecturesScreen({
@@ -14,7 +14,7 @@ export default function LecturesScreen({
 }: {
   navigation: NativeStackNavigationProp<any>
 }) {
-  const {data, isLoading, isSuccess, refetch} = useMembers()
+  const {data, isLoading, isSuccess, refetch} = useLectures()
   const translationY = useSharedValue(0);
   const isScrolledMuch = useSharedValue(false);
   const scrollHandler = useAnimatedScrollHandler({
@@ -39,7 +39,7 @@ export default function LecturesScreen({
 
   if (isLoading) return <MasoryLoading />
   return (
-    <Box safeAreaTop>
+    <Box safeAreaTop px={2}>
       <Box height={180} position="absolute" right={0} top={-4} opacity={0.35}>
         <Animated.Image style={[animatedStyle, { flex: 1, maxWidth: 280 }]} resizeMode="contain" source={logoImg} />
       </Box>
@@ -50,13 +50,14 @@ export default function LecturesScreen({
         scrollEventThrottle={15}
       >
         <Heading
-          onPress={() => navigation.navigate('Home')} mt={2} ml={2} mb={6} size="xl" maxWidth="70%" fontWeight="semibold" color="trueGray.900"
-          style={{ shadowOffset: { height: 2, width: 2 }, shadowOpacity:0.2, shadowRadius:3 }}
-        >NARA Membership Directory</Heading>
+          onPress={() => navigation.navigate('Home')}
+          mt={2} ml={2} mb={6} size="xl" pb={2} maxWidth="70%" fontWeight="medium" color="trueGray.900"
+          // style={{ shadowOffset: { height: 2, width: 2 }, shadowOpacity:0.2, shadowRadius:3 }}
+        >Lecture Videos</Heading>
         <MasonryList
           data={data}
           keyExtractor={(item): string => item.id}
-          numColumns={3}
+          numColumns={2}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => <MasonryCard {...item} />}
           refreshing={isLoading}
