@@ -49,3 +49,11 @@ export type MemberType = {
   logo?: string;
   url?: string;
 }
+
+export type LectureType = {
+  id: string;
+  title: string;
+  imgUrl?: string;
+  videoCount?: number;
+  updatedAt: number;
+}

@@ -1,25 +1,31 @@
 import React, {useMemo} from "react"
-import {Image, View, TouchableOpacity} from "react-native"
+import {Image, View, StyleSheet} from "react-native"
 import { useNavigation } from '@react-navigation/native';
+import {Text, Box, Heading, Row, Icon, Badge} from 'native-base'
 // fix useNavigation & push ts err
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MotiPressable } from 'moti/interactions'
+import { formatDistanceToNow, subDays } from 'date-fns'
+import {Feather, MaterialIcons} from '@expo/vector-icons'
 
-import {MemberType} from "../../types"
+
+import {LectureType} from "../../types"
+import {COLOR_SCHEME} from '../../constants/Colors'
 import {isDev} from "../../utils/helper"
 
-export default function MasonryCard(member: MemberType): JSX.Element {
+export default function MasonryCard(lecture: LectureType): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
-  const RandomBool = useMemo(() => {
-    return Math.random() < 0.5
-  }, [])
-  const RandomBoolB = Math.random() < 0.5
-  const mockUri = RandomBool ? 'https://cdn.dribbble.com/users/24078/screenshots/15522433/media/e92e58ec9d338a234945ae3d3ffd5be3.jpg?compress=1&resize=400x300':
-    (RandomBoolB ? 'https://cdn.motor1.com/images/mgl/2RQQg/s3/volkswagen-new-logo.jpg' : 'https://static.mybrandnewlogo.com/images/thumbnail.jpg')
   const onPressCard = function () {
-    navigation.navigate('WebModal', { title: member?.name, url: member?.url })
+    // TODO: 跳转到详情页
+    // navigation.navigate('WebModal', { title: lecture?.name, url: lecture?.url })
   }
+  const lastUpdatedStr = lecture?.updatedAt ?
+    useMemo(() => {
+      const updatedAt = isDev ? (subDays(new Date(), Math.random()*10)) : lecture.updatedAt
+      return formatDistanceToNow(updatedAt as Date | number)
+    }, []) : 'never'
   return <MotiPressable
+    key={lecture.id}
     onPress={() => {console.log('press')}}
     animate={useMemo(
       () => ({ hovered, pressed }) => {
@@ -33,13 +39,58 @@ export default function MasonryCard(member: MemberType): JSX.Element {
       []
     )}
   >
-    <View key={member.id} style={{ flex: 1, margin: 4 }}>
-
+    <Box
+      shadow={1}
+      bg='blueGray.50'
+      m={1}
+      p={2}
+      style={styles.wrapper}
+    >
       <Image
-        source={{ uri: isDev ? mockUri : member.logo }}
-        style={{ height: RandomBool ? 120 : 150, alignSelf: 'stretch' }}
+        source={{ uri: lecture.imgUrl }}
+        style={styles.image}
         resizeMode="cover"
       />
-    </View>
+      <Heading
+        numberOfLines={1}
+        ellipsizeMode='tail'
+        mt={2}
+        color={COLOR_SCHEME.NARA_BlUE}
+        size='sm'
+      >{lecture.title}</Heading>
+      <Row mt={2} justifyContent="space-between" overflow="hidden">
+        <Badge colorScheme="success" alignSelf="center" variant="outline">{`${lecture.videoCount} videos`}</Badge>
+        <Row space={2} alignItems="center" maxWidth="80%">
+          <Icon as={<Feather name="upload-cloud" />} size='sm' ml="2" color="muted.400" />
+          <Text
+            numberOfLines={1}
+            ellipsizeMode='tail'
+            color="muted.400"
+          >
+            <Text
+              color="muted.600"
+            >in {lastUpdatedStr}</Text>
+          </Text>
+        </Row>
+      </Row>
+
+    </Box>
   </MotiPressable>
 }
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderRadius: 10
+  },
+  image: {
+    height: 130,
+    alignSelf: "stretch",
+    borderTopRightRadius: 6,
+    borderTopLeftRadius: 6,
+    margin: -8,
+    marginBottom: 0
+  }
+})

@@ -20,4 +20,4 @@ const fetchMembers = async () => {
   return parseData(data);
 };
 
-export const useMembers = (): any => useQuery('posts', fetchMembers);
+export const useMembers = (): any => useQuery('members', fetchMembers);
