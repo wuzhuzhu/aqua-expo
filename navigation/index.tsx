@@ -6,7 +6,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -40,27 +40,22 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Group screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Tab" component={BottomTabNavigator} />
-      </Stack.Group>
-      <Stack.Group>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Tab" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="Lecture" component={Lecture} options={({ route }) => ({ title: route?.params?.title })} />
-      </Stack.Group>
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen
           name="WebModal"
           component={WebModal}
-          options={({ route }) => ({ title: route?.params?.title })}
+          options={({ route }) => ({
+            title: route?.params?.title,
+          })}
         />
-        <Stack.Screen name="Modal2" component={ModalScreen} />
-      </Stack.Group>
     </Stack.Navigator>
   );
 }
