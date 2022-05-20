@@ -2,13 +2,19 @@ import {useState, useRef} from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import { Box, Column, Text, AspectRatio, Image } from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
+import {useLecture} from '../api/lectures'
+import {LectureLoading} from '../components/common/loading'
 import {LectureType} from "../types"
+import {useMembers} from "../api/members"
 
 export default function Lecture({route, navigation}):JSX.Element {
-  const lecture = route.params?.lecture
+  const lectureId = route?.params?.id
+  const {data: lecture, isLoading, isSuccess, refetch} = useLecture(lectureId)
   const video = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(undefined as number | undefined)
   const [status, setStatus] = useState({} as AVPlaybackStatus);
+
+  if (isLoading) return <LectureLoading />
   return (
     <Box bg="muted.600">
       <AspectRatio w="100%" ratio={16 / 9}>

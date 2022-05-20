@@ -16,7 +16,7 @@ import {isDev} from "../../utils/helper"
 export default function MasonryCard(lecture: LectureType): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const onPressCard = function () {
-    navigation.navigate('Lecture', { lecture })
+    navigation.navigate('Lecture', { id: lecture?.id, title: lecture?.title })
   }
   const lastUpdatedStr = lecture?.updatedAt ?
     useMemo(() => {
