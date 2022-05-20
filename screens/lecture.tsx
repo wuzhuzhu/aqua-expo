@@ -1,27 +1,34 @@
-import {useState, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import { View, StyleSheet, Button } from 'react-native';
-import { Box, Column, Text, AspectRatio, Image } from 'native-base'
+import {Box, Column, Row, Text, AspectRatio, Image, Heading} from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
 import {LectureType} from "../types"
 import {useMembers} from "../api/members"
+import {COLOR_SCHEME} from "../constants/Colors"
+import {isDev} from '../utils/helper'
 
 export default function Lecture({route, navigation}):JSX.Element {
   const lectureId = route?.params?.id
-  const {data: lecture, isLoading, isSuccess, refetch} = useLecture(lectureId)
+  const {data: lecture, isLoading, isSuccess, refetch, isFetching} = useLecture(lectureId)
   const video = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(undefined as number | undefined)
   const [status, setStatus] = useState({} as AVPlaybackStatus);
 
+  const hasVideo = Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0)
+  function handleVideoClick(i) {
+    setCurrentIndex(i)
+  }
+
   if (isLoading) return <LectureLoading />
   return (
-    <Box bg="muted.600">
-      <AspectRatio w="100%" ratio={16 / 9}>
+    <Box safeAreaBottom safeAreaTop={currentIndex ? true : void 0}>
+      <AspectRatio w="100%" ratio={4 / 3}>
         {currentIndex ? <Video
           ref={video}
           source={{
-            uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+            uri: isDev ? 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
           }}
           useNativeControls
           resizeMode="contain"
@@ -31,30 +38,43 @@ export default function Lecture({route, navigation}):JSX.Element {
           source={{
             uri: lecture?.imgUrl,
           }}
+          alt="lecture image"
         />}
       </AspectRatio>
+      <Column mx={4}>
+        <Heading
+          numberOfLines={1}
+          ellipsizeMode='tail'
+          mt={2}
+          color={COLOR_SCHEME.NARA_BlUE}
+          size='lg'
+        >{lecture.title}</Heading>
+        {hasVideo ? (lecture.videos.map((v, i) => {
+          return <Row onPress={() => handleVideoClick(i)}>
+            <Text
+              numberOfLines={1}
+              maxWidth="65%"
+              fontSize="lg"
+              mt={2}
+            >{v.title}</Text>
+          </Row>
+        }) ): <Text>There's no video available yet.</Text>}
 
-      <View style={styles.buttons}>
-        <Button
-          title={status?.isPlaying ? 'Pause' : 'Play'}
-          onPress={() =>
-            status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-          }
-        />
-      </View>
+
+        <View>
+          <Button
+            title={status?.isPlaying ? 'Pause' : 'Play'}
+            onPress={() =>
+              status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+            }
+          />
+        </View>
+      </Column>
+
     </Box>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+function VideoLine(video: Video): JSX.Element {
+  return null
+}
