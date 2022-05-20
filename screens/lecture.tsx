@@ -1,13 +1,23 @@
 import React, {useState, useRef, useMemo} from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager } from 'react-native';
 import {Box, Column, Row, Text, AspectRatio, Image, Heading} from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
+import { StatusBar } from 'expo-status-bar';
+
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
 import {LectureType} from "../types"
 import {useMembers} from "../api/members"
 import {COLOR_SCHEME} from "../constants/Colors"
-import {isDev} from '../utils/helper'
+import {ImageBackground} from '../utils/motify'
+import {isDev, windowHeight} from '../utils/helper'
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 export default function Lecture({route, navigation}):JSX.Element {
   const lectureId = route?.params?.id
@@ -20,16 +30,18 @@ export default function Lecture({route, navigation}):JSX.Element {
   const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
 
   function handleVideoClick(i) {
-    console.log(i)
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setCurrentIndex(i)
   }
 
   if (isLoading) return <LectureLoading />
   return (
     <Box safeAreaBottom safeAreaTop={hasSelectedIndex ? true : void 0}>
+      <StatusBar style={hasSelectedIndex ? "dark" : "light"} />
       <AspectRatio
         mb={8}
-        ShadowOffsetHeight="80"
+        maxHeight={0.6*windowHeight}
+        ShadowBottomHeight="80"
         shadowRadius={20}
         shadowOpacity={0.5}
         w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
@@ -42,21 +54,17 @@ export default function Lecture({route, navigation}):JSX.Element {
           resizeMode="contain"
           isLooping
           onPlaybackStatusUpdate={status => setStatus(() => status)}
-        /> : <Image
+        /> : <ImageBackground
           source={{
             uri: lecture?.imgUrl,
           }}
           alt="lecture image"
-        />}
+        >
+          <Title isLight title={lecture?.title} />
+        </ImageBackground>}
       </AspectRatio>
       <Column mx={4}>
-        <Heading
-          numberOfLines={1}
-          ellipsizeMode='tail'
-          mt={2}
-          color={COLOR_SCHEME.NARA_BlUE}
-          size='lg'
-        >{lecture.title}</Heading>
+        {hasSelectedIndex && <Title title={lecture?.title}/>}
         {hasVideo ? (lecture.videos.map((v, i) => {
           return <Row key={`video-${i}`} >
             <Text
@@ -82,6 +90,23 @@ export default function Lecture({route, navigation}):JSX.Element {
 
     </Box>
   );
+}
+
+const Title = function ({isLight = false, title}) {
+  const lightStyles = {
+    position: "absolute",
+    color: "muted.100",
+    left: "4",
+    bottom: "6"
+  }
+  return <Heading
+    numberOfLines={1}
+    ellipsizeMode='tail'
+    mt={2}
+    color={COLOR_SCHEME.NARA_BlUE}
+    size='xl'
+    {...isLight ? lightStyles : {}}
+  >{title}</Heading>
 }
 
 function VideoLine(video: Video): JSX.Element {
