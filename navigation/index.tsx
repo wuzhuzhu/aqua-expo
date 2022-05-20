@@ -55,7 +55,7 @@ function RootNavigator() {
         component={DetailScreen}
         sharedElements={(route, otherRoute, showing) => {
           const { item } = route.params;
-          return [`item.${item.id}.photo`];
+          return [`someUniqueId`];
         }}
       />
       <Stack.Screen name="Tab" component={BottomTabNavigator} options={{ headerShown: false }} />

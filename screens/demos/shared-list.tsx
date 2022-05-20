@@ -1,26 +1,29 @@
-import { SharedElement } from 'react-navigation-shared-element';
-import {Column, Text, Image} from 'native-base'
-import {TouchableOpacity} from 'react-native'
-import {useLectures} from "../../api/lectures"
+import React from 'react'
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
+// Make sure this import isn't `react-native-shared-element` 👇
+import { SharedElement } from 'react-navigation-shared-element'
 
-function renderItem(item, navigation) {
-  return (<TouchableOpacity key={item.id} onPress={() => navigation.push('Detail', { item })}>
-    <Text>name: {item.title}</Text>
-    <SharedElement id={`item.${item.id}.imgUrl`}>
-      <Image source={{
-        uri: item.imgUrl
-      }} alt="Alternate Text" size="xl" />
-    </SharedElement>
-  </TouchableOpacity>)
-}
+const imageSource = { uri: 'https://source.unsplash.com/random' }
 
-export default function SharedList({navigation}) {
-  const {data, isLoading, isSuccess, refetch} = useLectures()
-  if (isLoading) return <Text>loading</Text>
+export default function Origin({navigation}) {
   return (
-    <Column safeArea>
-      <Text>123</Text>
-      {data.map(i => renderItem(i, navigation))}
-    </Column>
+    <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('Detail')}>
+        <SharedElement id="someUniqueId">
+          <Image source={imageSource} style={styles.image} />
+        </SharedElement>
+      </TouchableOpacity>
+    </View>
   )
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    height: 200,
+    width: 200,
+  },
+})

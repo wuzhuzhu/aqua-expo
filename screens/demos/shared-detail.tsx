@@ -1,15 +1,26 @@
-import {Column, Text, Image} from 'native-base'
-import {TouchableOpacity} from 'react-native'
-import { SharedElement } from 'react-navigation-shared-element';
+import React from 'react'
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { SharedElement } from 'react-navigation-shared-element'
 
+const imageSource = { uri: 'https://source.unsplash.com/random' }
 
-export default function SharedDetail({navigation, route}) {
-  const { item } = route.params;
+export default function Destination() {
   return (
-    <SharedElement id={`item.${item.id}.imgUrl`}>
-      <Image source={{
-        uri: item.imgUrl
-      }} alt="Alternate Text" size="xl" />
-    </SharedElement>
-  );
+    <View>
+      <SharedElement id="someUniqueId">
+        <Image source={imageSource} style={styles.image} />
+      </SharedElement>
+    </View>
+  )
 }
+
+Destination.sharedElements = (navigation, otherNavigation, showing) => {
+  return ['someUniqueId']
+}
+
+const styles = StyleSheet.create({
+  image: {
+    height: 350,
+    width: 350,
+  },
+})
