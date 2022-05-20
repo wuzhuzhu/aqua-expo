@@ -6,7 +6,8 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
+// import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,6 +23,8 @@ import Lectures from '../screens/lectures';
 import Lecture from '../screens/lecture';
 import MotiScreen from '../screens/moti-demo';
 import WebModal from '../screens/modals/web-modal'
+import DetailScreen from '../screens/demos/shared-detail'
+import ListScreen from '../screens/demos/shared-list'
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -40,22 +43,31 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Tab" component={BottomTabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="Lecture" component={Lecture} options={({ route }) => ({ title: route?.params?.title })} />
+    <Stack.Navigator initialRouteName="List">
+      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="List" component={ListScreen} />
+      <Stack.Screen
+        name="Detail"
+        component={DetailScreen}
+        sharedElements={(route, otherRoute, showing) => {
+          const { item } = route.params;
+          return [`item.${item.id}.photo`];
+        }}
+      />
+      <Stack.Screen name="Tab" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Lecture" component={Lecture} options={({ route }) => ({ title: route?.params?.title })} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Screen
-          name="WebModal"
-          component={WebModal}
-          options={({ route }) => ({
-            title: route?.params?.title,
-          })}
-        />
+      <Stack.Screen
+        name="WebModal"
+        component={WebModal}
+        options={({ route }) => ({
+          title: route?.params?.title,
+        })}
+      />
     </Stack.Navigator>
   );
 }
