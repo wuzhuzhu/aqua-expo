@@ -40,7 +40,7 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
     )}
   >
     <Box
-      shadow={1}
+      // shadow={1}
       bg='blueGray.50'
       m={1}
       p={2}
