@@ -59,7 +59,6 @@ export type LectureType = {
   id: string;
   title: string;
   imgUrl?: string;
-  videoCount?: number;
   updatedAt: number;
   videos: VideoType[];
 }

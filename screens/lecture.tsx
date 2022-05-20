@@ -1,5 +1,5 @@
 import React, {useState, useRef, useMemo} from 'react';
-import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
 import {Box, Column, Row, Text, AspectRatio, Image, Heading} from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
@@ -30,7 +30,7 @@ export default function Lecture({route, navigation}):JSX.Element {
   const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
 
   function handleVideoClick(i) {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     setCurrentIndex(i)
   }
 
@@ -66,15 +66,15 @@ export default function Lecture({route, navigation}):JSX.Element {
       <Column mx={4}>
         {hasSelectedIndex && <Title title={lecture?.title}/>}
         {hasVideo ? (lecture.videos.map((v, i) => {
-          return <Row key={`video-${i}`} >
+          return <TouchableOpacity onPress={() => handleVideoClick(i)}><Row
+            mt={4} py={2} key={`video-${i}`} >
             <Text
-              onPress={() => handleVideoClick(i)}
               numberOfLines={1}
               maxWidth="65%"
               fontSize="lg"
               mt={2}
             >{v.title}</Text>
-          </Row>
+          </Row></TouchableOpacity>
         }) ): <Text>There's no video available yet.</Text>}
 
 
@@ -97,14 +97,16 @@ const Title = function ({isLight = false, title}) {
     position: "absolute",
     color: "muted.100",
     left: "4",
-    bottom: "6"
+    bottom: "6",
+    shadow: "4",
   }
   return <Heading
     numberOfLines={1}
     ellipsizeMode='tail'
     mt={2}
-    color={COLOR_SCHEME.NARA_BlUE}
+    color={COLOR_SCHEME.NARA_GREEN}
     size='xl'
+    maxWidth='80%'
     {...isLight ? lightStyles : {}}
   >{title}</Heading>
 }

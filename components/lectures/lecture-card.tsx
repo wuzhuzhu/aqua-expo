@@ -12,6 +12,7 @@ import {Feather, MaterialIcons} from '@expo/vector-icons'
 import {LectureType, RootStackParamList} from "../../types"
 import {COLOR_SCHEME} from '../../constants/Colors'
 import {isDev} from "../../utils/helper"
+import {MotifiBtn} from "../../utils/motify"
 
 export default function MasonryCard(lecture: LectureType): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
