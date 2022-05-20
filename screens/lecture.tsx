@@ -27,7 +27,12 @@ export default function Lecture({route, navigation}):JSX.Element {
   if (isLoading) return <LectureLoading />
   return (
     <Box safeAreaBottom safeAreaTop={hasSelectedIndex ? true : void 0}>
-      <AspectRatio w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
+      <AspectRatio
+        mb={8}
+        ShadowOffsetHeight="80"
+        shadowRadius={20}
+        shadowOpacity={0.5}
+        w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
         {hasSelectedIndex ? <Video
           ref={video}
           source={{
