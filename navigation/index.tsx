@@ -19,6 +19,7 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import MembersScreen from '../screens/members';
 import Lectures from '../screens/lectures';
+import Lecture from '../screens/lecture';
 import MotiScreen from '../screens/moti-demo';
 import WebModal from '../screens/modals/web-modal'
 
@@ -47,6 +48,9 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Tab" component={BottomTabNavigator} />
+      </Stack.Group>
+      <Stack.Group>
+        <Stack.Screen name="Lecture" component={Lecture} options={({ route }) => ({ title: route?.params?.title })} />
       </Stack.Group>
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>

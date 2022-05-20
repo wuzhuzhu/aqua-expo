@@ -9,15 +9,14 @@ import { formatDistanceToNow, subDays } from 'date-fns'
 import {Feather, MaterialIcons} from '@expo/vector-icons'
 
 
-import {LectureType} from "../../types"
+import {LectureType, RootStackParamList} from "../../types"
 import {COLOR_SCHEME} from '../../constants/Colors'
 import {isDev} from "../../utils/helper"
 
 export default function MasonryCard(lecture: LectureType): JSX.Element {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const onPressCard = function () {
-    // TODO: 跳转到详情页
-    // navigation.navigate('WebModal', { title: lecture?.name, url: lecture?.url })
+    navigation.navigate('Lecture', { title: lecture?.title, id: lecture?.id })
   }
   const lastUpdatedStr = lecture?.updatedAt ?
     useMemo(() => {
@@ -26,7 +25,7 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
     }, []) : 'never'
   return <MotiPressable
     key={lecture.id}
-    onPress={() => {console.log('press')}}
+    onPress={onPressCard}
     animate={useMemo(
       () => ({ hovered, pressed }) => {
         'worklet'
@@ -60,15 +59,15 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
       >{lecture.title}</Heading>
       <Row mt={2} justifyContent="space-between" overflow="hidden">
         <Badge colorScheme="success" alignSelf="center" variant="outline">{`${lecture.videoCount} videos`}</Badge>
-        <Row space={2} alignItems="center" maxWidth="80%">
+        <Row space={2} alignItems="flex-end" maxWidth="80%">
           <Icon as={<Feather name="upload-cloud" />} size='sm' ml="2" color="muted.400" />
           <Text
             numberOfLines={1}
             ellipsizeMode='tail'
-            color="muted.400"
+            fontSize='xs'
           >
             <Text
-              color="muted.600"
+              color="muted.400"
             >in {lastUpdatedStr}</Text>
           </Text>
         </Row>

@@ -18,6 +18,12 @@ export type RootStackParamList = {
   Home: {
     screen?: string
   } | undefined;
+  Members: undefined;
+  Lectures: undefined;
+  Lecture: {
+    title?: string;
+    id: string;
+  }
   WebModal: {
     url?: string
     name?: string
