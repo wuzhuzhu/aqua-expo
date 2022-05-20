@@ -14,4 +14,4 @@ const fetchLectureById = async (id): Promise<LectureType> => {
 };
 
 export const useLectures = (): any => useQuery('lectures', fetchLectures);
-export const useLecture = (): any => useQuery('lectures', fetchLectureById);
+export const useLecture = (lectureId): any => useQuery(['lectures', lectureId], () => fetchLectureById(lectureId))
