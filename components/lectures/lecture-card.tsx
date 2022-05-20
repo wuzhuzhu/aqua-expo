@@ -21,8 +21,8 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
   }
   const lastUpdatedStr = lecture?.updatedAt ?
     useMemo(() => {
-      const updatedAt = isDev ? (subDays(new Date(), Math.random()*10)) : lecture.updatedAt
-      return formatDistanceToNow(updatedAt as Date | number)
+      const updatedAt = lecture?.updatedAt as number
+      return formatDistanceToNow(new Date(updatedAt))
     }, []) : 'never'
   const videoCount = (Array.isArray(lecture?.videos) && (lecture?.videos.length !== 0)) ? lecture?.videos.length : 'no'
   return <MotiPressable

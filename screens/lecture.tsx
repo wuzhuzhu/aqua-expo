@@ -1,8 +1,9 @@
 import React, {useState, useRef, useMemo} from 'react';
 import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
-import {Box, Column, Row, Text, AspectRatio, Image, Heading} from 'native-base'
+import {Box, Column, Row, Text, AspectRatio, Divider, Image, Heading, Icon} from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
+import { formatDistanceToNow } from 'date-fns'
 
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
@@ -11,6 +12,7 @@ import {useMembers} from "../api/members"
 import {COLOR_SCHEME} from "../constants/Colors"
 import {ImageBackground} from '../utils/motify'
 import {isDev, windowHeight} from '../utils/helper'
+import {Feather} from "@expo/vector-icons"
 
 if (
   Platform.OS === "android" &&
@@ -28,6 +30,7 @@ export default function Lecture({route, navigation}):JSX.Element {
 
   const hasVideo = Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0)
   const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
+  const onPlayingIndex = useMemo(() => hasSelectedIndex && status?.isPlaying, [currentIndex, status]);
 
   function handleVideoClick(i) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
@@ -39,7 +42,6 @@ export default function Lecture({route, navigation}):JSX.Element {
     <Box safeAreaBottom safeAreaTop={hasSelectedIndex ? true : void 0}>
       <StatusBar style={hasSelectedIndex ? "dark" : "light"} />
       <AspectRatio
-        mb={8}
         maxHeight={0.6*windowHeight}
         ShadowBottomHeight="80"
         shadowRadius={20}
@@ -63,18 +65,32 @@ export default function Lecture({route, navigation}):JSX.Element {
           <Title isLight title={lecture?.title} />
         </ImageBackground>}
       </AspectRatio>
-      <Column mx={4}>
-        {hasSelectedIndex && <Title title={lecture?.title}/>}
+      <Column mx={4} mt={6}>
+        {hasSelectedIndex && <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></>}
         {hasVideo ? (lecture.videos.map((v, i) => {
-          return <TouchableOpacity onPress={() => handleVideoClick(i)}><Row
-            mt={4} py={2} key={`video-${i}`} >
-            <Text
-              numberOfLines={1}
-              maxWidth="65%"
-              fontSize="lg"
-              mt={2}
-            >{v.title}</Text>
-          </Row></TouchableOpacity>
+          return <TouchableOpacity key={`video-${i}`} onPress={() => handleVideoClick(i)}>
+            <Row
+              mt={4} py={2}
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Column>
+                <Text
+                  numberOfLines={1}
+                  maxWidth="70%"
+                  fontSize="lg"
+                  fontWeight="bold"
+                  mt={2}
+                >{v.title}</Text>
+                <Text
+                  color="muted.400"
+                >{formatDistanceToNow(new Date(v.createdAt), { addSuffix: true })}</Text>
+              </Column>
+              <TouchableOpacity onPress={() => status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}>
+                <Icon as={<Feather name={(onPlayingIndex === i) ? 'pause' : 'play'} />} size='md' mr="2" color={onPlayingIndex !== i ? COLOR_SCHEME.NARA_GREEN : 'muted.400'} />
+              </TouchableOpacity>
+            </Row>
+          </TouchableOpacity>
         }) ): <Text>There's no video available yet.</Text>}
 
 
@@ -103,8 +119,8 @@ const Title = function ({isLight = false, title}) {
   return <Heading
     numberOfLines={1}
     ellipsizeMode='tail'
-    mt={2}
-    color={COLOR_SCHEME.NARA_GREEN}
+    color="muted.800"
+    fontWeight="semibold"
     size='xl'
     maxWidth='80%'
     {...isLight ? lightStyles : {}}
