@@ -1,32 +1,42 @@
-import * as React from 'react';
+import {useState, useRef} from 'react';
 import { View, StyleSheet, Button } from 'react-native';
+import { Box, Column, Text, AspectRatio, Image } from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
+import {LectureType} from "../types"
 
-export default function Lecture() {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
+export default function Lecture({route, navigation}):JSX.Element {
+  const lecture = route.params?.lecture
+  const video = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(undefined as number | undefined)
+  const [status, setStatus] = useState({} as AVPlaybackStatus);
   return (
-    <View style={styles.container}>
-      <Video
-        ref={video}
-        style={styles.video}
-        source={{
-          uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-        }}
-        useNativeControls
-        resizeMode="contain"
-        isLooping
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
-      />
+    <Box bg="muted.600">
+      <AspectRatio w="100%" ratio={16 / 9}>
+        {currentIndex ? <Video
+          ref={video}
+          source={{
+            uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+          }}
+          useNativeControls
+          resizeMode="contain"
+          isLooping
+          onPlaybackStatusUpdate={status => setStatus(() => status)}
+        /> : <Image
+          source={{
+            uri: lecture?.imgUrl,
+          }}
+        />}
+      </AspectRatio>
+
       <View style={styles.buttons}>
         <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
+          title={status?.isPlaying ? 'Pause' : 'Play'}
           onPress={() =>
-            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+            status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
           }
         />
       </View>
-    </View>
+    </Box>
   );
 }
 
@@ -35,11 +45,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#ecf0f1',
-  },
-  video: {
-    alignSelf: 'center',
-    width: 320,
-    height: 200,
   },
   buttons: {
     flexDirection: 'row',

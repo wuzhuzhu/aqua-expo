@@ -16,13 +16,14 @@ import {isDev} from "../../utils/helper"
 export default function MasonryCard(lecture: LectureType): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const onPressCard = function () {
-    navigation.navigate('Lecture', { title: lecture?.title, id: lecture?.id })
+    navigation.navigate('Lecture', { lecture })
   }
   const lastUpdatedStr = lecture?.updatedAt ?
     useMemo(() => {
       const updatedAt = isDev ? (subDays(new Date(), Math.random()*10)) : lecture.updatedAt
       return formatDistanceToNow(updatedAt as Date | number)
     }, []) : 'never'
+  const videoCount = (Array.isArray(lecture?.videos) && (lecture?.videos.length !== 0)) ? lecture?.videos.length : 'no'
   return <MotiPressable
     key={lecture.id}
     onPress={onPressCard}
@@ -58,7 +59,7 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
         size='sm'
       >{lecture.title}</Heading>
       <Row mt={2} justifyContent="space-between" overflow="hidden">
-        <Badge colorScheme="success" alignSelf="center" variant="outline">{`${lecture.videoCount} videos`}</Badge>
+        <Badge colorScheme="success" alignSelf="center" variant="outline">{`${videoCount} videos`}</Badge>
         <Row space={2} alignItems="flex-end" maxWidth="80%">
           <Icon as={<Feather name="upload-cloud" />} size='sm' ml="2" color="muted.400" />
           <Text

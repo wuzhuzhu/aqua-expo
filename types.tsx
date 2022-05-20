@@ -21,8 +21,7 @@ export type RootStackParamList = {
   Members: undefined;
   Lectures: undefined;
   Lecture: {
-    title?: string;
-    id: string;
+    lecture: LectureType
   }
   WebModal: {
     url?: string
@@ -62,4 +61,14 @@ export type LectureType = {
   imgUrl?: string;
   videoCount?: number;
   updatedAt: number;
+  videos: VideoType[];
+}
+
+export type VideoType = {
+  id: string;
+  lectureId: string;
+  createdAt: number;
+  title: string;
+  videoUrl: string;
+  isYoutube: boolean;
 }

@@ -4,12 +4,12 @@ import {LectureType} from '../types'
 import {API_ENDPOINT} from '../utils/config'
 
 const fetchLectures = async (): Promise<LectureType[]> => {
-  const { data } = await axios.get(`${API_ENDPOINT}/lecture`);
+  const { data } = await axios.get(`${API_ENDPOINT}/lectures`);
   return data;
 };
 
 const fetchLectureById = async (id): Promise<LectureType> => {
-  const { data } = await axios.get(`${API_ENDPOINT}/lecture/${id}`);
+  const { data } = await axios.get(`${API_ENDPOINT}/lectures/${id}`);
   return data;
 };
 
