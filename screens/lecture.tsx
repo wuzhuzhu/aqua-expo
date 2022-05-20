@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useMemo} from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import {Box, Column, Row, Text, AspectRatio, Image, Heading} from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
@@ -17,15 +17,18 @@ export default function Lecture({route, navigation}):JSX.Element {
   const [status, setStatus] = useState({} as AVPlaybackStatus);
 
   const hasVideo = Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0)
+  const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
+
   function handleVideoClick(i) {
+    console.log(i)
     setCurrentIndex(i)
   }
 
   if (isLoading) return <LectureLoading />
   return (
-    <Box safeAreaBottom safeAreaTop={currentIndex ? true : void 0}>
-      <AspectRatio w="100%" ratio={4 / 3}>
-        {currentIndex ? <Video
+    <Box safeAreaBottom safeAreaTop={hasSelectedIndex ? true : void 0}>
+      <AspectRatio w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
+        {hasSelectedIndex ? <Video
           ref={video}
           source={{
             uri: isDev ? 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
@@ -50,8 +53,9 @@ export default function Lecture({route, navigation}):JSX.Element {
           size='lg'
         >{lecture.title}</Heading>
         {hasVideo ? (lecture.videos.map((v, i) => {
-          return <Row onPress={() => handleVideoClick(i)}>
+          return <Row key={`video-${i}`} >
             <Text
+              onPress={() => handleVideoClick(i)}
               numberOfLines={1}
               maxWidth="65%"
               fontSize="lg"
