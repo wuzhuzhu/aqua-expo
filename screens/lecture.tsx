@@ -75,7 +75,9 @@ export default function Lecture({route, navigation}):JSX.Element {
       <ScrollView px={4} mt={6}>
         {hasSelectedIndex ? <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></> : <></>}
           {videos.map((v, i) => {
-            return <VideoRow key={v.id}  v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
+            return <StaggeredList key={i}>
+              <VideoRow v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
+            </StaggeredList>
           })}
       </ScrollView>
       {hasSelectedIndex && <ContolBtn status={status} video={video}/>}
@@ -83,7 +85,12 @@ export default function Lecture({route, navigation}):JSX.Element {
   );
 }
 
-const Title = function ({isLight = false, title}) {
+type ITitleProps = {
+  isLight: boolean
+  title?: string
+}
+
+const Title = function ({isLight = false, title}: ITitleProps): JSX.Element {
   const lightStyles = {
     position: "absolute",
     color: "muted.100",
