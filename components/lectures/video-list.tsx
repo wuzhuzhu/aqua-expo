@@ -6,10 +6,7 @@ import {COLOR_SCHEME} from "../../constants/Colors"
 import {VideoType} from "../../types"
 
 type IVideoListProps = {
-  videos: VideoType[]
-  handleVideoClick: any
-  togglePlayback: any
-  onPlayingIndex: number
+  children: JSX.Element
 }
 type IVideoRowProps = {
   v: VideoType
@@ -20,7 +17,7 @@ type IVideoRowProps = {
 }
 
 // TODO: 解决重复刷新问题
-const VideoList = function ({videos, handleVideoClick, togglePlayback, onPlayingIndex}: IVideoListProps) {
+const VideoList = function ({children}: IVideoListProps) {
   return (
     <Stagger
       visible
@@ -43,9 +40,7 @@ const VideoList = function ({videos, handleVideoClick, togglePlayback, onPlaying
         opacity: 0
       }}
     >
-      {videos.map((v, i) => {
-        return <VideoRow key={v.id}  v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
-      })}
+      {children}
     </Stagger>
   )
 }

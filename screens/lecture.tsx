@@ -7,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns'
 
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
-import VideoList from '../components/lectures/video-list'
+import VideoList, {VideoRow} from '../components/lectures/video-list'
 import ContolBtn from '../components/lectures/control-btn'
 import {LectureType} from "../types"
 import {useMembers} from "../api/members"
@@ -55,8 +55,9 @@ export default function Lecture({route, navigation}):JSX.Element {
         w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
         {hasSelectedIndex ? <Video
           ref={video}
+          resizeMode="contain"
           source={{
-            uri: isDev ? 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
+            uri: isDev ? 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
           }}
           useNativeControls
           isLooping
@@ -72,8 +73,12 @@ export default function Lecture({route, navigation}):JSX.Element {
       {showDev && <Text>选中的index{currentIndex}</Text>}
       {showDev && hasSelectedIndex && <Text>选中的video{JSON.stringify(lecture?.videos[currentIndex])}</Text>}
       <ScrollView px={4} mt={6}>
-        {hasSelectedIndex && <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></>}
-        <VideoList videoRef={video} videos={videos} togglePlayback={togglePlayback} handleVideoClick={handleVideoClick} onPlayingIndex={currentIndex} />
+        {hasSelectedIndex ? <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></> : <></>}
+        <VideoList>
+          {videos.map((v, i) => {
+            return <VideoRow key={v.id}  v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
+          })}
+        </VideoList>
       </ScrollView>
       {hasSelectedIndex && <ContolBtn status={status} video={video}/>}
     </Box>
