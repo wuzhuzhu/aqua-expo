@@ -2,7 +2,13 @@ import React from "react";
 import {NativeStackNavigationProp, NativeStackScreenProps} from "@react-navigation/native-stack"
 import {Center, Box, Column, ScrollView, Text, Heading, PresenceTransition, Image} from "native-base"
 import MasonryList from '@react-native-seoul/masonry-list';
-import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated'
+import Animated, {
+  useSharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useDerivedValue,
+  FadeInDown
+} from 'react-native-reanimated'
 
 import {useMembers} from "../api/members"
 import Logo from '../components/home/logo'
@@ -44,7 +50,7 @@ export default function MembersScreen({
   return (
     <Box safeAreaTop px={2}>
       <Box height={180} position="absolute" right={0} top={-4} opacity={0.35}>
-        <Animated.Image style={[{flex: 1, maxWidth: 280}, animatedStyle]} resizeMode="contain" source={logoImg} />
+        <Animated.Image entering={FadeInDown.duration(600).delay(300)} style={[animatedStyle, { flex: 1, maxWidth: 280 }]} resizeMode="contain" source={logoImg} />
       </Box>
       <Animated.ScrollView
         contentContainerStyle={{ width: "100%" }}

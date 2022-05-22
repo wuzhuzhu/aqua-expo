@@ -7,12 +7,15 @@ import { formatDistanceToNow } from 'date-fns'
 
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
+import VideoList from '../components/lectures/video-list'
 import {LectureType} from "../types"
 import {useMembers} from "../api/members"
 import {COLOR_SCHEME} from "../constants/Colors"
 import {ImageBackground} from '../utils/motify'
 import {isDev, windowHeight} from '../utils/helper'
 import {Feather} from "@expo/vector-icons"
+
+const showDev = false
 
 if (
   Platform.OS === "android" &&
@@ -53,47 +56,21 @@ export default function Lecture({route, navigation}):JSX.Element {
             uri: isDev ? 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
           }}
           useNativeControls
-          resizeMode="contain"
           isLooping
           onPlaybackStatusUpdate={status => setStatus(() => status)}
         /> : <ImageBackground
           source={{
             uri: lecture?.imgUrl,
           }}
-          alt="lecture image"
         >
           <Title isLight title={lecture?.title} />
         </ImageBackground>}
       </AspectRatio>
+      {showDev && <Text>选中的index{currentIndex}</Text>}
+      {showDev && hasSelectedIndex && <Text>选中的video{JSON.stringify(lecture?.videos[currentIndex])}</Text>}
       <Column mx={4} mt={6}>
         {hasSelectedIndex && <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></>}
-        {hasVideo ? (lecture.videos.map((v, i) => {
-          return <TouchableOpacity key={`video-${i}`} onPress={() => handleVideoClick(i)}>
-            <Row
-              mt={4} py={2}
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Column>
-                <Text
-                  numberOfLines={1}
-                  maxWidth="70%"
-                  fontSize="lg"
-                  fontWeight="bold"
-                  mt={2}
-                >{v.title}</Text>
-                <Text
-                  color="muted.400"
-                >{formatDistanceToNow(new Date(v.createdAt), { addSuffix: true })}</Text>
-              </Column>
-              <TouchableOpacity onPress={() => status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}>
-                <Icon as={<Feather name={(onPlayingIndex === i) ? 'pause' : 'play'} />} size='md' mr="2" color={onPlayingIndex !== i ? COLOR_SCHEME.NARA_GREEN : 'muted.400'} />
-              </TouchableOpacity>
-            </Row>
-          </TouchableOpacity>
-        }) ): <Text>There's no video available yet.</Text>}
-
-
+        {hasVideo ? <VideoList videoRef={video} videos={lecture.videos} handleVideoClick={handleVideoClick} onPlayingIndex={onPlayingIndex} /> : <Text>There's no video available yet.</Text>}
         <View>
           <Button
             title={status?.isPlaying ? 'Pause' : 'Play'}

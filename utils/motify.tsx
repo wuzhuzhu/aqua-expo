@@ -1,6 +1,7 @@
 import React, {useMemo} from "react"
 import {motify, MotiPressable} from "moti"
 import {Badge, Factory, Heading, Icon, Row, Text} from 'native-base'
+import Animated from 'react-native-reanimated';
 import {Box, Center} from "native-base"
 import {Image, ImageBackground as IBg} from 'react-native'
 import {COLOR_SCHEME} from "../constants/Colors"
@@ -30,3 +31,4 @@ export const MotifiBtn = function (props) {
 }
 
 export const ImageBackground = Factory(IBg);
+export const NBAnimatedView = Factory(Animated.View);

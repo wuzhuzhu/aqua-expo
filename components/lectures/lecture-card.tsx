@@ -8,7 +8,6 @@ import { MotiPressable } from 'moti/interactions'
 import { formatDistanceToNow, subDays } from 'date-fns'
 import {Feather, MaterialIcons} from '@expo/vector-icons'
 
-
 import {LectureType, RootStackParamList} from "../../types"
 import {COLOR_SCHEME} from '../../constants/Colors'
 import {isDev} from "../../utils/helper"
