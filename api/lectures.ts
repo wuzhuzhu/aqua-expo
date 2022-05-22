@@ -8,7 +8,7 @@ const fetchLectures = async (): Promise<LectureType[]> => {
   return data;
 };
 
-const fetchLectureById = async (id): Promise<LectureType> => {
+const fetchLectureById = async (id: number): Promise<LectureType> => {
   const { data } = await axios.get(`${API_ENDPOINT}/lectures/${id}`);
   return data;
 };
