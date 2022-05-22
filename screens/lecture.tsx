@@ -7,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns'
 
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
-import VideoList, {VideoRow} from '../components/lectures/video-list'
+import {StaggeredList, VideoRow} from '../components/lectures/video-list'
 import ContolBtn from '../components/lectures/control-btn'
 import {LectureType} from "../types"
 import {useMembers} from "../api/members"
@@ -55,11 +55,11 @@ export default function Lecture({route, navigation}):JSX.Element {
         w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
         {hasSelectedIndex ? <Video
           ref={video}
-          resizeMode="contain"
           source={{
-            uri: isDev ? 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
+            uri: isDev ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
           }}
           useNativeControls
+          resizeMode="contain"
           isLooping
           onPlaybackStatusUpdate={status => setStatus(() => status)}
         /> : <ImageBackground
@@ -74,11 +74,9 @@ export default function Lecture({route, navigation}):JSX.Element {
       {showDev && hasSelectedIndex && <Text>选中的video{JSON.stringify(lecture?.videos[currentIndex])}</Text>}
       <ScrollView px={4} mt={6}>
         {hasSelectedIndex ? <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></> : <></>}
-        <VideoList>
           {videos.map((v, i) => {
             return <VideoRow key={v.id}  v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
           })}
-        </VideoList>
       </ScrollView>
       {hasSelectedIndex && <ContolBtn status={status} video={video}/>}
     </Box>

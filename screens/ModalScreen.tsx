@@ -3,10 +3,21 @@ import { Platform, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { Video, AVPlaybackStatus } from 'expo-av';
 
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
+      <Video
+        // ref={video}
+        style={styles.video}
+        source={{
+          uri: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+        }}
+        useNativeControls
+        resizeMode="contain"
+        isLooping
+      />
       <Text style={styles.title}>Modal</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/ModalScreen.tsx" />
@@ -31,5 +42,10 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  video: {
+    alignSelf: 'center',
+    width: 320,
+    height: 200,
   },
 });

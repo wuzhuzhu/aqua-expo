@@ -1,3 +1,4 @@
+import {memo} from 'react'
 import {Column, Icon, Row, Stagger, Text, FlatList, Box, Avatar, VStack, HStack, Spacer} from 'native-base'
 import {TouchableOpacity} from "react-native"
 import {formatDistanceToNow} from "date-fns"
@@ -17,7 +18,7 @@ type IVideoRowProps = {
 }
 
 // TODO: 解决重复刷新问题
-const VideoList = function ({children}: IVideoListProps) {
+export const StaggeredList = function ({children}: IVideoListProps) {
   return (
     <Stagger
       visible
@@ -72,5 +73,3 @@ export const VideoRow = function ({v, i, handleVideoClick, togglePlayback, onPla
     </Row>
   </TouchableOpacity>
 }
-
-export default VideoList

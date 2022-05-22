@@ -13,7 +13,7 @@ export default function HomeScreen({navigation}: RootStackScreenProps<'Home'>) {
       <Column justifyContent="center" space={4}>
         <Logo imageMaxWidth="70%" mt={4} />
         <Center>
-          <Text textAlign="center" maxWidth="60%" color="trueGray.600">Premium Rendered Proteins for Sustainable Aquaculture in the World</Text>
+          <Text onPress={() => navigation.navigate('Modal2')} textAlign="center" maxWidth="60%" color="trueGray.600">Premium Rendered Proteins for Sustainable Aquaculture in the World</Text>
         </Center>
         <Center>
           <Input size="10" w="80%" mt="2" InputLeftElement={<Icon as={<MaterialIcons name="search" />} size={5} ml="2" color="muted.400" />} placeholder="Search For ..." />
