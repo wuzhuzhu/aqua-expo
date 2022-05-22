@@ -36,6 +36,7 @@ export default function Lecture({route, navigation}):JSX.Element {
   const hasVideo = useMemo(() => Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0), [lecture])
   const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
   const onPlayingIndex = useMemo(() => hasSelectedIndex && status?.isPlaying, [currentIndex, status]);
+  const togglePlayback = useCallback(() => status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync(), [])
 
   const handleVideoClick = useCallback((i) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
@@ -72,55 +73,7 @@ export default function Lecture({route, navigation}):JSX.Element {
       {showDev && hasSelectedIndex && <Text>选中的video{JSON.stringify(lecture?.videos[currentIndex])}</Text>}
       <ScrollView px={4} mt={6}>
         {hasSelectedIndex && <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></>}
-        {hasVideo ? <Stagger
-          visible
-          initial={{
-            opacity: 0,
-            translateY: 10
-          }}
-          animate={{
-            opacity: 1,
-            translateY: 0,
-            transition: {
-              delay: 100,
-              duration: 350,
-              stagger: {
-                offset: 50,
-              }
-            }
-          }}
-          exit={{
-            opacity: 0
-          }}
-        >
-          {videos.map((v, i) => {
-            return <TouchableOpacity key={v.id} onPress={() => handleVideoClick(i)}>
-              <Row key={i}
-                   mt={4} py={2}
-                   alignItems="center"
-                   justifyContent="space-between"
-              >
-                <Column>
-                  <Text
-                    numberOfLines={1}
-                    maxWidth="70%"
-                    fontSize="lg"
-                    fontWeight="bold"
-                    mt={2}
-                  >{i+1}{v.title}</Text>
-                  <Text
-                    color="muted.400"
-                  >{formatDistanceToNow(new Date(v.createdAt), {addSuffix: true})}</Text>
-                </Column>
-                <TouchableOpacity
-                  onPress={() => status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}>
-                  <Icon as={<Feather name={(onPlayingIndex === i) ? 'pause' : 'play'}/>} size="md" mr="2"
-                        color={onPlayingIndex !== i ? COLOR_SCHEME.NARA_GREEN : 'muted.400'}/>
-                </TouchableOpacity>
-              </Row>
-            </TouchableOpacity>
-          })}
-        </Stagger> : <Text>There's no video available yet.</Text>}
+        <VideoList videoRef={video} videos={videos} togglePlayback={togglePlayback} handleVideoClick={handleVideoClick} onPlayingIndex={currentIndex} />
       </ScrollView>
       {hasSelectedIndex && <ContolBtn status={status} video={video}/>}
     </Box>
