@@ -1,6 +1,6 @@
-import React, {useState, useRef, useMemo} from 'react';
+import React, {useState, useRef, useMemo, useCallback} from 'react';
 import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
-import {Box, Column, Row, Text, AspectRatio, Divider, Image, Heading, Icon} from 'native-base'
+import {Box, Column, Row, Text, AspectRatio, Divider, Image, Heading, Icon, Stagger} from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 import { formatDistanceToNow } from 'date-fns'
@@ -8,10 +8,11 @@ import { formatDistanceToNow } from 'date-fns'
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
 import VideoList from '../components/lectures/video-list'
+import ContolBtn from '../components/lectures/control-btn'
 import {LectureType} from "../types"
 import {useMembers} from "../api/members"
 import {COLOR_SCHEME} from "../constants/Colors"
-import {ImageBackground} from '../utils/motify'
+import {ImageBackground, ScrollView} from '../utils/motify'
 import {isDev, windowHeight} from '../utils/helper'
 import {Feather} from "@expo/vector-icons"
 
@@ -27,22 +28,23 @@ if (
 export default function Lecture({route, navigation}):JSX.Element {
   const lectureId = route?.params?.id
   const {data: lecture, isLoading, isSuccess, refetch, isFetching} = useLecture(lectureId)
+  const videos = lecture?.videos ? lecture.videos : []
   const video = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(undefined as number | undefined)
   const [status, setStatus] = useState({} as AVPlaybackStatus);
 
-  const hasVideo = Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0)
+  const hasVideo = useMemo(() => Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0), [lecture])
   const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
   const onPlayingIndex = useMemo(() => hasSelectedIndex && status?.isPlaying, [currentIndex, status]);
 
-  function handleVideoClick(i) {
+  const handleVideoClick = useCallback((i) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     setCurrentIndex(i)
-  }
+  }, [currentIndex])
 
   if (isLoading) return <LectureLoading />
   return (
-    <Box safeAreaBottom safeAreaTop={hasSelectedIndex ? true : void 0}>
+    <Box safeAreaBottom safeAreaTop={hasSelectedIndex ? true : void 0} flex={1}>
       <StatusBar style={hasSelectedIndex ? "dark" : "light"} />
       <AspectRatio
         maxHeight={0.6*windowHeight}
@@ -68,19 +70,59 @@ export default function Lecture({route, navigation}):JSX.Element {
       </AspectRatio>
       {showDev && <Text>选中的index{currentIndex}</Text>}
       {showDev && hasSelectedIndex && <Text>选中的video{JSON.stringify(lecture?.videos[currentIndex])}</Text>}
-      <Column mx={4} mt={6}>
+      <ScrollView px={4} mt={6}>
         {hasSelectedIndex && <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></>}
-        {hasVideo ? <VideoList videoRef={video} videos={lecture.videos} handleVideoClick={handleVideoClick} onPlayingIndex={onPlayingIndex} /> : <Text>There's no video available yet.</Text>}
-        <View>
-          <Button
-            title={status?.isPlaying ? 'Pause' : 'Play'}
-            onPress={() =>
-              status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+        {hasVideo ? <Stagger
+          visible
+          initial={{
+            opacity: 0,
+            translateY: 10
+          }}
+          animate={{
+            opacity: 1,
+            translateY: 0,
+            transition: {
+              delay: 100,
+              duration: 350,
+              stagger: {
+                offset: 50,
+              }
             }
-          />
-        </View>
-      </Column>
-
+          }}
+          exit={{
+            opacity: 0
+          }}
+        >
+          {videos.map((v, i) => {
+            return <TouchableOpacity key={v.id} onPress={() => handleVideoClick(i)}>
+              <Row key={i}
+                   mt={4} py={2}
+                   alignItems="center"
+                   justifyContent="space-between"
+              >
+                <Column>
+                  <Text
+                    numberOfLines={1}
+                    maxWidth="70%"
+                    fontSize="lg"
+                    fontWeight="bold"
+                    mt={2}
+                  >{i+1}{v.title}</Text>
+                  <Text
+                    color="muted.400"
+                  >{formatDistanceToNow(new Date(v.createdAt), {addSuffix: true})}</Text>
+                </Column>
+                <TouchableOpacity
+                  onPress={() => status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}>
+                  <Icon as={<Feather name={(onPlayingIndex === i) ? 'pause' : 'play'}/>} size="md" mr="2"
+                        color={onPlayingIndex !== i ? COLOR_SCHEME.NARA_GREEN : 'muted.400'}/>
+                </TouchableOpacity>
+              </Row>
+            </TouchableOpacity>
+          })}
+        </Stagger> : <Text>There's no video available yet.</Text>}
+      </ScrollView>
+      {hasSelectedIndex && <ContolBtn status={status} video={video}/>}
     </Box>
   );
 }
@@ -104,6 +146,3 @@ const Title = function ({isLight = false, title}) {
   >{title}</Heading>
 }
 
-function VideoLine(video: Video): JSX.Element {
-  return null
-}
