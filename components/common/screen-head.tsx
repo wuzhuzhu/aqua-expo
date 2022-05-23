@@ -1,6 +1,6 @@
 import React, {memo} from 'react'
 import {Box, Heading, Row} from "native-base"
-import Animated, {FadeInDown} from "react-native-reanimated"
+import Animated, {FadeInRight} from "react-native-reanimated"
 import logoImg from "../../assets/images/logo.png"
 import MasonryList from "@react-native-seoul/masonry-list"
 import MasonryCard from "../lectures/lecture-card"
@@ -16,7 +16,7 @@ const ScreenHead = function ({navigation, children, title, customizeContainer}: 
   const {overscollImageStyle, scrollHandler} = useOverscollImageStyle()
   return <Box safeAreaTop px={2} flex={1}>
     <Box height={180} position="absolute" right={0} top={-4} opacity={0.35}>
-      <Animated.Image entering={FadeInDown.duration(600).delay(300)} style={[overscollImageStyle, { flex: 1, maxWidth: 280 }]} resizeMode="contain" source={logoImg} />
+      <Animated.Image entering={FadeInRight.duration(800).delay(400)} style={[overscollImageStyle, { flex: 1, maxWidth: 280 }]} resizeMode="contain" source={logoImg} />
     </Box>
     <Animated.ScrollView
       showsVerticalScrollIndicator={false}
