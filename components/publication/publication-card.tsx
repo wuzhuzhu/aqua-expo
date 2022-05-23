@@ -1,10 +1,10 @@
 import {Column, Row, Box, Text, Image, Icon, AspectRatio, Pressable} from "native-base"
-import React, {useMemo, memo, useCallback, useState} from "react"
+import React, {useMemo, memo, useCallback, useState, useEffect} from "react"
 import {ImageBackground} from '../../utils/motify'
 import {PublicationType} from "../../types"
 import {getImagePlaceHolder, getTimeDistanceStr} from '../../utils/helper'
 import {Feather} from '@expo/vector-icons'
-import Animated, {useSharedValue, useAnimatedStyle, withTiming, withSpring, Easing} from 'react-native-reanimated'
+import Animated, {useSharedValue, useAnimatedStyle, withTiming, withRepeat, withDelay, withSequence, withSpring, Easing} from 'react-native-reanimated'
 
 import BetterButton from '../common/better-btn'
 import {NBAnimatedView} from '../../utils/motify'
@@ -17,7 +17,7 @@ type IPublicationCardType = {
   p: PublicationType
 }
 
-const PublicationCard = function ({p, cardWidth, marginRight = 0}: IPublicationCardType) {
+const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublicationCardType) {
   // animations
   const [isChaptersShow, _toggleChaptersShow] = useState(false)
   const wrapperWidth = useSharedValue(cardWidth);
@@ -38,6 +38,22 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0}: IPublicationC
       wrapperWidth.value = cardWidth
     _toggleChaptersShow(!isChaptersShow)
   };
+
+  // btn show up alert
+  const rotation = useSharedValue(0);
+  function animate()  {
+    rotation.value = withSequence(
+      withDelay(1500, withTiming(-10, { duration: 50 })),
+      withRepeat(withTiming(20, { duration: 100 }), 6, true),
+      withTiming(0, { duration: 50 })
+    )
+  }
+  useEffect(animate, [])
+  const showUpAnimationStyles = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotateZ: `${rotation.value}deg` }],
+    };
+  })
 
   const wrapperStyle = {
     mb: 4,
@@ -63,18 +79,19 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0}: IPublicationC
       >
         <BetterButton onPressBtn={toggleChapter}>
           <Box p={3}>
-            <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl' shadow={1} />
+            <NBAnimatedView style={rank === 0 ? showUpAnimationStyles : null}>
+              <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl' shadow={1} />
+            </NBAnimatedView>
           </Box>
         </BetterButton>
       </ImageBackground>
     </AspectRatio>
     <Column p={2} bg="muted.100">
-      <Text numberOfLines={1}>{wrapperWidth.value}</Text>
-      <Text numberOfLines={1}>{isChaptersShow.toString()}</Text>
+      <Text numberOfLines={1}>{rank}</Text>
       <Text numberOfLines={1}>{p.title}</Text>
-      {/*<Text numberOfLines={1}>{p.title}</Text>*/}
-      {/*<Text numberOfLines={1}>{p.author}</Text>*/}
-      {/*<Text numberOfLines={1}>{timeToNow}</Text>*/}
+      <Text numberOfLines={1}>{p.title}</Text>
+      <Text numberOfLines={1}>{p.author}</Text>
+      <Text numberOfLines={1}>{timeToNow}</Text>
     </Column>
   </NBAnimatedView>
   </ BetterButton>)

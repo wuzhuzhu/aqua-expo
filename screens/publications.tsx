@@ -1,6 +1,7 @@
 import {Box, Heading, Text, Row} from 'native-base'
 import Animated from 'react-native-reanimated'
 
+import SlideInHint from '../components/common/slide-in-hint'
 import StaggeredList from '../components/common/staggered-list'
 import {NativeStackNavigationProp} from "@react-navigation/native-stack"
 import {MasoryLoading2, EmptyList} from "../components/common/loading"
@@ -11,6 +12,7 @@ import React from "react"
 import {usePublications} from "../api/publications"
 import PublicationCard from "../components/publication/publication-card"
 import {windowWidth, windowHeight} from '../utils/helper'
+
 
 export default function PublicationsScreen({
                                         navigation,
@@ -44,7 +46,7 @@ export default function PublicationsScreen({
       >Publications</Heading>
       {hasPublication ? <Row {...wrapperStyle}>
         <StaggeredList>
-          {publications.map((p, i) => <PublicationCard marginRight={checkOdd(i)?cardSpace:(0-cardSpace)} cardWidth={cardWidth} p={p} key={i} />)}
+          {publications.map((p, i) => <PublicationCard key={`p-${i}`} marginRight={checkOdd(i)?cardSpace:(0-cardSpace)} cardWidth={cardWidth} p={p} rank={i} />)}
         </StaggeredList>
       </Row> : <EmptyList text="There's No Publication yet." />}
       </>
