@@ -44,7 +44,7 @@ export default function PublicationsScreen({
       >Publications</Heading>
       {hasPublication ? <Row {...wrapperStyle}>
         <StaggeredList>
-          {publications.map((p, i) => <PublicationCard marginRight={checkOdd(i)?cardSpace:0} cardWidth={cardWidth} p={p} key={i} />)}
+          {publications.map((p, i) => <PublicationCard marginRight={checkOdd(i)?cardSpace:(0-cardSpace)} cardWidth={cardWidth} p={p} key={i} />)}
         </StaggeredList>
       </Row> : <EmptyList text="There's No Publication yet." />}
       </>
