@@ -1,4 +1,4 @@
-import React, {useState, useRef, useMemo, useCallback} from 'react';
+import React, {memo, useState, useRef, useMemo, useCallback} from 'react';
 import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
 import {Box, Column, Row, Text, AspectRatio, Divider, Image, Heading, Icon, Stagger} from 'native-base'
 import { Video, AVPlaybackStatus } from 'expo-av';
@@ -7,7 +7,8 @@ import { formatDistanceToNow } from 'date-fns'
 
 import {useLecture} from '../api/lectures'
 import {LectureLoading} from '../components/common/loading'
-import {StaggeredList, VideoRow} from '../components/lectures/video-list'
+import StaggeredList from '../components/common/staggered-list'
+import VideoRow from '../components/lectures/video-list'
 import ContolBtn from '../components/lectures/control-btn'
 import {LectureType} from "../types"
 import {useMembers} from "../api/members"
@@ -75,9 +76,7 @@ export default function Lecture({route, navigation}):JSX.Element {
       <ScrollView px={4} mt={6}>
         {hasSelectedIndex ? <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></> : <></>}
           {videos.map((v, i) => {
-            return <StaggeredList key={i}>
-              <VideoRow v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
-            </StaggeredList>
+            return <VideoRow key={i} v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
           })}
       </ScrollView>
       {hasSelectedIndex && <ContolBtn status={status} video={video}/>}
@@ -90,7 +89,7 @@ type ITitleProps = {
   title?: string
 }
 
-const Title = function ({isLight = false, title}: ITitleProps): JSX.Element {
+const Title = memo(function ({isLight = false, title}: ITitleProps): JSX.Element {
   const lightStyles = {
     position: "absolute",
     color: "muted.100",
@@ -107,5 +106,5 @@ const Title = function ({isLight = false, title}: ITitleProps): JSX.Element {
     maxWidth='80%'
     {...isLight ? lightStyles : {}}
   >{title}</Heading>
-}
+})
 

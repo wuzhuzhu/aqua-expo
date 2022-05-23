@@ -1,4 +1,4 @@
-import {memo} from 'react'
+import {memo, useEffect} from 'react'
 import {Column, Icon, Row, Stagger, Text, FlatList, Box, Avatar, VStack, HStack, Spacer} from 'native-base'
 import {TouchableOpacity} from "react-native"
 import {formatDistanceToNow} from "date-fns"
@@ -6,9 +6,6 @@ import {Feather} from "@expo/vector-icons"
 import {COLOR_SCHEME} from "../../constants/Colors"
 import {VideoType} from "../../types"
 
-type IVideoListProps = {
-  children: JSX.Element
-}
 type IVideoRowProps = {
   v: VideoType
   handleVideoClick: any
@@ -17,36 +14,8 @@ type IVideoRowProps = {
   i: number
 }
 
-// TODO: 解决重复刷新问题
-export const StaggeredList = function ({children}: IVideoListProps) {
-  return (
-    <Stagger
-      visible
-      initial={{
-        opacity: 0,
-        translateY: 10
-      }}
-      animate={{
-        opacity: 1,
-        translateY: 0,
-        transition: {
-          delay: 100,
-          duration: 350,
-          stagger: {
-            offset: 50,
-          }
-        }
-      }}
-      exit={{
-        opacity: 0
-      }}
-    >
-      {children}
-    </Stagger>
-  )
-}
-
-export const VideoRow = function ({v, i, handleVideoClick, togglePlayback, onPlayingIndex}: IVideoRowProps) {
+const VideoRow = memo(function ({v, i, handleVideoClick, togglePlayback, onPlayingIndex}: IVideoRowProps) {
+  useEffect(() => console.log('渲染了', i))
   return <TouchableOpacity onPress={() => handleVideoClick(i)}>
     <Row
          mt={4} py={2}
@@ -72,4 +41,6 @@ export const VideoRow = function ({v, i, handleVideoClick, togglePlayback, onPla
       </TouchableOpacity>
     </Row>
   </TouchableOpacity>
-}
+})
+
+export default VideoRow
