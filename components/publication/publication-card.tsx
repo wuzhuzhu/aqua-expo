@@ -21,9 +21,7 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
   // animations
   const [isChaptersShow, _toggleChaptersShow] = useState(false)
   const wrapperWidth = useSharedValue(cardWidth);
-  const wrapperAnimation = {
-    width: isChaptersShow ? 404 : 202
-  }
+  // todo: try to use layout animation to improve right one's looking
   const animatedStyles = useAnimatedStyle(() => {
     return {
       width: withTiming(wrapperWidth.value, {
