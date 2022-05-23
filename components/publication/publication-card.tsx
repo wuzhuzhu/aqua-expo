@@ -4,9 +4,10 @@ import {ImageBackground} from '../../utils/motify'
 import {PublicationType} from "../../types"
 import {getImagePlaceHolder, getTimeDistanceStr} from '../../utils/helper'
 import {Feather} from '@expo/vector-icons'
-import Animated, {useSharedValue, useAnimatedStyle, withTiming} from 'react-native-reanimated'
+import Animated, {useSharedValue, useAnimatedStyle, withTiming, withSpring, Easing} from 'react-native-reanimated'
 
 import BetterButton from '../common/better-btn'
+import {NBAnimatedView} from '../../utils/motify'
 import {PDF_URL_BASE} from "../../utils/config"
 
 type IPublicationCardType = {
@@ -19,11 +20,16 @@ type IPublicationCardType = {
 const PublicationCard = function ({p, cardWidth, marginRight = 0}: IPublicationCardType) {
   // animations
   const [isChaptersShow, _toggleChaptersShow] = useState(false)
-  const wrapperWidth = useSharedValue(150);
-  const wrapperAnimation = useAnimatedStyle(() => {
+  const wrapperWidth = useSharedValue(cardWidth);
+  const wrapperAnimation = {
+    width: isChaptersShow ? 404 : 202
+  }
+  const animatedStyles = useAnimatedStyle(() => {
     return {
-      width: withTiming(wrapperWidth.value, {duration: 750})
-    }
+      width: withTiming(wrapperWidth.value, {
+        duration: 300,
+      })
+    };
   });
   function toggleChapter() {
     // !important: change the width base on [PREV] state
@@ -46,22 +52,23 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0}: IPublicationC
   }
   const timeToNow = getTimeDistanceStr(p.createdAt)
   return (<BetterButton onPressBtn={() => console.log('hi')}>
-  <Column {...wrapperStyle}>
+  <NBAnimatedView {...wrapperStyle} style={animatedStyles}>
     <AspectRatio ratio={3/4}>
       <ImageBackground
         source={{uri: p.imgUrl || getImagePlaceHolder(300, 400)}}
         resizeMode="cover" alt={p.title}
         borderTopLeftRadius={6}
         borderTopRightRadius={6}
+        overflow="hidden"
       >
         <BetterButton onPressBtn={toggleChapter}>
-          <Box p={2}>
-            <Icon as={Feather} name="book" color="muted.100" size='lg' />
+          <Box p={3}>
+            <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl' shadow={1} />
           </Box>
         </BetterButton>
       </ImageBackground>
     </AspectRatio>
-    <Column>
+    <Column p={2} bg="muted.100">
       <Text numberOfLines={1}>{wrapperWidth.value}</Text>
       <Text numberOfLines={1}>{isChaptersShow.toString()}</Text>
       <Text numberOfLines={1}>{p.title}</Text>
@@ -69,7 +76,7 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0}: IPublicationC
       {/*<Text numberOfLines={1}>{p.author}</Text>*/}
       {/*<Text numberOfLines={1}>{timeToNow}</Text>*/}
     </Column>
-  </Column>
+  </NBAnimatedView>
   </ BetterButton>)
 }
 
