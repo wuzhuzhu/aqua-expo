@@ -24,6 +24,27 @@ export const MasoryLoading = () => {
   </Center>;
 };
 
+export const MasoryLoading2 = () => {
+  return <Center safeAreaTop w="100%">
+    <VStack w="90%" maxW="400" space={2} overflow="hidden" rounded="md">
+      <Skeleton h="45" rounded="md" />
+      <Skeleton h="60" w="70%" mb="6" rounded="md" startColor="primary.100" />
+      <Row space={2}>
+        <Skeleton h="40" w="45%"/>
+        <Skeleton h="40" w="45%"/>
+      </Row>
+      <Row space={2}>
+        <Skeleton h="40" w="45%"/>
+        <Skeleton h="40" w="45%"/>
+      </Row>
+      <Row space={2}>
+        <Skeleton h="40" w="45%"/>
+        <Skeleton h="40" w="45%"/>
+      </Row>
+    </VStack>
+  </Center>;
+};
+
 export const LectureLoading = () => {
   return <Center mt={4} w="100%">
     <VStack w="90%" maxW="400" space={2} overflow="hidden" rounded="md">

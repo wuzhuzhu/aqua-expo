@@ -5,7 +5,8 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import Animated, {FadeInDown, useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated'
 
 import {useLectures} from "../api/lectures"
-import {MasoryLoading} from '../components/common/loading'
+import {MasoryLoading2} from '../components/common/loading'
+import StaggeredList from '../components/common/staggered-list'
 import MasonryCard from '../components/lectures/lecture-card'
 import logoImg from "../assets/images/logo.png"
 import useOverscollImageStyle from "../hooks/useOverscollImageStyle"
@@ -18,7 +19,7 @@ export default function LecturesScreen({
   const {data, isLoading, isSuccess, refetch} = useLectures()
   const {overscollImageStyle, scrollHandler} = useOverscollImageStyle()
 
-  if (isLoading) return <MasoryLoading />
+  if (isLoading) return <MasoryLoading2 />
   return (
     <Box safeAreaTop px={2}>
       <Box height={180} position="absolute" right={0} top={-4} opacity={0.35}>
