@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import {LectureType} from '../types'
+import {isDev} from '../utils/helper'
 import {API_ENDPOINT} from '../utils/config'
 
 const fetchLectures = async (): Promise<LectureType[]> => {

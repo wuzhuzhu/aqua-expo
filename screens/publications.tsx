@@ -23,19 +23,16 @@ export default function PublicationsScreen({
   const wrapperMarginX = 8
   const columnNum = 2
   const cardSpace = 2
-  const wrapperStyle = function(i: number) {
-    return {
-      bg: "primary.100",
-      oddMarginRight: cardSpace,
-      flexWrap: "wrap" ,
-      alignItems: "flex-start",
-      // justifyContent: "space-between",
-    }
+  const wrapperStyle = {
+    // bg: "primary.300",
+    oddMarginRight: cardSpace,
+    flexWrap: "wrap" ,
+    alignItems: "flex-start",
+    alignContent: "stretch",
   }
 
-  const cardWidth = (windowWidth - wrapperMarginX * 2 - cardSpace)/columnNum
+  const cardWidth = (windowWidth - wrapperMarginX * 2 - cardSpace - 6)/columnNum
   const checkOdd = (i: number) => i%2 ===0
-
   if (isLoading) return <MasoryLoading2 />
   return (
     <ScreenHead navigation={navigation}>

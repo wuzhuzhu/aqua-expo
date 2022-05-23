@@ -1,6 +1,11 @@
-import {Column, Row, Box, Text, Image, AspectRatio} from "native-base"
-import React, {memo} from "react"
+import {Column, Row, Box, Text, Image, AspectRatio, Pressable} from "native-base"
+import React, {useMemo, memo, useCallback} from "react"
 import {PublicationType} from "../../types"
+import {getImagePlaceHolder, getTimeDistanceStr} from '../../utils/helper'
+import {formatDistanceToNow} from "date-fns"
+
+import BetterButton from '../common/better-btn'
+import {PDF_URL_BASE} from "../../utils/config"
 
 type IPublicationCardType = {
   cardWidth: number
@@ -10,20 +15,33 @@ type IPublicationCardType = {
 }
 
 const PublicationCard = function ({p, cardWidth, marginRight = 0}: IPublicationCardType) {
-
   const wrapperStyle = {
     mb: 4,
     mr: marginRight,
-    bg: 'warning.200',
+    // bg: 'warning.200',
     width: cardWidth,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
     // display: 'inline-block',
   }
-  return <Column {...wrapperStyle}>
+  const timeToNow = getTimeDistanceStr(p.createdAt)
+  return (<BetterButton onPressBtn={() => console.log('hi')}>
+  <Column {...wrapperStyle}>
     <AspectRatio ratio={3/4}>
-      <Image source={{uri: p.imgUrl}} resizeMode="cover" alt={p.title} />
+      <Image
+        source={{uri: p.imgUrl || getImagePlaceHolder(300, 400)}}
+        resizeMode="cover" alt={p.title}
+        borderTopLeftRadius={6}
+        borderTopRightRadius={6}
+      />
     </AspectRatio>
-    <Text>{p.title}</Text>
+    <Column>
+      <Text numberOfLines={1}>{p.title}</Text>
+      <Text numberOfLines={1}>{p.author}</Text>
+      <Text numberOfLines={1}>{timeToNow}</Text>
+    </Column>
   </Column>
+  </ BetterButton>)
 }
 
-export default memo(PublicationCard)
+export default PublicationCard

@@ -1,4 +1,4 @@
-import React, {useMemo} from "react"
+import React, {useMemo, useCallback} from "react"
 import {Image, View, StyleSheet} from "react-native"
 import { useNavigation } from '@react-navigation/native';
 import {Text, Box, Heading, Row, Icon, Badge} from 'native-base'
@@ -11,34 +11,22 @@ import {Feather, MaterialIcons} from '@expo/vector-icons'
 import {LectureType, RootStackParamList} from "../../types"
 import {COLOR_SCHEME} from '../../constants/Colors'
 import {isDev} from "../../utils/helper"
+import BetterButton from '../common/better-btn'
 import {MotifiBtn} from "../../utils/motify"
+import {PDF_URL_BASE} from '../../utils/config'
 
 export default function MasonryCard(lecture: LectureType): JSX.Element {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-  const onPressCard = function () {
+  const onPressCard = useCallback(function () {
     navigation.navigate('Lecture', { id: lecture?.id, title: lecture?.title })
-  }
+  },[lecture])
   const lastUpdatedStr = lecture?.updatedAt ?
     useMemo(() => {
       const updatedAt = lecture?.updatedAt as number
       return formatDistanceToNow(new Date(updatedAt))
     }, []) : 'never'
   const videoCount = (Array.isArray(lecture?.videos) && (lecture?.videos.length !== 0)) ? lecture?.videos.length : 'no'
-  return <MotiPressable
-    key={lecture.id}
-    onPress={onPressCard}
-    animate={useMemo(
-      () => ({ hovered, pressed }) => {
-        'worklet'
-
-        return {
-          opacity: hovered || pressed ? 0.5 : 1,
-          scale: hovered || pressed ? 0.96 : 1,
-        }
-      },
-      []
-    )}
-  >
+  return <BetterButton onPressBtn={onPressCard}>
     <Box
       // shadow={1}
       bg='blueGray.50'
@@ -75,7 +63,7 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
       </Row>
 
     </Box>
-  </MotiPressable>
+  </BetterButton>
 }
 
 const styles = StyleSheet.create({
