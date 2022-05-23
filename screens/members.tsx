@@ -20,7 +20,12 @@ export default function MembersScreen({
   const hasMembers = Array.isArray(data) && data.length > 0
   if (isLoading) return <MasoryLoading />
   return (
-    <ScreenHead navigation={navigation} title="NARA Members">
+    <ScreenHead navigation={navigation}>
+      <>
+      <Heading
+        onPress={() => navigation.navigate('Home')}
+        mt={2} ml={2} mb={6} size="xl" pb={2} maxWidth="70%" fontWeight="medium" color="trueGray.900"
+      >NARA Members</Heading>
       {hasMembers ? <MasonryList
         data={data}
         keyExtractor={(item): string => item.id}
@@ -29,6 +34,7 @@ export default function MembersScreen({
         renderItem={({item}) => <MasonryCard {...item} />}
         refreshing={isLoading}
       /> : <EmptyList text="There's No Member yet." />}
+      </>
     </ ScreenHead>
   );
 }
