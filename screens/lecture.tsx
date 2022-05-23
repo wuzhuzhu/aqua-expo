@@ -16,6 +16,7 @@ import {COLOR_SCHEME} from "../constants/Colors"
 import {ImageBackground, ScrollView} from '../utils/motify'
 import {isDev, windowHeight} from '../utils/helper'
 import {Feather} from "@expo/vector-icons"
+import {NativeStackNavigationProp, NativeStackScreenProps} from "@react-navigation/native-stack"
 
 const showDev = false
 
@@ -26,12 +27,12 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export default function Lecture({route, navigation}):JSX.Element {
+export default function Lecture({route, navigation}: NativeStackScreenProps<any>):JSX.Element {
   const lectureId = route?.params?.id
   const {data: lecture, isLoading, isSuccess, refetch, isFetching} = useLecture(lectureId)
   const videos = lecture?.videos ? lecture.videos : []
   const video = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(undefined as number | undefined)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [status, setStatus] = useState({} as AVPlaybackStatus);
 
   const hasVideo = useMemo(() => Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0), [lecture])
@@ -46,7 +47,7 @@ export default function Lecture({route, navigation}):JSX.Element {
 
   if (isLoading) return <LectureLoading />
   return (
-    <Box safeAreaBottom safeAreaTop={hasSelectedIndex ? true : void 0} flex={1}>
+    <Box safeAreaTop flex={1}>
       <StatusBar style={hasSelectedIndex ? "dark" : "light"} />
       <AspectRatio
         maxHeight={0.6*windowHeight}
@@ -54,7 +55,7 @@ export default function Lecture({route, navigation}):JSX.Element {
         shadowRadius={20}
         shadowOpacity={0.5}
         w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
-        {hasSelectedIndex ? <Video
+        <Video
           ref={video}
           source={{
             uri: isDev ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
@@ -63,29 +64,21 @@ export default function Lecture({route, navigation}):JSX.Element {
           resizeMode="contain"
           isLooping
           onPlaybackStatusUpdate={status => setStatus(() => status)}
-        /> : <ImageBackground
-          source={{
-            uri: lecture?.imgUrl,
-          }}
-        >
-          <Title isLight title={lecture?.title} />
-        </ImageBackground>}
+        />
       </AspectRatio>
-      {showDev && <Text>选中的index{currentIndex}</Text>}
-      {showDev && hasSelectedIndex && <Text>选中的video{JSON.stringify(lecture?.videos[currentIndex])}</Text>}
       <ScrollView px={4} mt={6}>
-        {hasSelectedIndex ? <><Title title={lecture?.title}/><Divider maxWidth="90%" my="2" /></> : <></>}
+        <><Title title={lecture?.title} /><Divider maxWidth="90%" mt="2" bg={COLOR_SCHEME.NARA_GREEN} /></>
           {videos.map((v, i) => {
             return <VideoRow key={i} v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
           })}
       </ScrollView>
-      {hasSelectedIndex && <ContolBtn status={status} video={video}/>}
+      <ContolBtn status={status} video={video}/>
     </Box>
   );
 }
 
 type ITitleProps = {
-  isLight: boolean
+  isLight?: boolean
   title?: string
 }
 

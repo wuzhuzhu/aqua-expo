@@ -15,7 +15,6 @@ type IVideoRowProps = {
 }
 
 const VideoRow = memo(function ({v, i, handleVideoClick, togglePlayback, onPlayingIndex}: IVideoRowProps) {
-  useEffect(() => console.log('渲染了', i))
   return <TouchableOpacity onPress={() => handleVideoClick(i)}>
     <Row
          mt={4} py={2}
@@ -24,12 +23,13 @@ const VideoRow = memo(function ({v, i, handleVideoClick, togglePlayback, onPlayi
     >
       <Column>
         <Text
+          color={onPlayingIndex === i ? COLOR_SCHEME.NARA_GREEN : 'muted.600'}
           numberOfLines={1}
-          maxWidth="70%"
+          maxWidth="85%"
           fontSize="lg"
           fontWeight="bold"
           mt={2}
-        >{i+1}{v.title}</Text>
+        >{`${i + 1}. ${v.title}`}</Text>
         <Text
           color="muted.400"
         >{formatDistanceToNow(new Date(v.createdAt), {addSuffix: true})}</Text>
