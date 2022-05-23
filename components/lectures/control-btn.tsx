@@ -1,5 +1,6 @@
-import {Pressable, Circle, Icon} from 'native-base'
+import {Pressable, Circle, Icon, Center} from 'native-base'
 import {Feather} from '@expo/vector-icons'
+import {COLOR_SCHEME} from '../../constants/Colors'
 
 type IControlBtnProps = {
   status?: {
@@ -10,13 +11,13 @@ type IControlBtnProps = {
 
 export default function ContolBtn({status, video}: IControlBtnProps) {
   const isPlaying = status?.isPlaying
-  return <Pressable onPress={() => isPlaying ? video.current.pauseAsync() : video.current.playAsync()}>
+  return <Center bg="transparent" pt={4} safeAreaBottom><Pressable style={{backgroundColor: 'transparent'}} onPress={() => isPlaying ? video.current.pauseAsync() : video.current.playAsync()}>
     {({
         isPressed
       }) => {
-      return <Circle size="40px" bg="secondary.400">
-        <Icon as={<Feather name={isPlaying ? 'pause' : 'play'} />} color="white" size={5} />
+      return <Circle size="lg" bg={COLOR_SCHEME.NARA_GREEN}>
+        <Icon as={<Feather name={isPlaying ? 'pause' : 'play'} />} color="white" size="2xl" />
       </Circle>
     }}
-  </Pressable>
+  </Pressable></Center>
 }

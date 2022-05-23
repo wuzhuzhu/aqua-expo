@@ -1,4 +1,4 @@
-import {memo, useEffect} from 'react'
+import {memo, useEffect, useMemo} from 'react'
 import {Column, Icon, Row, Stagger, Text, FlatList, Box, Avatar, VStack, HStack, Spacer} from 'native-base'
 import {TouchableOpacity} from "react-native"
 import {formatDistanceToNow} from "date-fns"
@@ -10,20 +10,28 @@ type IVideoRowProps = {
   v: VideoType
   handleVideoClick: any
   togglePlayback: any
-  onPlayingIndex: number
+  onPlayingIndex: number | boolean
+  currentIndex: number
   i: number
 }
 
-const VideoRow = memo(function ({v, i, handleVideoClick, togglePlayback, onPlayingIndex}: IVideoRowProps) {
+const VideoRow = memo(function ({v, i, handleVideoClick, onPlayingIndex, currentIndex}: IVideoRowProps) {
+  const iconName = useMemo(() => {
+    if (v.isYoutube) {
+      return 'youtube'
+    } else {
+      return (onPlayingIndex === i) ? 'pause' : 'film'
+    }
+  }, [i])
   return <TouchableOpacity onPress={() => handleVideoClick(i)}>
     <Row
-         mt={4} py={2}
+         mt={3} py={2}
          alignItems="center"
          justifyContent="space-between"
     >
       <Column>
         <Text
-          color={onPlayingIndex === i ? COLOR_SCHEME.NARA_GREEN : 'muted.600'}
+          color={currentIndex === i ? COLOR_SCHEME.NARA_GREEN : 'muted.600'}
           numberOfLines={1}
           maxWidth="85%"
           fontSize="lg"
@@ -34,11 +42,8 @@ const VideoRow = memo(function ({v, i, handleVideoClick, togglePlayback, onPlayi
           color="muted.400"
         >{formatDistanceToNow(new Date(v.createdAt), {addSuffix: true})}</Text>
       </Column>
-      <TouchableOpacity
-        onPress={togglePlayback}>
-        <Icon as={<Feather name={(onPlayingIndex === i) ? 'pause' : 'play'}/>} size="md" mr="2"
-              color={onPlayingIndex !== i ? COLOR_SCHEME.NARA_GREEN : 'muted.400'}/>
-      </TouchableOpacity>
+      <Icon as={<Feather name={iconName}/>} size="md" mr="2"
+            color={currentIndex === i ? COLOR_SCHEME.NARA_GREEN : 'muted.400'}/>
     </Row>
   </TouchableOpacity>
 })

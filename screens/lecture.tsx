@@ -1,7 +1,7 @@
 import React, {memo, useState, useRef, useMemo, useCallback} from 'react';
 import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
 import {Box, Column, Row, Text, AspectRatio, Divider, Image, Heading, Icon, Stagger} from 'native-base'
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video, AVPlaybackStatusSuccess } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 import { formatDistanceToNow } from 'date-fns'
 
@@ -29,21 +29,27 @@ if (
 
 export default function Lecture({route, navigation}: NativeStackScreenProps<any>):JSX.Element {
   const lectureId = route?.params?.id
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [status, setStatus] = useState({} as AVPlaybackStatusSuccess);
   const {data: lecture, isLoading, isSuccess, refetch, isFetching} = useLecture(lectureId)
   const videos = lecture?.videos ? lecture.videos : []
+  const currentVideo = videos[currentIndex]
   const video = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [status, setStatus] = useState({} as AVPlaybackStatus);
 
-  const hasVideo = useMemo(() => Array.isArray(lecture?.videos) && (lecture?.videos?.length > 0), [lecture])
   const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
-  const onPlayingIndex = useMemo(() => hasSelectedIndex && status?.isPlaying, [currentIndex, status]);
-  const togglePlayback = useCallback(() => status?.isPlaying ? video.current.pauseAsync() : video.current.playAsync(), [])
+  const onPlayingIndex = video && status?.isPlaying && currentIndex
+  const togglePlayback = useCallback(() => {
+    status?.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()
+  }, [video])
 
-  const handleVideoClick = useCallback((i) => {
+  const handleVideoClick = (i: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    if (status?.isPlaying) {video?.current?.stopAsync()}
     setCurrentIndex(i)
-  }, [currentIndex])
+    if (videos[i].isYoutube) {
+      navigation.navigate('WebModal', {title: videos[i].title, url: videos[i].videoUrl})
+    }
+  }
 
   if (isLoading) return <LectureLoading />
   return (
@@ -55,7 +61,7 @@ export default function Lecture({route, navigation}: NativeStackScreenProps<any>
         shadowRadius={20}
         shadowOpacity={0.5}
         w="100%" ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}>
-        <Video
+        {!currentVideo?.isYoutube ? <Video
           ref={video}
           source={{
             uri: isDev ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4' : lecture?.videos?.[`${currentIndex}`]?.videoUrl,
@@ -64,15 +70,26 @@ export default function Lecture({route, navigation}: NativeStackScreenProps<any>
           resizeMode="contain"
           isLooping
           onPlaybackStatusUpdate={status => setStatus(() => status)}
-        />
+        /> : <ImageBackground
+          source={{
+            uri: lecture?.imgUrl,
+          }}
+        >
+          <Title isLight title="Youtube Video" />
+        </ImageBackground>}
       </AspectRatio>
+      {showDev &&
+        <>
+          <Text>on playing: {onPlayingIndex}</Text>
+          <Text>{currentIndex}:{JSON.stringify(currentVideo)}</Text>
+        </>}
       <ScrollView px={4} mt={6}>
         <><Title title={lecture?.title} /><Divider maxWidth="90%" mt="2" bg={COLOR_SCHEME.NARA_GREEN} /></>
           {videos.map((v, i) => {
-            return <VideoRow key={i} v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} />
+            return <VideoRow key={i} v={v} i={i} handleVideoClick={handleVideoClick} togglePlayback={togglePlayback} onPlayingIndex={onPlayingIndex} currentIndex={currentIndex} />
           })}
       </ScrollView>
-      <ContolBtn status={status} video={video}/>
+      {!currentVideo?.isYoutube && <ContolBtn status={status} video={video}/>}
     </Box>
   );
 }
@@ -85,10 +102,12 @@ type ITitleProps = {
 const Title = memo(function ({isLight = false, title}: ITitleProps): JSX.Element {
   const lightStyles = {
     position: "absolute",
-    color: "muted.100",
-    left: "4",
-    bottom: "6",
-    shadow: "4",
+    color: "muted.200",
+    size: 'sm',
+    top: 4,
+    right: 4,
+    shadow: "2",
+    fontWeight: "normal"
   }
   return <Heading
     numberOfLines={1}
