@@ -71,3 +71,19 @@ export type VideoType = {
   videoUrl: string;
   isYoutube: boolean;
 }
+
+export type PublicationType = {
+  id: string;
+  title: string;
+  author: string;
+  createdAt: number;
+  imgUrl: string;
+  pdfUrl: string
+  chapters: ChapterType[]
+}
+
+export type ChapterType = {
+  id: string;
+  title: string;
+  page: number;
+}

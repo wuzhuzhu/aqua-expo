@@ -33,3 +33,4 @@ export const MotifiBtn = function (props) {
 export const ImageBackground = Factory(IBg);
 export const ScrollView = Factory(Sv);
 export const NBAnimatedView = Factory(Animated.View);
+export const NBAnimatedText = Factory(Animated.Text);

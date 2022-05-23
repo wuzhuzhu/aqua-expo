@@ -1,4 +1,10 @@
-import {VStack, Row, Column, Skeleton, Center} from 'native-base'
+import {memo} from 'react'
+import {VStack, Row, Column, Skeleton, Center, Text, Icon} from 'native-base'
+import {Feather} from '@expo/vector-icons'
+import Animated, {BounceIn, FadeInDown, FadeInUp} from 'react-native-reanimated'
+import {NBAnimatedText, NBAnimatedView} from '../../utils/motify'
+
+import {COLOR_SCHEME} from '../../constants/Colors'
 
 export const MasoryLoading = () => {
   return <Center safeAreaTop w="100%">
@@ -55,3 +61,13 @@ export const LectureLoading = () => {
     </VStack>
   </Center>;
 };
+
+export const EmptyList = memo(({text = "There's Nothing Here."}: {text: string}) => {
+  return <Column flex={1} justifyContent='center' alignItems='center'>
+    <NBAnimatedView entering={FadeInDown}>
+      <Icon as={Feather} name='cloud-off' color={COLOR_SCHEME.NARA_BLUE} size="4xl" />
+    </NBAnimatedView>
+    <NBAnimatedText entering={BounceIn} color="muted.500" mt={4}>OOOOps!</NBAnimatedText>
+    <Text color="muted.500" mt={2}>{text}</Text>
+  </Column>
+})

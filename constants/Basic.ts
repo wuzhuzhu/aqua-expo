@@ -2,7 +2,7 @@ import {COLOR_SCHEME} from './Colors'
 
 export const HOMEPAGE_BTNS = [
   {
-    bg: COLOR_SCHEME.NARA_BlUE,
+    bg: COLOR_SCHEME.NARA_BLUE,
     targetName: 'Members',
     title: `NARA
 Membership
@@ -17,7 +17,7 @@ Videos`
     targetName: 'Publications',
     title: 'Publications',
   },{
-    bg: COLOR_SCHEME.NARA_BlUE,
+    bg: COLOR_SCHEME.NARA_BLUE,
     targetName: 'Database',
     title: `Database for,
 Nutrient 

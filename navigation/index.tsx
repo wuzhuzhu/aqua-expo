@@ -20,7 +20,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import MembersScreen from '../screens/members';
 import Lectures from '../screens/lectures';
 import Lecture from '../screens/lecture';
-import MotiScreen from '../screens/moti-demo';
+import PublicationsScreen from '../screens/publications';
 import WebModal from '../screens/modals/web-modal'
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -103,7 +103,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Publications"
-        component={MotiScreen}
+        component={PublicationsScreen}
         options={{
           title: 'Publications',
           tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
@@ -111,7 +111,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Database"
-        component={MotiScreen}
+        component={PublicationsScreen}
         options={{
           title: 'Database',
           tabBarIcon: ({ color }) => <TabBarIcon name="server" color={color} />,

@@ -19,6 +19,6 @@ export default {
 };
 
 export const COLOR_SCHEME = {
-  NARA_BlUE: "#1469a8",
+  NARA_BLUE: "#1469a8",
   NARA_GREEN: "#37b055"
 }
