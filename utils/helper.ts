@@ -14,6 +14,8 @@ export const mock = (success, mockData, timeout = 600) => {
   });
 }
 
+export const checkOdd = (i: number) => i%2 ===0
+
 export function getTimeDistanceStr(timestamp: number): string {
   let timeToNow = 'unknown'
   try {

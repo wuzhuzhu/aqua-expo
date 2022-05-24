@@ -2,7 +2,7 @@ import {memo} from 'react'
 import {Stagger} from "native-base"
 
 type IStaggerdList = {
-  children: JSX.Element
+  children: React.ReactNode
 }
 
 export const StaggeredList = memo(function ({children}: IStaggerdList) {

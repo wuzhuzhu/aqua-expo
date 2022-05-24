@@ -17,35 +17,37 @@ import StaggeredList from '../common/staggered-list'
 type IPublicationCardType = {
   cardWidth: number
   rank: number
-  marginRight: number
+  isLeft: boolean
+  cardSpace: number
   p: PublicationType
+  expandedIndex: number
+  setExpandedIndex: Function
 }
 
-const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublicationCardType) {
-  // animations
-  const [isChaptersShow, _toggleChaptersShow] = useState(false)
+const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expandedIndex, setExpandedIndex}: IPublicationCardType) {
+  // show up Animation
   const [animate, showUpAnimationStyles ] = useShowUpAnimation()
-  const [wrapperWidth, setWrapperWidth] = useState(cardWidth)
-  const layoutAnimatedStyle = {
-    width: wrapperWidth
-  }
+  useEffect(animate, [])
+
+  // animations
+  const isChaptersShow = useMemo(() => expandedIndex === rank, [rank, expandedIndex])
+  const wrapperWidth = useMemo(() => expandedIndex === rank ? (cardWidth * 2 + cardSpace) : cardWidth, [rank, expandedIndex]);
   const chapters = Array.isArray(p?.chapters) ? p.chapters : []
   const imgHeight = cardWidth *4/3
+  const mr = isChaptersShow ? 0
+    : isLeft ? cardSpace
+      : 0
   // btn show up alert
-  useEffect(animate, [])
   function toggleChapter() {
     // use automate layout animation
-    LayoutAnimation.configureNext({...LayoutAnimation.Presets.linear, duration: 300});
-    setWrapperWidth(!isChaptersShow ? (cardWidth * 2 + Math.abs(marginRight)) : cardWidth)
-    _toggleChaptersShow(!isChaptersShow)
+    LayoutAnimation.configureNext({...LayoutAnimation.Presets.linear, duration: 250});
+    setExpandedIndex(isChaptersShow ? -1 : rank)
   };
 
   const wrapperStyle = {
     mb: 4,
-    mr: isChaptersShow ? 0 : ((marginRight > 0) ? marginRight : 0),
     // bg: 'warning.200',
-    width: cardWidth,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: '#e2e8f0',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
@@ -60,10 +62,10 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
   })
 
   return (<BetterButton onPressBtn={() => console.log('hi')}>
-  <NBAnimatedView {...wrapperStyle} style={layoutAnimatedStyle}>
+  <NBAnimatedView {...wrapperStyle} w={wrapperWidth} mr={mr}>
     <AspectRatio ratio={3/4} height={imgHeight}>
       <ImageBackground
-        source={{uri: p.imgUrl || getImagePlaceHolder(300, 400)}}
+        source={{uri: p.imgUrl}}
         resizeMode="cover" alt={p.title}
         borderTopLeftRadius={6}
         borderTopRightRadius={isChaptersShow ? 0 : 6}
@@ -82,9 +84,11 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
     <Box h={isChaptersShow ? imgHeight : 100} bg="muted.100">
       {
         !isChaptersShow ? <Column p={2} bg="muted.100">
-          <Text numberOfLines={1}>cardWidth{cardWidth}</Text>
-          <Text numberOfLines={1}>margin right{marginRight}</Text>
-          <Text numberOfLines={1}>{wrapperWidth}</Text>
+          <Text numberOfLines={1}>rank: {rank}</Text>
+          <Text numberOfLines={1}>cardWidth: {cardWidth}</Text>
+          <Text numberOfLines={1}>margin right: {mr}</Text>
+          <Text numberOfLines={1}>isLeft: {isLeft.toString()}</Text>
+          <Text numberOfLines={1}>wrapper width: {wrapperWidth}</Text>
           <Text numberOfLines={1}>{timeToNow}</Text>
         </Column> : <Animated.ScrollView
           h="100"
@@ -103,4 +107,4 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
   </ BetterButton>)
 }
 
-export default memo(PublicationCard)
+export default PublicationCard
