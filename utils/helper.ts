@@ -32,4 +32,3 @@ export const getImagePlaceHolder = (x: number, y: number) => {return `https://vi
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
 export const isDev = process.env.NODE_ENV === 'development';
-

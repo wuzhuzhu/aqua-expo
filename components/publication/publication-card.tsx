@@ -9,6 +9,7 @@ import Animated, {useSharedValue, useAnimatedStyle, withTiming, withRepeat, with
 import BetterButton from '../common/better-btn'
 import {NBAnimatedView} from '../../utils/motify'
 import {PDF_URL_BASE} from "../../utils/config"
+import {useShowUpAnimation} from '../../hooks/useAnimation'
 
 type IPublicationCardType = {
   cardWidth: number
@@ -20,8 +21,12 @@ type IPublicationCardType = {
 const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublicationCardType) {
   // animations
   const [isChaptersShow, _toggleChaptersShow] = useState(false)
+  const [animate, showUpAnimationStyles ] = useShowUpAnimation()
   const wrapperWidth = useSharedValue(cardWidth);
-  // todo: try to use layout animation to improve right one's looking
+
+  // btn show up alert
+  useEffect(animate, [])
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
       width: withTiming(wrapperWidth.value, {
@@ -36,22 +41,6 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
       wrapperWidth.value = cardWidth
     _toggleChaptersShow(!isChaptersShow)
   };
-
-  // btn show up alert
-  const rotation = useSharedValue(0);
-  function animate()  {
-    rotation.value = withSequence(
-      withDelay(1500, withTiming(-10, { duration: 50 })),
-      withRepeat(withTiming(20, { duration: 100 }), 6, true),
-      withTiming(0, { duration: 50 })
-    )
-  }
-  useEffect(animate, [])
-  const showUpAnimationStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotateZ: `${rotation.value}deg` }],
-    };
-  })
 
   const wrapperStyle = {
     mb: 4,
