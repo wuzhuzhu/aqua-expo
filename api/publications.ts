@@ -175,7 +175,209 @@ const mockData = [
     "author": "Noel_Daniel53",
     "imgUrl": "http://loremflickr.com/640/480",
     "pdfUrl": "https://thorny-indication.info",
-    "id": "5"
+    "id": "5",
+    "chapters": [
+      {
+        "title": "Corkery, Heathcote and Bahringer",
+        "page": 8170,
+        "id": "1"
+      },
+      {
+        "title": "Funk - Hudson",
+        "page": 85446,
+        "id": "2"
+      },
+      {
+        "title": "Gleichner, Franecki and Torphy",
+        "page": 9431,
+        "id": "3"
+      },
+      {
+        "title": "Langworth - Lehner",
+        "page": 98512,
+        "id": "4"
+      },
+      {
+        "title": "Zieme LLC",
+        "page": 41149,
+        "id": "5"
+      },
+      {
+        "title": "Gottlieb Inc",
+        "page": 87205,
+        "id": "6"
+      },
+      {
+        "title": "Ullrich, Russel and Schaden",
+        "page": 24829,
+        "id": "7"
+      },
+      {
+        "title": "Dach, Jerde and Pollich",
+        "page": 38224,
+        "id": "8"
+      },
+      {
+        "title": "Wyman - Streich",
+        "page": 33455,
+        "id": "9"
+      },
+      {
+        "title": "Christiansen, Walter and Conroy",
+        "page": 68976,
+        "id": "10"
+      },
+      {
+        "title": "Thiel Inc",
+        "page": 61981,
+        "id": "11"
+      },
+      {
+        "title": "Walsh - Walsh",
+        "page": 22978,
+        "id": "12"
+      },
+      {
+        "title": "Brekke - Konopelski",
+        "page": 35477,
+        "id": "13"
+      },
+      {
+        "title": "Welch Inc",
+        "page": 82312,
+        "id": "14"
+      },
+      {
+        "title": "Schamberger LLC",
+        "page": 943,
+        "id": "15"
+      },
+      {
+        "title": "Jenkins - Buckridge",
+        "page": 51277,
+        "id": "16"
+      },
+      {
+        "title": "Adams, Zieme and Hoeger",
+        "page": 90836,
+        "id": "17"
+      },
+      {
+        "title": "Ankunding LLC",
+        "page": 61873,
+        "id": "18"
+      },
+      {
+        "title": "Block and Sons",
+        "page": 39488,
+        "id": "19"
+      },
+      {
+        "title": "Murazik - Bayer",
+        "page": 42447,
+        "id": "20"
+      },
+      {
+        "title": "Jaskolski LLC",
+        "page": 35229,
+        "id": "21"
+      },
+      {
+        "title": "Satterfield Inc",
+        "page": 58921,
+        "id": "22"
+      },
+      {
+        "title": "McLaughlin LLC",
+        "page": 46487,
+        "id": "23"
+      },
+      {
+        "title": "Ferry - Beatty",
+        "page": 12161,
+        "id": "24"
+      },
+      {
+        "title": "DuBuque LLC",
+        "page": 37407,
+        "id": "25"
+      },
+      {
+        "title": "Jast, Dibbert and Roob",
+        "page": 22532,
+        "id": "26"
+      },
+      {
+        "title": "Schultz LLC",
+        "page": 23701,
+        "id": "27"
+      },
+      {
+        "title": "Bosco LLC",
+        "page": 55221,
+        "id": "28"
+      },
+      {
+        "title": "Glover - Prosacco",
+        "page": 17515,
+        "id": "29"
+      },
+      {
+        "title": "Blick - Altenwerth",
+        "page": 6194,
+        "id": "30"
+      },
+      {
+        "title": "Balistreri, Lowe and Gislason",
+        "page": 73228,
+        "id": "31"
+      },
+      {
+        "title": "Tillman LLC",
+        "page": 58582,
+        "id": "32"
+      },
+      {
+        "title": "Wunsch, Schoen and Bartoletti",
+        "page": 43636,
+        "id": "33"
+      },
+      {
+        "title": "Dicki, Kutch and Jaskolski",
+        "page": 42047,
+        "id": "34"
+      },
+      {
+        "title": "Herman - Stoltenberg",
+        "page": 14087,
+        "id": "35"
+      },
+      {
+        "title": "Jones, Oberbrunner and Koelpin",
+        "page": 29092,
+        "id": "36"
+      },
+      {
+        "title": "Quitzon LLC",
+        "page": 37325,
+        "id": "37"
+      },
+      {
+        "title": "Feil - Flatley",
+        "page": 65192,
+        "id": "38"
+      },
+      {
+        "title": "Balistreri Inc",
+        "page": 13100,
+        "id": "39"
+      },
+      {
+        "title": "Witting, Bergstrom and Abernathy",
+        "page": 20421,
+        "id": "40"
+      }
+    ]
   },
   {
     "createdAt": "2054-06-05T11:41:52.403Z",

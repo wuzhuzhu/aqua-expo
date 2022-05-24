@@ -14,7 +14,7 @@ export function useShowUpAnimation () {
   function animate()  {
     rotation.value = withSequence(
       withDelay(1500, withTiming(-10, { duration: 50 })),
-      withRepeat(withTiming(15, { duration: 100 }), 6, true),
+      withRepeat(withTiming(5, { duration: 100 }), 6, true),
       withTiming(0, { duration: 50 })
     )
   }

@@ -1,18 +1,21 @@
-import {Column, Row, Box, Text, Image, Icon, AspectRatio, Pressable, Spacer} from "native-base"
-import React, {useMemo, memo, useCallback, useState, useEffect} from "react"
-import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
-import {ImageBackground} from '../../utils/motify'
+import {AspectRatio, Box, Column, Icon, Row, Spacer, Text} from "native-base"
+import React, {useEffect, useMemo} from "react"
+import {LayoutAnimation} from 'react-native'
+import {ImageBackground, NBAnimatedView} from '../../utils/motify'
 import {PublicationType} from "../../types"
-import {getImagePlaceHolder, getTimeDistanceStr} from '../../utils/helper'
+import {getTimeDistanceStr} from '../../utils/helper'
 import {Feather} from '@expo/vector-icons'
-import Animated, {useAnimatedScrollHandler, useSharedValue, useAnimatedStyle, withTiming, withRepeat, withDelay, withSequence, withSpring, Easing} from 'react-native-reanimated'
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue
+} from 'react-native-reanimated'
 
 import BetterButton from '../common/better-btn'
-import {NBAnimatedView} from '../../utils/motify'
-import {PDF_URL_BASE} from "../../utils/config"
 import {useShowUpAnimation} from '../../hooks/useAnimation'
 import ChapterCard from './chapters-card'
-import StaggeredList from '../common/staggered-list'
 
 type IPublicationCardType = {
   cardWidth: number
@@ -56,16 +59,56 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
   }
   const timeToNow = getTimeDistanceStr(p.createdAt)
 
-  // chapter rows scroll animation
+  // !interpolate! chapter rows scroll animation
+  const translateX = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler((e) => {
-    console.log(e.contentOffset.x)
+    translateX.value = e.contentOffset.x
+  })
+  const dynamicImgStyle = useAnimatedStyle(() => {
+    const pageW = cardWidth + 16
+    const translateXViewPort = translateX.value % pageW
+    const inputRange =[0, pageW/2, pageW]
+    const scale = interpolate(
+      translateXViewPort,
+      inputRange,
+      [1, 1.3, 1],
+      Extrapolation.CLAMP
+    )
+    const borderRadius = interpolate(
+      translateXViewPort,
+      inputRange,
+      [0, cardWidth/2, 0],
+      Extrapolation.CLAMP
+    )
+    const opacity = interpolate(
+      translateXViewPort,
+      inputRange,
+      [-0.5, 1, -0.5],
+      Extrapolation.CLAMP
+    )
+    // todo: use translateY
+    const translateY = interpolate(
+      translateXViewPort,
+      inputRange,
+      [-imgHeight/2, 0, -imgHeight/2],
+      Extrapolation.CLAMP
+    )
+    return {
+      opacity,
+      borderRadius,
+      transform: [{
+        scale,
+      }]
+    }
   })
 
   return (<BetterButton onPressBtn={() => console.log('hi')}>
-  <NBAnimatedView {...wrapperStyle} w={wrapperWidth} mr={mr}>
+  <NBAnimatedView {...wrapperStyle} w={wrapperWidth} overflow="hidden" mr={mr}>
+    <Animated.View style={[{overflow: 'hidden'}]}>
     <AspectRatio ratio={3/4} height={imgHeight}>
       <ImageBackground
         source={{uri: p.imgUrl}}
+        width={cardWidth}
         resizeMode="cover" alt={p.title}
         borderTopLeftRadius={6}
         borderTopRightRadius={isChaptersShow ? 0 : 6}
@@ -79,8 +122,10 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
             <Spacer flex={1} />
           </Row>
         </BetterButton>
+        <NBAnimatedView bg="warning.600" flex={1} style={[dynamicImgStyle]}></NBAnimatedView>
       </ImageBackground>
     </AspectRatio>
+    </Animated.View>
     <Box h={isChaptersShow ? imgHeight : 100} bg="muted.100">
       {
         !isChaptersShow ? <Column p={2} bg="muted.100">
@@ -92,13 +137,14 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
           <Text numberOfLines={1}>{timeToNow}</Text>
         </Column> : <Animated.ScrollView
           h="100"
+          snapToInterval={cardWidth+16}
           horizontal
           onScroll={scrollHandler}
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
         >
-          <Column bg="muted.100" flexWrap>
-            {chapters.map(c => <ChapterCard key={`chapter-${c.id}`} c={c} w={wrapperWidth-cardWidth} />)}
+          <Column bg="muted.100" flexWrap pr={wrapperWidth-cardWidth}>
+            {chapters.map(c => <ChapterCard key={`chapter-${c.id}`} c={c} rowWidth={wrapperWidth-cardWidth} />)}
           </Column>
         </Animated.ScrollView>
       }

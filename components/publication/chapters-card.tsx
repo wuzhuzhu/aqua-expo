@@ -5,11 +5,11 @@ import React from "react"
 
 type IChapterCardType = {
   c: ChapterType
-  w: number
+  rowWidth: number
 }
 
-const ChapterCard = function ({c, w}: IChapterCardType) {
-  return <Box mx={2} mt={3} w={w}>
+const ChapterCard = function ({c, rowWidth}: IChapterCardType) {
+  return <Box mx={2} mt={4} w={rowWidth}>
     <Text fontSize="md" color="muted.800" fontWeight="semibold" numberOfLines={1}>{c.title}</Text>
     <Text fontSize="md" color="muted.500">[Page{c.page}]</Text>
   </Box>

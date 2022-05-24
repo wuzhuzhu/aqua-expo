@@ -30,6 +30,8 @@ export const MotifiBtn = function (props) {
   </MotiPressable>
 }
 
+export const MotifiedImageBackground = motify(IBg)()
+
 export const ImageBackground = Factory(IBg);
 export const ScrollView = Factory(Sv);
 export const NBAnimatedView = Factory(Animated.View);
