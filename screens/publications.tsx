@@ -1,5 +1,6 @@
 import {Box, Heading, Text, Row} from 'native-base'
 import Animated from 'react-native-reanimated'
+import React, {useState} from "react"
 
 import SlideInHint from '../components/common/slide-in-hint'
 import StaggeredList from '../components/common/staggered-list'
@@ -8,7 +9,6 @@ import {MasoryLoading2, EmptyList} from "../components/common/loading"
 import ScreenHead from "../components/common/screen-head"
 import MasonryList from "@react-native-seoul/masonry-list"
 import MasonryCard from "../components/members/masonry-card"
-import React from "react"
 import {usePublications} from "../api/publications"
 import PublicationCard from "../components/publication/publication-card"
 import {windowWidth, windowHeight} from '../utils/helper'
