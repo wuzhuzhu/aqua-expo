@@ -39,25 +39,25 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
 
   const wrapperStyle = {
     mb: 4,
-    mr: (marginRight > 0) ? marginRight : 0,
+    mr: isChaptersShow ? 0 : ((marginRight > 0) ? marginRight : 0),
     // bg: 'warning.200',
     width: cardWidth,
     borderWidth: 1,
     borderColor: '#e2e8f0',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
-    // flexDirection: isChaptersShow ? 'row' : 'column',
+    flexDirection: isChaptersShow ? 'row' : 'column',
     // display: 'inline-block',
   }
   const timeToNow = getTimeDistanceStr(p.createdAt)
   return (<BetterButton onPressBtn={() => console.log('hi')}>
   <NBAnimatedView {...wrapperStyle} style={layoutAnimatedStyle}>
-    <AspectRatio ratio={3/4}>
+    <AspectRatio ratio={3/4} width={cardWidth}>
       <ImageBackground
         source={{uri: p.imgUrl || getImagePlaceHolder(300, 400)}}
         resizeMode="cover" alt={p.title}
         borderTopLeftRadius={6}
-        borderTopRightRadius={6}
+        borderTopRightRadius={isChaptersShow ? 0 : 6}
         overflow="hidden"
       >
         <BetterButton onPressBtn={toggleChapter}>
@@ -70,9 +70,9 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
       </ImageBackground>
     </AspectRatio>
     <Column p={2} bg="muted.100">
-      <Text numberOfLines={1}>{rank}</Text>
-      <Text numberOfLines={1}>{p.title}</Text>
-      <Text numberOfLines={1}>{p.author}</Text>
+      <Text numberOfLines={1}>cardWidth{cardWidth}</Text>
+      <Text numberOfLines={1}>margin right{marginRight}</Text>
+      <Text numberOfLines={1}>{wrapperWidth}</Text>
       <Text numberOfLines={1}>{timeToNow}</Text>
     </Column>
   </NBAnimatedView>
