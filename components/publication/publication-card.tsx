@@ -1,5 +1,6 @@
 import {Column, Row, Box, Text, Image, Icon, AspectRatio, Pressable} from "native-base"
 import React, {useMemo, memo, useCallback, useState, useEffect} from "react"
+import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
 import {ImageBackground} from '../../utils/motify'
 import {PublicationType} from "../../types"
 import {getImagePlaceHolder, getTimeDistanceStr} from '../../utils/helper'
@@ -20,20 +21,14 @@ type IPublicationCardType = {
 const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublicationCardType) {
   // animations
   const [isChaptersShow, _toggleChaptersShow] = useState(false)
-  const wrapperWidth = useSharedValue(cardWidth);
-  // todo: try to use layout animation to improve right one's looking
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      width: withTiming(wrapperWidth.value, {
-        duration: 300,
-      })
-    };
-  });
+  const [wrapperWidth, setWrapperWidth] = useState(cardWidth)
+  const layoutAnimatedStyle = {
+    width: wrapperWidth
+  }
   function toggleChapter() {
-    // !important: change the width base on [PREV] state
-    !isChaptersShow ?
-      wrapperWidth.value = cardWidth * 2 + marginRight :
-      wrapperWidth.value = cardWidth
+    // use automate layout animation
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    setWrapperWidth(!isChaptersShow ? (cardWidth * 2 + marginRight) : cardWidth)
     _toggleChaptersShow(!isChaptersShow)
   };
 
@@ -66,7 +61,7 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
   }
   const timeToNow = getTimeDistanceStr(p.createdAt)
   return (<BetterButton onPressBtn={() => console.log('hi')}>
-  <NBAnimatedView {...wrapperStyle} style={animatedStyles}>
+  <NBAnimatedView {...wrapperStyle} style={layoutAnimatedStyle}>
     <AspectRatio ratio={3/4}>
       <ImageBackground
         source={{uri: p.imgUrl || getImagePlaceHolder(300, 400)}}
@@ -94,4 +89,4 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
   </ BetterButton>)
 }
 
-export default PublicationCard
+export default memo(PublicationCard)
