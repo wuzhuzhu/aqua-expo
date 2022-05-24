@@ -24,6 +24,10 @@ export function getTimeDistanceStr(timestamp: number): string {
   return timeToNow
 }
 
+export function swapArray(list, x, y) {
+  [ list[y], list[x] ] = [ list[x], list[y] ]
+}
+
 export const getImagePlaceHolder = (x: number, y: number) => {return `https://via.placeholder.com/${x}x${y}?text=NARA`}
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;

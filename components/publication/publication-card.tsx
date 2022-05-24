@@ -87,7 +87,6 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
     <Column p={2} bg="muted.100">
       <Text numberOfLines={1}>{rank}</Text>
       <Text numberOfLines={1}>{p.title}</Text>
-      <Text numberOfLines={1}>{p.title}</Text>
       <Text numberOfLines={1}>{p.author}</Text>
       <Text numberOfLines={1}>{timeToNow}</Text>
     </Column>

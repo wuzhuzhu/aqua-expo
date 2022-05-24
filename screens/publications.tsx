@@ -13,7 +13,6 @@ import {usePublications} from "../api/publications"
 import PublicationCard from "../components/publication/publication-card"
 import {windowWidth, windowHeight} from '../utils/helper'
 
-
 export default function PublicationsScreen({
                                         navigation,
                                       }: {
