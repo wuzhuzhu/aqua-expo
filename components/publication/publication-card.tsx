@@ -32,8 +32,8 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
   useEffect(animate, [])
   function toggleChapter() {
     // use automate layout animation
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-    setWrapperWidth(!isChaptersShow ? (cardWidth * 2 + marginRight) : cardWidth)
+    LayoutAnimation.configureNext({...LayoutAnimation.Presets.linear, duration: 300});
+    setWrapperWidth(!isChaptersShow ? (cardWidth * 2 + Math.abs(marginRight)) : cardWidth)
     _toggleChaptersShow(!isChaptersShow)
   };
 
@@ -45,7 +45,8 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
     borderWidth: 1,
     borderColor: '#e2e8f0',
     borderTopLeftRadius: 6,
-    borderTopRightRadius: 6
+    borderTopRightRadius: 6,
+    // flexDirection: isChaptersShow ? 'row' : 'column',
     // display: 'inline-block',
   }
   const timeToNow = getTimeDistanceStr(p.createdAt)
@@ -62,7 +63,7 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
         <BetterButton onPressBtn={toggleChapter}>
           <Box p={3}>
             <NBAnimatedView style={rank === 0 ? showUpAnimationStyles : null}>
-              <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl' shadow={1} />
+              <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl' shadow={2} bg="rgba(0, 0, 0, 0.25)" />
             </NBAnimatedView>
           </Box>
         </BetterButton>
