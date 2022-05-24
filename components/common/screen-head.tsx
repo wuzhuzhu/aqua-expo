@@ -2,8 +2,6 @@ import React, {memo} from 'react'
 import {Box, Heading, Row} from "native-base"
 import Animated, {FadeInRight} from "react-native-reanimated"
 import logoImg from "../../assets/images/logo.png"
-import MasonryList from "@react-native-seoul/masonry-list"
-import MasonryCard from "../lectures/lecture-card"
 import useOverscollImageStyle from "../../hooks/useOverscollImageStyle"
 import {NativeStackNavigationProp} from "@react-navigation/native-stack"
 

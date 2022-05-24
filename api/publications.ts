@@ -31,7 +31,74 @@ const mockData = [
     "author": "Van25",
     "imgUrl": "http://loremflickr.com/640/480",
     "pdfUrl": "http://plaintive-availability.com",
-    "id": "1"
+    "id": "1",
+    "chapters": [
+      {
+        "title": "Corkery, Heathcote and Bahringer",
+        "page": 8170,
+        "id": "1"
+      },
+      {
+        "title": "Funk - Hudson",
+        "page": 85446,
+        "id": "2"
+      },
+      {
+        "title": "Gleichner, Franecki and Torphy",
+        "page": 9431,
+        "id": "3"
+      },
+      {
+        "title": "Langworth - Lehner",
+        "page": 98512,
+        "id": "4"
+      },
+      {
+        "title": "Zieme LLC",
+        "page": 41149,
+        "id": "5"
+      },
+      {
+        "title": "Gottlieb Inc",
+        "page": 87205,
+        "id": "6"
+      },
+      {
+        "title": "Stiedemann - Boyle",
+        "page": 31177,
+        "id": "7"
+      },
+      {
+        "title": "Carter - Quitzon",
+        "page": 46522,
+        "id": "8"
+      },
+      {
+        "title": "Senger - Bednar",
+        "page": 94082,
+        "id": "9"
+      },
+      {
+        "title": "Lind, Ratke and Funk",
+        "page": 25613,
+        "id": "10"
+      },
+      {
+        "title": "Orn Group",
+        "page": 69797,
+        "id": "11"
+      },
+      {
+        "title": "Zulauf - Nienow",
+        "page": 60677,
+        "id": "12"
+      },
+      {
+        "title": "Armstrong, Jaskolski and Barrows",
+        "page": 1793,
+        "id": "13"
+      }
+    ]
   },
   {
     "createdAt": "2009-05-23T03:53:14.617Z",
@@ -39,7 +106,39 @@ const mockData = [
     "author": "Judy.Farrell",
     "imgUrl": "http://loremflickr.com/640/480",
     "pdfUrl": "http://shimmering-cliff.com",
-    "id": "2"
+    "id": "2",
+    "chapters": [
+      {
+        "title": "Corkery, Heathcote and Bahringer",
+        "page": 8170,
+        "id": "1"
+      },
+      {
+        "title": "Funk - Hudson",
+        "page": 85446,
+        "id": "2"
+      },
+      {
+        "title": "Gleichner, Franecki and Torphy",
+        "page": 9431,
+        "id": "3"
+      },
+      {
+        "title": "Langworth - Lehner",
+        "page": 98512,
+        "id": "4"
+      },
+      {
+        "title": "Zieme LLC",
+        "page": 41149,
+        "id": "5"
+      },
+      {
+        "title": "Gottlieb Inc",
+        "page": 87205,
+        "id": "6"
+      }
+    ]
   },
   {
     "createdAt": "2026-10-26T07:53:31.003Z",
@@ -47,7 +146,8 @@ const mockData = [
     "author": "Baby2",
     "imgUrl": "http://loremflickr.com/640/480",
     "pdfUrl": "http://optimal-testimony.info",
-    "id": "3"
+    "id": "3",
+    "chapters": []
   },
   {
     "createdAt": "1993-11-11T11:11:16.827Z",
@@ -55,7 +155,19 @@ const mockData = [
     "author": "Hermann_Mills77",
     "imgUrl": "http://loremflickr.com/640/480",
     "pdfUrl": "http://shameful-twister.net",
-    "id": "4"
+    "id": "4",
+    "chapters": [
+      {
+        "title": "Corkery, Heathcote and Bahringer",
+        "page": 8170,
+        "id": "1"
+      },
+      {
+        "title": "Funk - Hudson",
+        "page": 85446,
+        "id": "2"
+      },
+    ]
   },
   {
     "createdAt": "2092-04-13T14:59:41.469Z",

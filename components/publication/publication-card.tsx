@@ -1,16 +1,18 @@
-import {Column, Row, Box, Text, Image, Icon, AspectRatio, Pressable} from "native-base"
+import {Column, Row, Box, Text, Image, Icon, AspectRatio, Pressable, Spacer} from "native-base"
 import React, {useMemo, memo, useCallback, useState, useEffect} from "react"
 import { View, StyleSheet, Button, LayoutAnimation, Platform, UIManager, TouchableOpacity } from 'react-native';
 import {ImageBackground} from '../../utils/motify'
 import {PublicationType} from "../../types"
 import {getImagePlaceHolder, getTimeDistanceStr} from '../../utils/helper'
 import {Feather} from '@expo/vector-icons'
-import Animated, {useSharedValue, useAnimatedStyle, withTiming, withRepeat, withDelay, withSequence, withSpring, Easing} from 'react-native-reanimated'
+import Animated, {useAnimatedScrollHandler, useSharedValue, useAnimatedStyle, withTiming, withRepeat, withDelay, withSequence, withSpring, Easing} from 'react-native-reanimated'
 
 import BetterButton from '../common/better-btn'
 import {NBAnimatedView} from '../../utils/motify'
 import {PDF_URL_BASE} from "../../utils/config"
 import {useShowUpAnimation} from '../../hooks/useAnimation'
+import ChapterCard from './chapters-card'
+import StaggeredList from '../common/staggered-list'
 
 type IPublicationCardType = {
   cardWidth: number
@@ -27,7 +29,8 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
   const layoutAnimatedStyle = {
     width: wrapperWidth
   }
-
+  const chapters = Array.isArray(p?.chapters) ? p.chapters : []
+  const imgHeight = cardWidth *4/3
   // btn show up alert
   useEffect(animate, [])
   function toggleChapter() {
@@ -50,9 +53,15 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
     // display: 'inline-block',
   }
   const timeToNow = getTimeDistanceStr(p.createdAt)
+
+  // chapter rows scroll animation
+  const scrollHandler = useAnimatedScrollHandler((e) => {
+    console.log(e.contentOffset.x)
+  })
+
   return (<BetterButton onPressBtn={() => console.log('hi')}>
   <NBAnimatedView {...wrapperStyle} style={layoutAnimatedStyle}>
-    <AspectRatio ratio={3/4} width={cardWidth}>
+    <AspectRatio ratio={3/4} height={imgHeight}>
       <ImageBackground
         source={{uri: p.imgUrl || getImagePlaceHolder(300, 400)}}
         resizeMode="cover" alt={p.title}
@@ -61,20 +70,35 @@ const PublicationCard = function ({p, cardWidth, marginRight = 0, rank}: IPublic
         overflow="hidden"
       >
         <BetterButton onPressBtn={toggleChapter}>
-          <Box p={3}>
-            <NBAnimatedView style={rank === 0 ? showUpAnimationStyles : null}>
-              <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl' shadow={2} bg="rgba(0, 0, 0, 0.25)" />
+          <Row>
+            <NBAnimatedView shadow={5} bg="rgba(0, 0, 0, 0.05)" p="2" style={rank === 0 ? showUpAnimationStyles : null}>
+              <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl'  />
             </NBAnimatedView>
-          </Box>
+            <Spacer flex={1} />
+          </Row>
         </BetterButton>
       </ImageBackground>
     </AspectRatio>
-    <Column p={2} bg="muted.100">
-      <Text numberOfLines={1}>cardWidth{cardWidth}</Text>
-      <Text numberOfLines={1}>margin right{marginRight}</Text>
-      <Text numberOfLines={1}>{wrapperWidth}</Text>
-      <Text numberOfLines={1}>{timeToNow}</Text>
-    </Column>
+    <Box h={isChaptersShow ? imgHeight : 100} bg="muted.100">
+      {
+        !isChaptersShow ? <Column p={2} bg="muted.100">
+          <Text numberOfLines={1}>cardWidth{cardWidth}</Text>
+          <Text numberOfLines={1}>margin right{marginRight}</Text>
+          <Text numberOfLines={1}>{wrapperWidth}</Text>
+          <Text numberOfLines={1}>{timeToNow}</Text>
+        </Column> : <Animated.ScrollView
+          h="100"
+          horizontal
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+          showsHorizontalScrollIndicator={false}
+        >
+          <Column bg="muted.100" flexWrap>
+            {chapters.map(c => <ChapterCard key={`chapter-${c.id}`} c={c} w={wrapperWidth-cardWidth} />)}
+          </Column>
+        </Animated.ScrollView>
+      }
+    </Box>
   </NBAnimatedView>
   </ BetterButton>)
 }
