@@ -1,5 +1,8 @@
 import {
-  useAnimatedStyle,
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle, useDerivedValue,
   useSharedValue,
   withDelay,
   withRepeat,
@@ -25,3 +28,17 @@ export function useShowUpAnimation () {
   })
   return [animate, showUpAnimationStyles]
 }
+
+/*
+export function useScrollHandler () {
+  const scrollDistance = useSharedValue(0)
+  const scrollHandler = useAnimatedScrollHandler((e) => {
+    scrollDistance.value = e.contentOffset.x
+  })
+  const width = useDerivedValue(() => {
+    return scrollDistance.value * 250;
+  });
+
+  return [scrollDistance, scrollHandler, width]
+}
+*/

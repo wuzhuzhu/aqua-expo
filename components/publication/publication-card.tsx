@@ -1,17 +1,27 @@
 import {AspectRatio, Box, Column, Icon, Row, Spacer, Text, Center, Badge, Stack, Heading} from "native-base"
 import React, {useEffect, useMemo, useCallback} from "react"
-import {LayoutAnimation} from 'react-native'
-import {ImageBackground, NBAnimatedView} from '../../utils/motify'
+import {LayoutAnimation, StyleSheet} from 'react-native'
+import {
+  AnimatedCenter,
+  AnimatedLinearGradient,
+  ImageBackground,
+  NBAnimatedText,
+  NBAnimatedView
+} from '../../utils/motify'
 import {PublicationType} from "../../types"
 import {getTimeDistanceStr} from '../../utils/helper'
 import {Feather} from '@expo/vector-icons'
 import Animated, {
   Extrapolation,
   interpolate,
+  interpolateColor,
   useAnimatedScrollHandler,
   useAnimatedStyle,
-  useSharedValue
+  useSharedValue,
+  SlideInLeft,
+  SlideOutRight, useDerivedValue
 } from 'react-native-reanimated'
+import { LinearGradient } from 'expo-linear-gradient';
 
 import BetterButton from '../common/better-btn'
 import {useShowUpAnimation} from '../../hooks/useAnimation'
@@ -20,6 +30,7 @@ import PublicationInfo from './publication-info'
 import {COLOR_SCHEME} from "../../constants/Colors"
 import {PDF_URL_BASE} from "../../utils/config"
 import {NativeStackNavigationProp} from "@react-navigation/native-stack"
+import {background} from "native-base/lib/typescript/theme/styled-system"
 
 type IPublicationCardType = {
   cardWidth: number
@@ -57,7 +68,7 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
   };
 
   const navigatePublication = function (navigation, pdfUrl, page = 1 as number | undefined, title) {
-    console.log('opening pdf: ',pdfUrl,page)
+    // console.log('opening pdf: ',pdfUrl,page)
     let pdfViewPageUrl =  `${PDF_URL_BASE}/pdf/${encodeURIComponent(pdfUrl)}/${page}`
     // if (page) pdfViewPageUrl += `/${page}`
     navigation.navigate('WebModal', {title, url: pdfViewPageUrl})
@@ -73,50 +84,60 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
     flexDirection: isChaptersShow ? 'row' : 'column',
     // display: 'inline-block',
   }
-  const timeToNow = getTimeDistanceStr(p.createdAt)
 
   // !interpolate! chapter rows scroll animation
-  const translateX = useSharedValue(0)
+  const scrollDistance = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler((e) => {
-    translateX.value = e.contentOffset.x
+    scrollDistance.value = e.contentOffset.x
+    // console.log(scrollDistance.value)
   })
-  const dynamicImgStyle = useAnimatedStyle(() => {
-    const pageW = cardWidth + 16
-    const translateXViewPort = translateX.value % pageW
-    const inputRange =[0, pageW/2, pageW]
-    const scale = interpolate(
-      translateXViewPort,
+  const pageW = cardWidth + 16
+  const inputRange =[0, pageW*2, pageW*4]
+  const animateBg = useAnimatedStyle(() =>{
+    const backgroundColor = interpolateColor(
+      scrollDistance.value,
       inputRange,
-      [1, 1.3, 1],
-      Extrapolation.CLAMP
+      ['#1469a8', '#37b055'],
     )
-    const borderRadius = interpolate(
-      translateXViewPort,
+    const margin = interpolate(
+      scrollDistance.value,
       inputRange,
-      [0, cardWidth/2, 0],
-      Extrapolation.CLAMP
-    )
-    const opacity = interpolate(
-      translateXViewPort,
-      inputRange,
-      [-0.5, 1, -0.5],
-      Extrapolation.CLAMP
-    )
-    // todo: use translateY
-    const translateY = interpolate(
-      translateXViewPort,
-      inputRange,
-      [-imgHeight/2, 0, -imgHeight/2],
-      Extrapolation.CLAMP
+      [0, 5],
     )
     return {
-      opacity,
-      borderRadius,
-      transform: [{
-        scale,
-      }]
+      backgroundColor,
+      margin
     }
   })
+  const Colors = {
+    dark: {
+      background: '#1469A8',
+      circle: '#252525',
+      text: '#F8F8F8',
+    },
+    light: {
+      background: '#37B055',
+      circle: '#FFF',
+      text: '#1E1E1E',
+    },
+  };
+  const animatedStyles = useAnimatedStyle(() => {
+    const color = interpolateColor(
+      scrollDistance.value,
+      [0, 1],
+      ['#1469A8', '#37B055']
+    );
+    const translateX = interpolate(
+      scrollDistance.value,
+      inputRange,
+      [0, 8, 0],
+      { extrapolateRight: Extrapolation.CLAMP });
+
+    return {
+      // color,
+      transform: [{ translateX }],
+    };
+  });
 
   return (<BetterButton onPressBtn={() => navigatePublication(navigation, p.pdfUrl, undefined, p.title)} bg="muted.100">
   <NBAnimatedView {...wrapperStyle} w={wrapperWidth} overflow="hidden" mr={mr}>
@@ -133,19 +154,31 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
       >
         {/*<NBAnimatedView flex={1} style={[dynamicImgStyle]}></NBAnimatedView>*/}
         <NBAnimatedView position="absolute" top="3" py="1.5" style={rank === 0 ? showUpAnimationStyles : null}>
-          <BetterButton onPressBtn={toggleChapter}>
-              <Center bg={COLOR_SCHEME.NARA_BLUE} flexDirection="row" p={2}>
-                <Icon mr="1" as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="warmGray.50" size='sm'  />
-                <Text fontWeight="bold" fontSize="xs" color="warmGray.50">{`${chapters.length} Chapters`}</Text>
+          <Box style={[{overflow: 'hidden'}]}>
+          <AnimatedLinearGradient
+            style={animatedStyles}
+            // Button Linear Gradient
+            opacity={0.8}
+            colors={['#ee7752', '#e73c7e', '#23a6d5', '#23d5ab']}
+            end={{x: -1, y: 3}}
+          >
+            <BetterButton onPressBtn={toggleChapter}>
+              <Center flexDirection="row" p={2}>
+                <Icon mr="1" as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="warmGray.50" size="sm"/>
+                <NBAnimatedText style={[animatedStyles]} fontWeight="bold" color="warmGray.50" fontSize="xs">{`${chapters.length} Chapters`}</NBAnimatedText>
               </Center>
-          </BetterButton>
+            </BetterButton>
+          </AnimatedLinearGradient>
+          </Box>
         </NBAnimatedView>
       </ImageBackground>
     </AspectRatio>
       <PublicationInfo isAbsolute={isChaptersShow} p={p} />
     </Animated.View>
-    {isChaptersShow ? <Box h={imgHeight} bg="muted.100">
+    {/* interpolate Demo <Animated.View style={animatedStyles} width={20} height={20}></Animated.View>*/}
+    {isChaptersShow ? <Box h={imgHeight} bg="muted.100" shadow={3}>
       <Animated.ScrollView
+        entering={SlideInLeft}
         h="100"
         snapToInterval={cardWidth + 16}
         horizontal
@@ -167,5 +200,13 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
   </NBAnimatedView>
   </ BetterButton>)
 }
+
+const styles = StyleSheet.create({
+  gradient: {
+    transform: [{ translateY: 0 }],
+    // left: 0,
+    zIndex: 200
+  }
+})
 
 export default PublicationCard

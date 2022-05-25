@@ -1,5 +1,7 @@
-import {PublicationType} from "../../types"
 import {Heading, Row, Stack, Text} from "native-base"
+import { LinearGradient } from 'expo-linear-gradient';
+
+import {PublicationType} from "../../types"
 import {COLOR_SCHEME} from "../../constants/Colors"
 import React, {memo} from "react"
 
@@ -8,10 +10,12 @@ const PublicationInfo = memo(function ({p, isAbsolute}: {p: PublicationType, isA
     bg: 'muted.100',
     position: isAbsolute ? 'absolute' : 'relative',
     bottom: isAbsolute ? '0' : undefined,
-    paddingRight: isAbsolute ? '3' : undefined,
+    right: isAbsolute ? '0' : undefined,
+    left: isAbsolute ? '0' : undefined,
   }
   const chapters = Array.isArray(p?.chapters) ? p.chapters : []
   return <Stack p={2} space={3} {...styles}>
+
     <Stack space={2}>
       <Heading size="md">
         {p.title}
