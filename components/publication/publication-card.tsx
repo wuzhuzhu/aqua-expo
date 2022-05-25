@@ -31,6 +31,7 @@ import {COLOR_SCHEME} from "../../constants/Colors"
 import {PDF_URL_BASE} from "../../utils/config"
 import {NativeStackNavigationProp} from "@react-navigation/native-stack"
 import {background} from "native-base/lib/typescript/theme/styled-system"
+import {transform} from "@babel/core"
 
 type IPublicationCardType = {
   cardWidth: number
@@ -130,7 +131,7 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
     const translateX = interpolate(
       scrollDistance.value,
       inputRange,
-      [0, 8, 0],
+      [-250, 0, -250],
       { extrapolateRight: Extrapolation.CLAMP });
 
     return {
@@ -155,20 +156,22 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
         {/*<NBAnimatedView flex={1} style={[dynamicImgStyle]}></NBAnimatedView>*/}
         <NBAnimatedView position="absolute" top="3" py="1.5" style={rank === 0 ? showUpAnimationStyles : null}>
           <Box style={[{overflow: 'hidden'}]}>
-          <AnimatedLinearGradient
-            style={animatedStyles}
-            // Button Linear Gradient
-            opacity={0.8}
-            colors={['#ee7752', '#e73c7e', '#23a6d5', '#23d5ab']}
-            end={{x: -1, y: 3}}
-          >
             <BetterButton onPressBtn={toggleChapter}>
-              <Center flexDirection="row" p={2}>
+              <AnimatedLinearGradient
+                style={[animatedStyles, {width: '600%', alignItems: 'flex-start'}]}
+                height={18}
+                // Button Linear Gradient
+                opacity={0.8}
+                colors={['#1469A8', '#8c036e', '#161f07', '#37B055']}
+                end={{x: -1, y: 3}}
+              />
+
+              <Center style={{transform: [{translateY: -25}]}} flexDirection="row" p={2}>
                 <Icon mr="1" as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="warmGray.50" size="sm"/>
-                <NBAnimatedText style={[animatedStyles]} fontWeight="bold" color="warmGray.50" fontSize="xs">{`${chapters.length} Chapters`}</NBAnimatedText>
+                <NBAnimatedText fontWeight="bold" color="warmGray.50"
+                                fontSize="xs">{`${chapters.length} Chapters`}</NBAnimatedText>
               </Center>
             </BetterButton>
-          </AnimatedLinearGradient>
           </Box>
         </NBAnimatedView>
       </ImageBackground>
