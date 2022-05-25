@@ -16,6 +16,7 @@ import Animated, {
 import BetterButton from '../common/better-btn'
 import {useShowUpAnimation} from '../../hooks/useAnimation'
 import ChapterCard from './chapters-card'
+import PublicationInfo from './publication-info'
 import {COLOR_SCHEME} from "../../constants/Colors"
 import {PDF_URL_BASE} from "../../utils/config"
 import {NativeStackNavigationProp} from "@react-navigation/native-stack"
@@ -141,48 +142,28 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
         </NBAnimatedView>
       </ImageBackground>
     </AspectRatio>
+      <PublicationInfo isAbsolute={isChaptersShow} p={p} />
     </Animated.View>
-    <Box h={isChaptersShow ? imgHeight : undefined} bg="muted.100">
-      {
-        !isChaptersShow ? <Stack p={2} space={3}>
-          <Stack space={2}>
-            <Heading size="md">
-              {p.title}
-            </Heading>
-            <Row alignItems="baseline" justifyContent="flex-start">
-              <Text fontSize="xs" color={COLOR_SCHEME.NARA_GREEN} fontWeight="500" ml="-0.5" mt="-1">
-                {chapters.length ? `Tap Book Icon to Expand`: 'Tap Card to view'}
-              </Text>
-            </Row>
-          </Stack>
-          <Row alignItems="center" space={4} justifyContent="space-between">
-            <Text fontWeight="400">{p.author}</Text>
-            <Text color="coolGray.600" _dark={{
-              color: "warmGray.200"
-            }} fontWeight="400">
-              6 mins ago
-            </Text>
-          </Row>
-        </Stack> : <Animated.ScrollView
-          h="100"
-          snapToInterval={cardWidth+16}
-          horizontal
-          onScroll={scrollHandler}
-          scrollEventThrottle={16}
-          showsHorizontalScrollIndicator={false}
-        >
-          <Column bg="muted.100" flexWrap pr={wrapperWidth-cardWidth}>
-            {chapters.map(c => <ChapterCard
-              key={`chapter-${c.id}`}
-              c={c} rowWidth={wrapperWidth-cardWidth}
-              pdfUrl={p.pdfUrl}
-              navigatePublication={navigatePublication}
-              navigation={navigation}
-            />)}
-          </Column>
-        </Animated.ScrollView>
-      }
-    </Box>
+    {isChaptersShow ? <Box h={imgHeight} bg="muted.100">
+      <Animated.ScrollView
+        h="100"
+        snapToInterval={cardWidth + 16}
+        horizontal
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        showsHorizontalScrollIndicator={false}
+      >
+        <Column bg="muted.100" flexWrap pr={wrapperWidth - cardWidth}>
+          {chapters.map(c => <ChapterCard
+            key={`chapter-${c.id}`}
+            c={c} rowWidth={wrapperWidth - cardWidth}
+            pdfUrl={p.pdfUrl}
+            navigatePublication={navigatePublication}
+            navigation={navigation}
+          />)}
+        </Column>
+      </Animated.ScrollView>
+    </Box> : <></>}
   </NBAnimatedView>
   </ BetterButton>)
 }
