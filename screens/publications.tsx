@@ -22,7 +22,7 @@ export default function PublicationsScreen({
   const pagePadding = 2
   const columnNum = 2
   const cardSpace = 2
-  console.log(windowWidth)
+  // console.log(windowWidth)
   const wrapperStyle = {
     // bg: "primary.300",
     flexWrap: "wrap" ,
@@ -69,6 +69,7 @@ export default function PublicationsScreen({
               cardSpace={cardSpace}
               cardWidth={cardWidth}
               p={p}
+              navigation={navigation}
               rank={i} />
           )}
         </StaggeredList>

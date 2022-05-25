@@ -1,5 +1,5 @@
-import {AspectRatio, Box, Column, Icon, Row, Spacer, Text} from "native-base"
-import React, {useEffect, useMemo} from "react"
+import {AspectRatio, Box, Column, Icon, Row, Spacer, Text, Center, Badge, Stack, Heading} from "native-base"
+import React, {useEffect, useMemo, useCallback} from "react"
 import {LayoutAnimation} from 'react-native'
 import {ImageBackground, NBAnimatedView} from '../../utils/motify'
 import {PublicationType} from "../../types"
@@ -16,6 +16,9 @@ import Animated, {
 import BetterButton from '../common/better-btn'
 import {useShowUpAnimation} from '../../hooks/useAnimation'
 import ChapterCard from './chapters-card'
+import {COLOR_SCHEME} from "../../constants/Colors"
+import {PDF_URL_BASE} from "../../utils/config"
+import {NativeStackNavigationProp} from "@react-navigation/native-stack"
 
 type IPublicationCardType = {
   cardWidth: number
@@ -25,9 +28,10 @@ type IPublicationCardType = {
   p: PublicationType
   expandedIndex: number
   setExpandedIndex: Function
+  navigation: NativeStackNavigationProp<any>
 }
 
-const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expandedIndex, setExpandedIndex}: IPublicationCardType) {
+const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expandedIndex, setExpandedIndex, navigation}: IPublicationCardType) {
   // show up Animation
   const [animate, showUpAnimationStyles ] = useShowUpAnimation()
   useEffect(animate, [])
@@ -42,15 +46,26 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
       : 0
   // btn show up alert
   function toggleChapter() {
-    // use automate layout animation
-    LayoutAnimation.configureNext({...LayoutAnimation.Presets.linear, duration: 250});
-    setExpandedIndex(isChaptersShow ? -1 : rank)
+    if (chapters.length > 0) {
+      // use automate layout animation
+      LayoutAnimation.configureNext({...LayoutAnimation.Presets.linear, duration: 250});
+      setExpandedIndex(isChaptersShow ? -1 : rank)
+    } else {
+      return
+    }
   };
+
+  const navigatePublication = function (navigation, pdfUrl, page = 1 as number | undefined, title) {
+    console.log('opening pdf: ',pdfUrl,page)
+    let pdfViewPageUrl =  `${PDF_URL_BASE}/pdf/${encodeURIComponent(pdfUrl)}/${page}`
+    // if (page) pdfViewPageUrl += `/${page}`
+    navigation.navigate('WebModal', {title, url: pdfViewPageUrl})
+  }
 
   const wrapperStyle = {
     mb: 4,
     // bg: 'warning.200',
-    // borderWidth: 1,
+    borderWidth: 1,
     borderColor: '#e2e8f0',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
@@ -102,11 +117,12 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
     }
   })
 
-  return (<BetterButton onPressBtn={() => console.log('hi')}>
+  return (<BetterButton onPressBtn={() => navigatePublication(navigation, p.pdfUrl, undefined, p.title)} bg="muted.100">
   <NBAnimatedView {...wrapperStyle} w={wrapperWidth} overflow="hidden" mr={mr}>
     <Animated.View style={[{overflow: 'hidden'}]}>
     <AspectRatio ratio={3/4} height={imgHeight}>
       <ImageBackground
+        bg="muted.100"
         source={{uri: p.imgUrl}}
         width={cardWidth}
         resizeMode="cover" alt={p.title}
@@ -114,28 +130,40 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
         borderTopRightRadius={isChaptersShow ? 0 : 6}
         overflow="hidden"
       >
-        <BetterButton onPressBtn={toggleChapter}>
-          <Row>
-            <NBAnimatedView shadow={5} bg="rgba(0, 0, 0, 0.05)" p="2" style={rank === 0 ? showUpAnimationStyles : null}>
-              <Icon as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="muted.100" size='xl'  />
-            </NBAnimatedView>
-            <Spacer flex={1} />
-          </Row>
-        </BetterButton>
-        <NBAnimatedView bg="warning.600" flex={1} style={[dynamicImgStyle]}></NBAnimatedView>
+        {/*<NBAnimatedView flex={1} style={[dynamicImgStyle]}></NBAnimatedView>*/}
+        <NBAnimatedView position="absolute" top="3" py="1.5" style={rank === 0 ? showUpAnimationStyles : null}>
+          <BetterButton onPressBtn={toggleChapter}>
+              <Center bg={COLOR_SCHEME.NARA_BLUE} flexDirection="row" p={2}>
+                <Icon mr="1" as={Feather} name={isChaptersShow ? 'book-open' : 'book'} color="warmGray.50" size='sm'  />
+                <Text fontWeight="bold" fontSize="xs" color="warmGray.50">{`${chapters.length} Chapters`}</Text>
+              </Center>
+          </BetterButton>
+        </NBAnimatedView>
       </ImageBackground>
     </AspectRatio>
     </Animated.View>
-    <Box h={isChaptersShow ? imgHeight : 100} bg="muted.100">
+    <Box h={isChaptersShow ? imgHeight : undefined} bg="muted.100">
       {
-        !isChaptersShow ? <Column p={2} bg="muted.100">
-          <Text numberOfLines={1}>rank: {rank}</Text>
-          <Text numberOfLines={1}>cardWidth: {cardWidth}</Text>
-          <Text numberOfLines={1}>margin right: {mr}</Text>
-          <Text numberOfLines={1}>isLeft: {isLeft.toString()}</Text>
-          <Text numberOfLines={1}>wrapper width: {wrapperWidth}</Text>
-          <Text numberOfLines={1}>{timeToNow}</Text>
-        </Column> : <Animated.ScrollView
+        !isChaptersShow ? <Stack p={2} space={3}>
+          <Stack space={2}>
+            <Heading size="md">
+              {p.title}
+            </Heading>
+            <Row alignItems="baseline" justifyContent="flex-start">
+              <Text fontSize="xs" color={COLOR_SCHEME.NARA_GREEN} fontWeight="500" ml="-0.5" mt="-1">
+                {chapters.length ? `Tap Book Icon to Expand`: 'Tap Card to view'}
+              </Text>
+            </Row>
+          </Stack>
+          <Row alignItems="center" space={4} justifyContent="space-between">
+            <Text fontWeight="400">{p.author}</Text>
+            <Text color="coolGray.600" _dark={{
+              color: "warmGray.200"
+            }} fontWeight="400">
+              6 mins ago
+            </Text>
+          </Row>
+        </Stack> : <Animated.ScrollView
           h="100"
           snapToInterval={cardWidth+16}
           horizontal
@@ -144,7 +172,13 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
           showsHorizontalScrollIndicator={false}
         >
           <Column bg="muted.100" flexWrap pr={wrapperWidth-cardWidth}>
-            {chapters.map(c => <ChapterCard key={`chapter-${c.id}`} c={c} rowWidth={wrapperWidth-cardWidth} />)}
+            {chapters.map(c => <ChapterCard
+              key={`chapter-${c.id}`}
+              c={c} rowWidth={wrapperWidth-cardWidth}
+              pdfUrl={p.pdfUrl}
+              navigatePublication={navigatePublication}
+              navigation={navigation}
+            />)}
           </Column>
         </Animated.ScrollView>
       }

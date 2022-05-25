@@ -8,7 +8,6 @@ type IBetterButtonType = {
 }
 
 export default function BetterButton ({onPressBtn = () => void 0, children}: IBetterButtonType) {
-  const scale = useSharedValue(0)
   return <MotiPressable
     onPress={onPressBtn}
     animate={useMemo(
