@@ -189,7 +189,7 @@ const PublicationCard = function ({p, cardWidth, cardSpace, isLeft, rank, expand
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
       >
-        <Column bg="muted.100" flexWrap pr={wrapperWidth - cardWidth}>
+        <Column bg="muted.100" style={{flexWrap: "wrap" }} pr={wrapperWidth - cardWidth}>
           {chapters.map(c => <ChapterCard
             key={`chapter-${c.id}`}
             c={c} rowWidth={wrapperWidth - cardWidth}

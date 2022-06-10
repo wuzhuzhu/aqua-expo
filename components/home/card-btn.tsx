@@ -24,7 +24,7 @@ export default function HomeScreenCard({ bg, title, targetName, navigation }: IH
                 type: 'timing',
                 duration: 200,
               }}
-              bg={bg} flexGrow="1" display="inline-block" m={1}>
+              bg={bg} flexGrow="1" m={1}>
               <Text color="trueGray.100" fontWeight="semibold">{title}</Text>
             </MotifiedCenter>
           )
