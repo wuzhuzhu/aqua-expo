@@ -1,6 +1,8 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import {MemberType} from '../types'
+import {API_ENDPOINT} from "../utils/config"
+
 
 function parseData(data: any) : MemberType[] {
   const parsed = data.map((d: {
@@ -15,9 +17,17 @@ function parseData(data: any) : MemberType[] {
   return parsed
 }
 
+/*
 const fetchMembers = async () => {
   const { data } = await axios.get('https://jsonplaceholder.typicode.com/albums/1/photos');
   return parseData(data);
+};
+*/
+
+
+const fetchMembers = async () => {
+  const {data} = await axios.get(`${API_ENDPOINT}/getMembers`);
+  return data?.data || [];
 };
 
 export const useMembers = (): any => useQuery('members', fetchMembers);
