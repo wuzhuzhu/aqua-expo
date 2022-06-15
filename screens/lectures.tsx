@@ -1,44 +1,61 @@
 import React from "react";
-import {NativeStackNavigationProp, NativeStackScreenProps} from "@react-navigation/native-stack"
-import {Center, Box, Column, ScrollView, Text, Heading, PresenceTransition, Image} from "native-base"
-import MasonryList from '@react-native-seoul/masonry-list';
-import Animated, {FadeInDown, useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated'
+import {
+	NativeStackNavigationProp,
+	NativeStackScreenProps,
+} from "@react-navigation/native-stack";
+import {
+	Center,
+	Box,
+	Column,
+	ScrollView,
+	Text,
+	Heading,
+	PresenceTransition,
+	Image,
+} from "native-base";
+import MasonryList from "@react-native-seoul/masonry-list";
+import Animated, {
+	FadeInDown,
+	useSharedValue,
+	useAnimatedScrollHandler,
+	useAnimatedStyle,
+	useDerivedValue,
+} from "react-native-reanimated";
 
-import {useLectures} from "../api/lectures"
-import {EmptyList, MasoryLoading2} from '../components/common/loading'
-import StaggeredList from '../components/common/staggered-list'
-import MasonryCard from '../components/lectures/lecture-card'
-import logoImg from "../assets/images/logo.png"
-import useOverscollImageStyle from "../hooks/useOverscollImageStyle"
-import ScreenHead from '../components/common/screen-head'
+import { useLectures } from "../api/lectures";
+import { EmptyList, MasoryLoading2 } from "../components/common/loading";
+import StaggeredList from "../components/common/staggered-list";
+import MasonryCard from "../components/lectures/lecture-card";
+import logoImg from "../assets/images/logo.png";
+import useOverscollImageStyle from "../hooks/useOverscollImageStyle";
+import ScreenHead from "../components/common/screen-head";
+import HeaderText from "../components/common/header-text";
 
 export default function LecturesScreen({
-  navigation,
+	navigation,
 }: {
-  navigation: NativeStackNavigationProp<any>
+	navigation: NativeStackNavigationProp<any>;
 }) {
-  const {data, isLoading, isSuccess, refetch} = useLectures()
-  const hasLecture = Array.isArray(data) && data.length > 0
-  if (isLoading) return <MasoryLoading2 />
-  return (
-    <ScreenHead navigation={navigation}>
-      <>
-      <Heading
-        onPress={() => navigation.navigate('Home')}
-        mt={2} ml={2} mb={6} size="xl" pb={2} maxWidth="70%" fontWeight="medium" color="trueGray.900"
-        // style={{ shadowOffset: { height: 2, width: 2 }, shadowOpacity:0.2, shadowRadius:3 }}
-      >Lecture Videos</Heading>
-      {hasLecture ? <MasonryList
-        data={data}
-        keyExtractor={(item): string => item.id}
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => <MasonryCard {...item} />}
-        refreshing={isLoading}
-      /> : <EmptyList text="There's No Lecture Yet." />}
-      </>
-    </ScreenHead>
-  );
+	const { data, isLoading, isSuccess, refetch } = useLectures();
+	const hasLecture = Array.isArray(data) && data.length > 0;
+	if (isLoading) return <MasoryLoading2 />;
+	return (
+		<ScreenHead navigation={navigation}>
+			<>
+				<HeaderText navigation={navigation}>Lecture Videos</HeaderText>
+				{hasLecture ? (
+					<MasonryList
+						data={data}
+						keyExtractor={(item): string => item.id}
+						numColumns={2}
+						showsVerticalScrollIndicator={false}
+						renderItem={({ item }) => <MasonryCard {...item} />}
+						refreshing={isLoading}
+					/>
+				) : (
+					<EmptyList text="There's No Lecture Yet." />
+				)}
+			</>
+		</ScreenHead>
+	);
 }
-
-

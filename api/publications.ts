@@ -4,25 +4,19 @@ import { PublicationType } from "../types";
 import { API_ENDPOINT } from "../utils/config";
 import { isDev, mock } from "../utils/helper";
 
-function parseData(data: any): PublicationType[] {
-	const parsed = data.map((d: PublicationType) => d);
+function parseData(res: any): PublicationType[] {
+	const parsed = res?.data?.data?.list;
 	return parsed;
 }
 
 const fetchPublications = async () => {
-	let data;
-	if (isDev) {
-		data = await mock(true, mockData);
-		return data;
-	} else {
-		data = await axios.get(`${API_ENDPOINT}/publications`);
-	}
-	console.log(data);
-	return parseData(data);
+	const res = await axios.get(`${API_ENDPOINT}/getLectureVideoInfo`);
+	debugger;
+	return parseData(res);
 };
 
 export const usePublications = (): any =>
-	useQuery("members", fetchPublications);
+	useQuery("publications", fetchPublications);
 
 const mockData = [
 	{
