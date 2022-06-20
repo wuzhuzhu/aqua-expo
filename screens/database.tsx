@@ -1,5 +1,6 @@
 import {NativeStackNavigationProp} from "@react-navigation/native-stack"
-import {Heading, FlatList} from 'native-base'
+import {Heading, FlatList, Box} from 'native-base'
+import {get} from 'lodash'
 
 import {useNutrients} from "../api/database"
 import {ListCardsLoading, MasoryLoading2} from "../components/common/loading"
@@ -7,21 +8,35 @@ import ScreenHead from "../components/common/screen-head"
 import HeaderText from "../components/common/header-text"
 import {useNavigation} from "@react-navigation/native"
 import NutrientListItem from "../components/database/nutrient-list-item"
+import Animated, {FadeInRight, useAnimatedScrollHandler, useSharedValue} from "react-native-reanimated"
+import logoImg from "../assets/images/logo.png"
+import useOverscollImageStyle from "../hooks/useOverscollImageStyle"
+import {useRef} from "react"
+const AnimatFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function DatabaseScreen() {
   const navigation = useNavigation<ReturnType<useNavigation>>()
+  const flatList = useRef<FlatList<any>>(null)
+  const {overscollImageStyle, scrollHandler} = useOverscollImageStyle()
   const {
     data: nutrients = [],
     isLoading,
-    isSuccess,
+    isRefetching,
     refetch,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
   } = useNutrients();
-
-  // console.warn('===========', nutrients)
 
   if (isLoading) return <ListCardsLoading />;
   return (
-    <ScreenHead navigation={navigation}>
+    <Box safeAreaTop px={2} flex={1}>
+      <Box height={180} position="absolute" right={0} top={-4} opacity={0.35}>
+        <Animated.Image entering={FadeInRight.duration(800).delay(400)} style={[overscollImageStyle, { flex: 1, maxWidth: 280 }]} resizeMode="contain" source={logoImg} />
+      </Box>
       <>
         <HeaderText navigation={navigation} lines={2}>Database</HeaderText>
         <Heading
@@ -35,13 +50,20 @@ export default function DatabaseScreen() {
           fontWeight="normal"
           color="trueGray.600"
         >for Nutrient and Digestibility and Growth Trails</Heading>
-        <FlatList
+        <AnimatFlatList
+          ref={flatList}
           data={nutrients}
+          onRefresh={refetch}
+          refreshing={isFetchingNextPage}
+          onEndReached={fetchNextPage}
+          onEndReachedThreshold={0.5}
+          onScroll={scrollHandler}
           renderItem={(item) => {
             return <NutrientListItem nutrient={item} />
           }}
+          scrollEventThrottle={16}
         />
       </>
-    </ScreenHead>
+    </Box>
   )
 }

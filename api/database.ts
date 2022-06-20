@@ -1,6 +1,6 @@
 import {useInfiniteQuery} from "react-query"
 import axios, {AxiosResponse} from "axios"
-import {isEmpty} from "lodash"
+import {get, isEmpty} from "lodash"
 import {IFetchFunParamType, IListResponseType, NutrientType} from '../types'
 import {API_ENDPOINT} from "../utils/config"
 import {PAGE_SIZE} from "../constants/Basic"
@@ -19,7 +19,7 @@ const fetchNutrients = async ({pageParams = {}}: IFetchFunParamType): Promise<Nu
 
 export const useNutrients = (): any => useInfiniteQuery("nutrients", fetchNutrients, {
   getNextPageParam: (lastPage, allPages) => {
-    const pageNumber = lastPage?.pagination?.pageNumber + 1
+    const pageNumber: number = lastPage?.pagination?.pageNumber || 0 + 1
     return {
       pageParams: {
         pageNumber,
@@ -27,4 +27,9 @@ export const useNutrients = (): any => useInfiniteQuery("nutrients", fetchNutrie
       }
     }
   },
+  select: (data) => {
+    const currentPageIndex = (data?.pageParams?.pageNumber || 1) - 1
+    const nutrients = data?.pages?.[currentPageIndex]?.data?.list || []
+    return nutrients
+  }
 })
