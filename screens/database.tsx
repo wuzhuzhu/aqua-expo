@@ -30,7 +30,7 @@ export default function DatabaseScreen() {
     isFetchingNextPage,
     status,
   } = useNutrients();
-
+  // TODO: implement screen head with out scrollview, pass handleScroll to parent components
   if (isLoading) return <ListCardsLoading />;
   return (
     <Box safeAreaTop px={2} flex={1}>
