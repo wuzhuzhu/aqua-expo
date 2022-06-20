@@ -87,3 +87,27 @@ export type ChapterType = {
   title: string;
   page: number;
 }
+
+export type NutrientType = {
+  id: string;
+  name: string;
+}
+
+export type paginationType = {
+  pageSize?: number;
+  pageNumber?: number;
+}
+
+export type IFetchFunParamType = {
+  pageParams: paginationType
+}
+
+export type IListResponseType = {
+  data: {
+    list: any[]
+    pagination?: {
+      pageSize?: number;
+      page
+    }
+  }
+}

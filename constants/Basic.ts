@@ -25,3 +25,5 @@ Digestibility
 and Growth Trials`
   },
 ]
+
+export const PAGE_SIZE = 10

@@ -33,6 +33,7 @@ import {
 	RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import DatabaseScreen from "../screens/database"
 
 export default function Navigation({
 	colorScheme,
@@ -130,7 +131,7 @@ function BottomTabNavigator() {
 			/>
 			<BottomTab.Screen
 				name="Database"
-				component={PublicationsScreen}
+				component={DatabaseScreen}
 				options={{
 					title: "Database",
 					tabBarIcon: ({ color }) => <TabBarIcon name="server" color={color} />,

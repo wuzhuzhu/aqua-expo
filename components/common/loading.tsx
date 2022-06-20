@@ -62,6 +62,22 @@ export const LectureLoading = () => {
   </Center>;
 };
 
+export const ListCardsLoading = () => {
+  return <Center safeArea mt={4} w="100%">
+    <VStack w="90%" maxW="400" space={6} overflow="hidden" rounded="md">
+      <Skeleton h={20} w="60%" startColor='amber.100'  />
+      <Skeleton.Text mb={6} />
+
+      <Skeleton h={50} rounded="md" />
+      <Skeleton h={50} rounded="md" />
+      <Skeleton h={50} rounded="md" />
+      <Skeleton h={50} rounded="md" />
+    </VStack>
+  </Center>;
+};
+
+
+
 export const EmptyList = memo(({text = "There's Nothing Here."}: {text: string}) => {
   return <Column flex={1} justifyContent='center' alignItems='center'>
     <NBAnimatedView entering={FadeInDown}>
