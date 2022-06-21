@@ -1,7 +1,7 @@
 import { isDev } from "./helper";
 
 export const API_ENDPOINT = isDev
-	? "https://api.nara4aqua.com/api/v1"
+	? "http://30.208.211.120:7001/api/v1"
 	: "https://api.nara4aqua.com/api/v1";
 
 export const PDF_URL_BASE = isDev

@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/eleme/.nvm/versions/node/v16.13.1/bin/node /Users/eleme/Library/pnpm/global/5/node_modules/yarn/bin/yarn.js add react-native-fast-image
+  /Users/eleme/.nvm/versions/node/v16.13.1/bin/node /Users/eleme/Library/pnpm/global/5/node_modules/yarn/bin/yarn.js
 
 PATH: 
   /Users/eleme/.amplify/bin:/Users/eleme/Library/pnpm:/Users/eleme/.nvm/versions/node/v16.13.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Users/eleme/WebstormProjects/aqua-expo/node_modules/.bin:/Users/eleme/development/flutter/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, copyfile '/Users/eleme/Library/Caches/Yarn/v6/npm-escape-string-regexp-4.0.0-14ba83a5d373e3d311e5afca29cf5bfad965bf34-integrity/node_modules/escape-string-regexp/index.d.ts' -> '/Users/eleme/WebstormProjects/aqua-expo/node_modules/@react-navigation/native/node_modules/escape-string-regexp/index.d.ts'
+  Error: ENOENT: no such file or directory, scandir '/Users/eleme/WebstormProjects/aqua-expo/node_modules/@expo/webpack-config/node_modules/babel-loader/node_modules'
 
 npm manifest: 
   {
@@ -62,7 +62,6 @@ npm manifest:
       "react-dom": "17.0.2",
       "react-native": "0.68.2",
       "react-native-auto-height-image": "^3.2.4",
-      "react-native-fast-image": "^8.5.11",
       "react-native-gesture-handler": "^2.4.2",
       "react-native-reanimated": "~2.8.0",
       "react-native-safe-area-context": "4.2.4",
