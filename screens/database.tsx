@@ -55,7 +55,7 @@ export default function DatabaseScreen() {
           onRefresh={refetch}
           refreshing={isFetchingNextPage}
           onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.8}
           onScroll={scrollHandler}
           renderItem={({item: nutrient, index}) => {
             return <NutrientListItem {...{nutrient, translationY}} />

@@ -19,10 +19,10 @@ const fetchNutrients = async ({pageParams = {pageSize: PAGE_SIZE, pageNumber: 1}
 
 export const useNutrients = (): any => useInfiniteQuery("nutrients", fetchNutrients, {
   getNextPageParam: (lastPage, allPages) => {
-    const pageNumber: number = lastPage?.pagination?.pageNumber || 0 + 1
+    const pageNumber: number = (lastPage?.data?.pagination?.pageNumber || 0) + 1
     return {
       pageParams: {
-        pageNumber,
+        pageNumber: pageNumber,
         pageSize: PAGE_SIZE
       }
     }
