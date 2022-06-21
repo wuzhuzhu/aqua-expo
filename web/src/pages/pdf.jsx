@@ -9,6 +9,7 @@ export default function () {
 
   return <div>
     {isDev && <ul>
+      <h2>123</h2>
       <li>{url}</li>
       <li>{page}</li>
     </ul>}
