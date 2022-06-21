@@ -1,13 +1,20 @@
 import {useNavigation} from "@react-navigation/native"
 import {NutrientType} from "../../types"
-import {Box, Text} from "native-base"
+import {Button, Text} from "native-base"
+import Animated, {LightSpeedInLeft, LightSpeedOutRight, useAnimatedStyle} from 'react-native-reanimated'
 
-export default function NutrientListItem(nutrient: NutrientType) {
-  const navigation = useNavigation();
-  const {name} = nutrient
+type INutrientListItemProps = {
+  nutrient: NutrientType;
+}
+
+export default function NutrientListItem({nutrient}: INutrientListItemProps) {
+  const navigation = useNavigation()
+
   return (
-    <Box>
-      <Text>{name}</Text>
-    </Box>
+    <Animated.View>
+      <Button p={4} mb={2} mx={2}>
+        {nutrient?.name || nutrient?.title}
+      </Button>
+    </Animated.View>
   )
 }

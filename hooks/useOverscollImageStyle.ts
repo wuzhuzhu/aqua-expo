@@ -23,5 +23,5 @@ export default function useOverscrollImageStyle() {
     };
   });
 
-  return {overscollImageStyle, scrollHandler}
+  return {overscollImageStyle, scrollHandler, translationY}
 }

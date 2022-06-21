@@ -1,5 +1,5 @@
 import {NativeStackNavigationProp} from "@react-navigation/native-stack"
-import {Heading, FlatList, Box} from 'native-base'
+import {Heading, FlatList, Box, Button} from 'native-base'
 import {get} from 'lodash'
 
 import {useNutrients} from "../api/database"
@@ -11,13 +11,12 @@ import NutrientListItem from "../components/database/nutrient-list-item"
 import Animated, {FadeInRight, useAnimatedScrollHandler, useSharedValue} from "react-native-reanimated"
 import logoImg from "../assets/images/logo.png"
 import useOverscollImageStyle from "../hooks/useOverscollImageStyle"
-import {useRef} from "react"
-const AnimatFlatList = Animated.createAnimatedComponent(FlatList);
+import {useRef, useState} from "react"
+// const AnimatFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function DatabaseScreen() {
   const navigation = useNavigation<ReturnType<useNavigation>>()
-  const flatList = useRef<FlatList<any>>(null)
-  const {overscollImageStyle, scrollHandler} = useOverscollImageStyle()
+  const {overscollImageStyle, scrollHandler, translationY} = useOverscollImageStyle()
   const {
     data: nutrients = [],
     isLoading,
@@ -30,6 +29,7 @@ export default function DatabaseScreen() {
     isFetchingNextPage,
     status,
   } = useNutrients();
+
   // TODO: implement screen head with out scrollview, pass handleScroll to parent components
   if (isLoading) return <ListCardsLoading />;
   return (
@@ -50,16 +50,15 @@ export default function DatabaseScreen() {
           fontWeight="normal"
           color="trueGray.600"
         >for Nutrient and Digestibility and Growth Trails</Heading>
-        <AnimatFlatList
-          ref={flatList}
+        <Animated.FlatList
           data={nutrients}
           onRefresh={refetch}
           refreshing={isFetchingNextPage}
           onEndReached={fetchNextPage}
           onEndReachedThreshold={0.5}
           onScroll={scrollHandler}
-          renderItem={(item) => {
-            return <NutrientListItem nutrient={item} />
+          renderItem={({item: nutrient, index}) => {
+            return <NutrientListItem {...{nutrient, translationY}} />
           }}
           scrollEventThrottle={16}
         />
