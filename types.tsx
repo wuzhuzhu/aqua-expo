@@ -99,7 +99,7 @@ export type paginationType = {
 }
 
 export type IFetchFunParamType = {
-  pageParams: paginationType
+  pageParam: number
 }
 
 export type IListResponseType = {
@@ -110,4 +110,15 @@ export type IListResponseType = {
       page
     }
   }
+}
+
+export type NutrientsPage = {
+  page: NutrientType
+  pageParam: number
+}
+
+export type InfiniteQueryResponse = {
+  pages: NutrientsPage[]
+  pageParams: number[]
+  contacts: ContactsArray
 }

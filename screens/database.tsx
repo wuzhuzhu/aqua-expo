@@ -2,8 +2,8 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack"
 import {Heading, FlatList, Box, Button} from 'native-base'
 import {get} from 'lodash'
 
-import {useNutrients} from "../api/database"
-import {ListCardsLoading, MasoryLoading2} from "../components/common/loading"
+import {useInfiniteNutrients, useNutrients} from "../api/database"
+import {ListCardsLoading, ListFooter, MasoryLoading2} from "../components/common/loading"
 import ScreenHead from "../components/common/screen-head"
 import HeaderText from "../components/common/header-text"
 import {useNavigation} from "@react-navigation/native"
@@ -18,7 +18,7 @@ export default function DatabaseScreen() {
   const navigation = useNavigation<ReturnType<useNavigation>>()
   const {overscollImageStyle, scrollHandler, translationY} = useOverscollImageStyle()
   const {
-    data: nutrients = [],
+    data = {},
     isLoading,
     isRefetching,
     refetch,
@@ -28,7 +28,10 @@ export default function DatabaseScreen() {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useNutrients();
+    hasMore
+  } = useInfiniteNutrients();
+
+  const {nutrients} = data
 
   // TODO: implement screen head with out scrollview, pass handleScroll to parent components
   if (isLoading) return <ListCardsLoading />;
@@ -54,8 +57,11 @@ export default function DatabaseScreen() {
           data={nutrients}
           onRefresh={refetch}
           refreshing={isFetchingNextPage}
-          onEndReached={fetchNextPage}
-          onEndReachedThreshold={0.8}
+          onEndReached={() => {
+            fetchNextPage()
+          }}
+          ListFooterComponent={<ListFooter {...{hasMore, isLoading, isFetching, isRefetching}} />}
+          onEndReachedThreshold={0.5}
           onScroll={scrollHandler}
           renderItem={({item: nutrient, index}) => {
             return <NutrientListItem {...{nutrient, translationY}} />

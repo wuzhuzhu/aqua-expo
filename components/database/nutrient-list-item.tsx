@@ -12,7 +12,7 @@ export default function NutrientListItem({nutrient}: INutrientListItemProps) {
 
   return (
     <Animated.View>
-      <Button p={4} mb={80} mx={2}>
+      <Button p={4} mb={4} mx={2}>
         {nutrient?.name || nutrient?.title}
       </Button>
     </Animated.View>

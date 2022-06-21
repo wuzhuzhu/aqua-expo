@@ -87,3 +87,17 @@ export const EmptyList = memo(({text = "There's Nothing Here."}: {text: string})
     <Text color="muted.500" mt={2}>{text}</Text>
   </Column>
 })
+
+type IListFooterType = {
+  hasMore: boolean;
+  isLoading: boolean;
+  isRefetching: boolean;
+  isFetching: boolean;
+}
+
+export const ListFooter = memo(({hasMore, isFetching, isLoading, isRefetching}: IListFooterType) => {
+  return <Center mb={4}>
+    {!hasMore && <Text color="muted.400">Reach the bottom already</Text>}
+    {isFetching||isLoading||isRefetching && <Text color="muted.400">Loading more..</Text>}
+  </Center>
+})
