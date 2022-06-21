@@ -19,7 +19,7 @@ function App() {
 }
 
 function Root() {
-  return <h1>示例页面</h1>
+  return <h1>示例页面1</h1>
 }
 
 export default App
