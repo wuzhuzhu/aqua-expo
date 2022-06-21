@@ -2,6 +2,7 @@ import React, {useMemo, useCallback} from "react"
 import {Image, View, StyleSheet} from "react-native"
 import { useNavigation } from '@react-navigation/native';
 import {Text, Box, Heading, Row, Icon, Badge} from 'native-base'
+import FastImage from 'react-native-fast-image'
 // fix useNavigation & push ts err
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MotiPressable } from 'moti/interactions'
@@ -34,7 +35,7 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
       p={2}
       style={styles.wrapper}
     >
-      <Image
+      <FastImage
         source={{ uri: lecture.imgUrl }}
         style={styles.image}
         resizeMode="cover"
