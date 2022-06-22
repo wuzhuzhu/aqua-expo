@@ -26,7 +26,6 @@ const PublicationInfo = memo(function ({
 				<Heading size="md" numberOfLines={1}>
 					{p.title}
 				</Heading>
-				<Text>{p.pdfUrl}</Text>
 				<Row alignItems="baseline" justifyContent="flex-start">
 					<Text
 						fontSize="xs"

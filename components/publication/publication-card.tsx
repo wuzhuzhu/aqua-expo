@@ -175,12 +175,7 @@ const PublicationCard = function ({
 	return (
 		<BetterButton
 			onPressBtn={() =>
-				navigatePublication(
-					navigation,
-					p.pdfUrl,
-					undefined,
-					p.title
-				)
+				navigatePublication(navigation, p.pdfUrl, undefined, p.title)
 			}
 			bg="muted.100"
 		>
