@@ -28,12 +28,14 @@ import PublicationsScreen from "../screens/publications";
 import WebModal from "../screens/modals/web-modal";
 
 import {
+	DatabaseStackParamList,
 	RootStackParamList,
 	RootTabParamList,
 	RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import DatabaseScreen from "../screens/database"
+import DatabaseScreen from "../screens/database";
+import NutrientScreen from "../screens/nutrient";
 
 export default function Navigation({
 	colorScheme,
@@ -131,13 +133,29 @@ function BottomTabNavigator() {
 			/>
 			<BottomTab.Screen
 				name="Database"
-				component={DatabaseScreen}
+				component={DatabaseNavigator}
 				options={{
 					title: "Database",
 					tabBarIcon: ({ color }) => <TabBarIcon name="server" color={color} />,
 				}}
 			/>
 		</BottomTab.Navigator>
+	);
+}
+
+const DatabaseStack = createNativeStackNavigator<DatabaseStackParamList>();
+function DatabaseNavigator() {
+	return (
+		<DatabaseStack.Navigator>
+			<DatabaseStack.Group screenOptions={{ headerShown: false }}>
+				<DatabaseStack.Screen name="Nutrients" component={DatabaseScreen} />
+				<DatabaseStack.Screen
+					name="Nutrient"
+					component={NutrientScreen}
+					options={({ route }) => ({ title: route?.params?.title })}
+				/>
+			</DatabaseStack.Group>
+		</DatabaseStack.Navigator>
 	);
 }
 
