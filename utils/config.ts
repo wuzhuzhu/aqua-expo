@@ -6,7 +6,7 @@ export const API_ENDPOINT =
 	"https://api.nara4aqua.com/api/v1";
 
 export const PDF_URL_BASE = isDev
-	? "http://localhost:3000"
-	: "https://www.nara4aqua.com";
+	? "https://aqua-expo.vercel.app"
+	: "https://aqua-expo.vercel.app"; // TODO: change to production url
 
 // https://api.nara4aqua.com/api/v1/getMembers

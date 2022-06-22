@@ -10,8 +10,7 @@ function parseData(res: any): PublicationType[] {
 }
 
 const fetchPublications = async () => {
-	const res = await axios.get(`${API_ENDPOINT}/getLectureVideoInfo`);
-	debugger;
+	const res = await axios.get(`${API_ENDPOINT}/publications`);
 	return parseData(res);
 };
 
