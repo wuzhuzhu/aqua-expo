@@ -41,7 +41,7 @@ import { useShowUpAnimation } from "../../hooks/useAnimation";
 import ChapterCard from "./chapters-card";
 import PublicationInfo from "./publication-info";
 import { COLOR_SCHEME } from "../../constants/Colors";
-import { PDF_URL_BASE } from "../../utils/config";
+import { HAS_PDF_WEB, PDF_URL_BASE } from "../../utils/config";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { background } from "native-base/lib/typescript/theme/styled-system";
 import { transform } from "@babel/core";
@@ -104,9 +104,9 @@ const PublicationCard = function ({
 		title
 	) {
 		// console.log('opening pdf: ',pdfUrl,page)
-		let pdfViewPageUrl = `${PDF_URL_BASE}/pdf/${encodeURIComponent(
-			pdfUrl
-		)}/${page}`;
+		let pdfViewPageUrl = HAS_PDF_WEB
+			? `${PDF_URL_BASE}/pdf/${encodeURIComponent(pdfUrl)}/${page}`
+			: pdfUrl;
 		// if (page) pdfViewPageUrl += `/${page}`
 		navigation.navigate("WebModal", { title, url: pdfViewPageUrl });
 	};

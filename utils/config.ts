@@ -10,3 +10,6 @@ export const PDF_URL_BASE = isDev
 	: "https://aqua-expo.vercel.app"; // TODO: change to production url
 
 // https://api.nara4aqua.com/api/v1/getMembers
+
+// TODO: 实现pdf跳页需要实现web服务器
+export const HAS_PDF_WEB = false;
