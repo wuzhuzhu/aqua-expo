@@ -146,9 +146,14 @@ export default function NutrientScreen({ route, navigation }) {
 			<SectionList
 				px={4}
 				ListHeaderComponent={() => (
-					<Box>
+					<Box mb={6}>
 						<HeaderText navigation={navigation}>{name}</HeaderText>
-						<Button.Group px={2} direction="column" alignItems="flex-start">
+						<Button.Group
+							px={2}
+							direction="column"
+							alignItems="flex-start"
+							colorScheme="muted"
+						>
 							{descriptions &&
 								descriptions.map((d, index) => {
 									return (
@@ -162,9 +167,19 @@ export default function NutrientScreen({ route, navigation }) {
 				)}
 				sections={sections}
 				renderItem={({ item }) => {
-					return <Text>{item.name}</Text>;
+					return (
+						<Button
+							alignSelf="flex-start"
+							variant="ghost"
+							colorScheme="tertiary"
+						>
+							{item.name}
+						</Button>
+					);
 				}}
-				renderSectionHeader={({ section }) => <Button>{section.title}</Button>}
+				renderSectionHeader={({ section }) => (
+					<Button colorScheme="muted">{section.title}</Button>
+				)}
 			/>
 		</VStack>
 	);
