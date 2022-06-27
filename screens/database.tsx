@@ -20,6 +20,7 @@ import Animated, {
 import logoImg from "../assets/images/logo.png";
 import useOverscollImageStyle from "../hooks/useOverscollImageStyle";
 import { useRef, useState } from "react";
+import SubHeaderText from "../components/common/sub-header-text";
 // const AnimatFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function DatabaseScreen() {
@@ -60,19 +61,9 @@ export default function DatabaseScreen() {
 				<HeaderText navigation={navigation} lines={2}>
 					Database
 				</HeaderText>
-				<Heading
-					onPress={() => navigation.navigate("Home")}
-					mt={-2}
-					ml={2}
-					mb={6}
-					size="md"
-					pb={2}
-					maxWidth="70%"
-					fontWeight="normal"
-					color="trueGray.600"
-				>
+				<SubHeaderText>
 					for Nutrient and Digestibility and Growth Trails
-				</Heading>
+				</SubHeaderText>
 				<Animated.FlatList
 					data={nutrients}
 					onRefresh={refetch}

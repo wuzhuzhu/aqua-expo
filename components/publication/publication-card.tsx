@@ -103,12 +103,9 @@ const PublicationCard = function ({
 		page = 1 as number | undefined,
 		title
 	) {
-		// console.log('opening pdf: ',pdfUrl,page)
-		let pdfViewPageUrl = HAS_PDF_WEB
-			? `${PDF_URL_BASE}/pdf/${encodeURIComponent(pdfUrl)}/${page}`
-			: pdfUrl;
-		// if (page) pdfViewPageUrl += `/${page}`
-		navigation.navigate("WebModal", { title, url: pdfViewPageUrl });
+		if (page) pdfUrl += `#page=${page}`;
+		console.log("opening pdf: ", pdfUrl, page);
+		navigation.navigate("WebModal", { title, url: pdfUrl });
 	};
 
 	const wrapperStyle = {

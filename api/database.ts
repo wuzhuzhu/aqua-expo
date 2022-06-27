@@ -38,10 +38,11 @@ export const useNutrients = (): UseInfiniteQueryResult => useInfiniteQuery("nutr
 
 const fetchPaginatedNutrients = async ({ pageParam = 1 }) => {
 	let url = `${API_ENDPOINT}/nutrients`;
-	// console.log('axios接到fetch指令，获取数据， param：', pageParam)
+	console.log("axios接到fetch指令，获取数据， param：", pageParam);
 	url += `?pageSize=${PAGE_SIZE}&&pageNumber=${pageParam}`;
-	// console.log('=====拉取数据中=======', url)
-	const { data: page } = await axios.get(url);
+	console.log("=====拉取数据中=======", url);
+	const res = await axios.get(url);
+	const { data: page } = res;
 	return { page, pageParam };
 };
 
@@ -72,10 +73,16 @@ export const useInfiniteNutrients = () => {
 	});
 };
 
-export const fetchNutrientById = async (id: string): Promise<NutrientType> => {
-	const { data } = await axios.get(`${API_ENDPOINT}/nutrient/${id}`);
+export const fetchNutrientById = async (
+	nutrientId: string
+): Promise<NutrientType> => {
+	console.log(
+		"axios接到fetch指令，获取数据， param：",
+		`${API_ENDPOINT}/nutrient/${nutrientId}`
+	);
+	const { data } = await axios.get(`${API_ENDPOINT}/nutrient/${nutrientId}`);
 	return data;
 };
 
-export const useNutrient = (nutrientId: string): any =>
+export const useNutrient = ({ nutrientId }: { nutrientId: string }): any =>
 	useQuery(["nutrient", nutrientId], () => fetchNutrientById(nutrientId));

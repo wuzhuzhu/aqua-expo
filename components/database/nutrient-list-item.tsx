@@ -20,7 +20,12 @@ export default function NutrientListItem({ nutrient }: INutrientListItemProps) {
 				p={4}
 				mb={4}
 				mx={2}
-				onPress={() => navigation.navigate("Nutrient")}
+				onPress={() =>
+					navigation.navigate("Nutrient", {
+						nutrientId: nutrient.id,
+						title: nutrient.name,
+					})
+				}
 			>
 				{nutrient?.name || nutrient?.title}
 			</Button>

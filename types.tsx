@@ -38,7 +38,7 @@ export type RootStackParamList = {
 
 export type DatabaseStackParamList = {
 	Nutrients: undefined;
-	Nutrient: undefined;
+	Nutrient: { nutrientId: string; title: string };
 	Category: undefined;
 	Fish: undefined;
 };
