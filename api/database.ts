@@ -80,8 +80,14 @@ export const fetchNutrientById = async (
 		"axios接到fetch指令，获取数据， param：",
 		`${API_ENDPOINT}/nutrient/${nutrientId}`
 	);
-	const { data } = await axios.get(`${API_ENDPOINT}/nutrient/${nutrientId}`);
-	return data;
+	const response = await axios.get(`${API_ENDPOINT}/nutrient/${nutrientId}`);
+	const nutrient = response?.data?.data || {}
+	console.log(
+		"data:",
+		`${API_ENDPOINT}/nutrient/${nutrientId}`,
+		nutrient
+	);
+	return nutrient;
 };
 
 export const useNutrient = ({ nutrientId }: { nutrientId: string }): any =>

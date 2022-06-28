@@ -3,158 +3,42 @@ import { useNutrient } from "../api/database";
 import { MOCK_PDF } from "../constants/Basic";
 import { ListCardsLoading } from "../components/common/loading";
 import HeaderText from "../components/common/header-text";
-import React from "react";
+import React, {useCallback} from "react"
 import ScreenHead from "../components/common/screen-head";
 import SubHeaderText from "../components/common/sub-header-text";
+import {useNavigation} from "@react-navigation/native"
+import {generatePdfUrl} from "../utils/helper"
 
 export default function NutrientScreen({ route, navigation }) {
 	const { nutrientId, title } = route.params;
-	const { nutrient = {}, isLoading, error } = useNutrient({ nutrientId });
-	const mockNutrient = {
-		id: "9",
-		name: "Proteins",
-		descriptions: [
-			{
-				id: "1",
-				title: "Proteins' Thursday",
-				linkType: "node",
-				link: ["Nutrient", { id: 2 }],
-			},
-			{
-				id: "2",
-				title: "Proteins' Weekday",
-				linkType: "pdf",
-				link: MOCK_PDF,
-			},
-			{
-				id: "3",
-				title: "Proteins' Monday",
-				linkType: "pdf",
-				link: MOCK_PDF,
-			},
-		],
-		classes: [
-			{
-				id: "1",
-				name: "Double tail fishes Class Research",
-				description:
-					"some description text here, should be very, very, very looog. I don't know much about fishes",
-				fishes: [
-					{
-						id: "1",
-						name: "Double tail flag fish",
-						linkType: "pdf",
-						link: MOCK_PDF, // 目标是pdf，么有页数 https://www.example.com/sample.pdf
-					},
-					{
-						id: "2",
-						name: "Double tail bite fish",
-						linkType: "pdf",
-						link: MOCK_PDF, // 目标是pdf,页数拼接规则 https://www.example.com/sample.pdf#page=1
-					},
-					{
-						id: "3",
-						name: "Double tail Brazil fish",
-						linkType: "node",
-						link: ["Nutrient", { id: 2 }], // 目标是详情，带参数情况
-					},
-					{
-						id: "4",
-						name: "Double tail Brazil fish",
-						linkType: "node",
-						link: ["Nutrients", {}], // 目标是列表，不带参数情况
-					},
-				],
-			},
-			{
-				id: "2",
-				name: "Single-eyes fishes Class",
-				description:
-					"some description text here, should be very, very, very looog. I don't know much about fishes",
-				fishes: [
-					{
-						id: "1",
-						name: "Single tail flag fish",
-					},
-					{ id: "2", name: "Single Eyes bite fish" },
-					{ id: "3", name: "Single Eyes Brazil fish" },
-					{ id: "4", name: "Single Eyes Brazil fish" },
-					{ id: "5", name: "Single Eyes Brazil fish" },
-					{ id: "6", name: "Single Eyes Brazil fish" },
-					{ id: "7", name: "Single Eyes Brazil fish" },
-					{ id: "8", name: "Single Eyes Brazil fish" },
-					{ id: "9", name: "Single Eyes Brazil fish" },
-				],
-			},
-			{
-				id: "3",
-				name: "Single-eyes fishes Class",
-				description:
-					"some description text here, should be very, very, very looog. I don't know much about fishes",
-				fishes: [
-					{
-						id: "1",
-						name: "Single tail flag fish",
-					},
-					{ id: "2", name: "Single Eyes bite fish" },
-					{ id: "3", name: "Single Eyes Brazil fish" },
-					{ id: "4", name: "Single Eyes Brazil fish" },
-					{ id: "5", name: "Single Eyes Brazil fish" },
-					{ id: "6", name: "Single Eyes Brazil fish" },
-					{ id: "7", name: "Single Eyes Brazil fish" },
-					{ id: "8", name: "Single Eyes Brazil fish" },
-					{ id: "9", name: "Single Eyes Brazil fish" },
-				],
-			},
-			{
-				id: "4",
-				name: "Single-eyes fishes Class",
-				description:
-					"some description text here, should be very, very, very looog. I don't know much about fishes",
-				fishes: [
-					{
-						id: "1",
-						name: "Single tail flag fish",
-					},
-					{ id: "2", name: "Single Eyes bite fish" },
-					{ id: "3", name: "Single Eyes Brazil fish" },
-					{ id: "4", name: "Single Eyes Brazil fish" },
-					{ id: "5", name: "Single Eyes Brazil fish" },
-					{ id: "6", name: "Single Eyes Brazil fish" },
-					{ id: "7", name: "Single Eyes Brazil fish" },
-					{ id: "8", name: "Single Eyes Brazil fish" },
-					{ id: "9", name: "Single Eyes Brazil fish" },
-				],
-			},
-			{
-				id: "5",
-				name: "Single-eyes fishes Class",
-				description:
-					"some description text here, should be very, very, very looog. I don't know much about fishes",
-				fishes: [
-					{
-						id: "1",
-						name: "Single tail flag fish",
-					},
-					{ id: "2", name: "Single Eyes bite fish" },
-					{ id: "3", name: "Single Eyes Brazil fish" },
-					{ id: "4", name: "Single Eyes Brazil fish" },
-					{ id: "5", name: "Single Eyes Brazil fish" },
-					{ id: "6", name: "Single Eyes Brazil fish" },
-					{ id: "7", name: "Single Eyes Brazil fish" },
-					{ id: "8", name: "Single Eyes Brazil fish" },
-					{ id: "9", name: "Single Eyes Brazil fish" },
-				],
-			},
-		],
-	};
+	const { data: nutrient = {}, isLoading, error } = useNutrient({ nutrientId });
 
 	const { name, details = [] } = nutrient;
 	const sections = details.map(classItem => ({
 		title: classItem.name,
 		data: classItem.categories,
 	}));
-	debugger
+
+	const onPressNode = useCallback(
+		(item) => {
+			if (item?.link?.url) {
+				const path = generatePdfUrl(item?.link || {})
+				navigation.navigate("WebModal", {title, url: path})
+			}
+		},
+		[],
+	);
+
+	const onPressItem = useCallback(
+		(item) => {
+			if (item?.id) {
+				navigation.navigate("Class", {id: item.id})
+			}
+		},
+		[],
+	);
+
+
 
 	if (isLoading) return <ListCardsLoading />;
 	return (
@@ -170,19 +54,23 @@ export default function NutrientScreen({ route, navigation }) {
 					</Box>
 				)}
 				sections={sections}
+				renderSectionFooter= {() => <Box mb={4} />}
 				renderItem={({ item }) => {
 					return (
 						<Button
 							alignSelf="flex-start"
 							variant="ghost"
 							colorScheme="tertiary"
+							onPress={() => {
+								onPressItem(item)
+							}}
 						>
 							{item.name}
 						</Button>
 					);
 				}}
 				renderSectionHeader={({ section }) => (
-					<Button colorScheme="muted">{section.title}</Button>
+					<Button onPress={() => onPressNode(section)} colorScheme="muted">{section.title}</Button>
 				)}
 			/>
 		</VStack>

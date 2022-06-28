@@ -1,6 +1,7 @@
 import { Factory } from 'native-base';
 import { Dimensions } from 'react-native';
 import {formatDistanceToNow} from "date-fns"
+import {PDF_URL_BASE} from "./config"
 
 export const mock = (success, mockData, timeout = 600) => {
   return new Promise((resolve, reject) => {
@@ -34,3 +35,9 @@ export const getImagePlaceHolder = (x: number, y: number) => {return `https://vi
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
 export const isDev = process.env.NODE_ENV === 'development';
+
+export const generatePdfUrl = function ({url, pageNumber}: {url: string, pageNumber: number}) {
+  let path = `${PDF_URL_BASE}/${encodeURIComponent(url)}`;
+  if (pageNumber) path += `/${pageNumber}`;
+  return path;
+}

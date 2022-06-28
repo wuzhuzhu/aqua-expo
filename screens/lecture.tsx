@@ -1,36 +1,25 @@
 import React, { memo, useState, useRef, useMemo, useCallback } from "react";
 import {
-	View,
-	StyleSheet,
-	Button,
 	LayoutAnimation,
 	Platform,
 	UIManager,
-	TouchableOpacity,
 } from "react-native";
 import {
 	Box,
-	Column,
-	Row,
 	Text,
 	AspectRatio,
 	Divider,
 	Image,
 	Heading,
-	Icon,
 	Stagger,
 } from "native-base";
 import { Video, AVPlaybackStatusSuccess } from "expo-av";
 import { StatusBar } from "expo-status-bar";
-import { formatDistanceToNow } from "date-fns";
 
 import { useLecture } from "../api/lectures";
 import { LectureLoading } from "../components/common/loading";
-import StaggeredList from "../components/common/staggered-list";
 import VideoRow from "../components/lectures/video-list";
 import ContolBtn from "../components/lectures/control-btn";
-import { LectureType } from "../types";
-import { useMembers } from "../api/members";
 import { COLOR_SCHEME } from "../constants/Colors";
 import { ImageBackground, ScrollView } from "../utils/motify";
 import { isDev, windowHeight } from "../utils/helper";
