@@ -31,6 +31,7 @@ export type RootStackParamList = {
 	WebModal: {
 		url?: string;
 		name?: string;
+		title?: string;
 	};
 	Modal2: undefined;
 	NotFound: undefined;

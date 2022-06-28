@@ -54,7 +54,7 @@ export default function Lecture({
 	navigation,
 }: NativeStackScreenProps<any>): JSX.Element {
 	const lectureId = route?.params?.id;
-	const [currentIndex, setCurrentIndex] = useState(0);
+	const [currentIndex, setCurrentIndex] = useState(null as number | null);
 	const [status, setStatus] = useState({} as AVPlaybackStatusSuccess);
 	const {
 		data: lecture,
@@ -65,29 +65,14 @@ export default function Lecture({
 	} = useLecture(lectureId);
 	const videos = lecture?.videos ? lecture.videos : [];
 	const currentVideo = videos[currentIndex];
-	const video = useRef(null);
 
 	const hasSelectedIndex = useMemo(() => !isNaN(currentIndex), [currentIndex]);
-	const onPlayingIndex = video && status?.isPlaying && currentIndex;
-	const togglePlayback = useCallback(() => {
-		status?.isPlaying
-			? video?.current?.pauseAsync()
-			: video?.current?.playAsync();
-	}, [video]);
 
 	const handleVideoClick = (i: number) => {
 		LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-		if (status?.isPlaying) {
-			video?.current?.stopAsync();
-		}
 		setCurrentIndex(i);
-		if (videos[i].isYoutube) {
-			navigation.navigate("WebModal", {
-				title: videos[i].title,
-				url: videos[i].videoUrl,
-			});
-		}
 	};
+
 
 	if (isLoading) return <LectureLoading />;
 	return (
@@ -101,28 +86,13 @@ export default function Lecture({
 				w="100%"
 				ratio={hasSelectedIndex ? 16 / 9 : 4 / 3}
 			>
-				{!currentVideo?.isYoutube ? (
-					<Video
-						ref={video}
-						source={{
-							uri: isDev
-								? "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
-								: lecture?.videos?.[`${currentIndex}`]?.videoUrl,
-						}}
-						useNativeControls
-						resizeMode="contain"
-						isLooping
-						onPlaybackStatusUpdate={status => setStatus(() => status)}
-					/>
-				) : (
-					<ImageBackground
-						source={{
-							uri: lecture?.imgUrl,
-						}}
-					>
-						<Title isLight title="Youtube Video" />
-					</ImageBackground>
-				)}
+				<ImageBackground
+					source={{
+						uri: currentVideo?.cover || lecture?.imgUrl
+					}}
+				>
+					<Title isLight title="Youtube Video" />
+				</ImageBackground>
 			</AspectRatio>
 			{showDev && (
 				<>
@@ -144,14 +114,12 @@ export default function Lecture({
 							v={v}
 							i={i}
 							handleVideoClick={handleVideoClick}
-							togglePlayback={togglePlayback}
-							onPlayingIndex={onPlayingIndex}
 							currentIndex={currentIndex}
 						/>
 					);
 				})}
 			</ScrollView>
-			{!currentVideo?.isYoutube && <ContolBtn status={status} video={video} />}
+			{currentVideo?.id && <ContolBtn video={currentVideo}/>}
 		</Box>
 	);
 }
