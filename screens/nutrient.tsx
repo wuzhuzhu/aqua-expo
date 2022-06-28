@@ -32,7 +32,7 @@ export default function NutrientScreen({ route, navigation }) {
 	const onPressItem = useCallback(
 		(item) => {
 			if (item?.id) {
-				navigation.navigate("Class", {id: item.id})
+				navigation.navigate("Class", {id: item.id, title: item.name})
 			}
 		},
 		[],

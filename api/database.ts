@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useQuery } from "react-query";
 import axios, { AxiosResponse } from "axios";
 import { get, isEmpty } from "lodash";
-import { IFetchFunParamType, IListResponseType, NutrientType } from "../types";
+import {ClassesType, IFetchFunParamType, IListResponseType, NutrientType} from "../types"
 import { API_ENDPOINT } from "../utils/config";
 import { PAGE_SIZE } from "../constants/Basic";
 import { UseInfiniteQueryResult } from "react-query/types/react/types";
@@ -92,3 +92,21 @@ export const fetchNutrientById = async (
 
 export const useNutrient = ({ nutrientId }: { nutrientId: string }): any =>
 	useQuery(["nutrient", nutrientId], () => fetchNutrientById(nutrientId));
+
+
+
+export const fetchClassesById = async (
+	id: string
+): Promise<ClassesType> => {
+	const response = await axios.get(`${API_ENDPOINT}/classes/${id}`);
+	const classes = response?.data?.data || {}
+	console.log(
+		"data:",
+		`${API_ENDPOINT}/classes/${id}`,
+		classes
+	);
+	return classes;
+};
+
+export const useClasses = ({ id }: { id: string }): any =>
+	useQuery(["classes", id], () => fetchClassesById(id));

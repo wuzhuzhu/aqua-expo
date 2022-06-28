@@ -114,6 +114,20 @@ enum NutrientLinkType {
 	CATEGORY = "CATEGORY",
 }
 
+export type ClassesType = {
+	title: string;
+	classes?: ClassType[] || null;
+}
+
+export type ClassType = {
+	id: number;
+	name: string;
+	subname?: string;
+	cover: string
+	createdAt?: number;
+	updatedAt?: string;
+}
+
 export type paginationType = {
 	pageSize?: number;
 	pageNumber?: number;

@@ -36,6 +36,7 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import DatabaseScreen from "../screens/database";
 import NutrientScreen from "../screens/nutrient";
+import ClassScreen from "../screens/class"
 
 export default function Navigation({
 	colorScheme,
@@ -152,6 +153,11 @@ function DatabaseNavigator() {
 				<DatabaseStack.Screen
 					name="Nutrient"
 					component={NutrientScreen}
+					options={({ route }) => ({ title: route?.params?.title })}
+				/>
+				<DatabaseStack.Screen
+					name="Class"
+					component={ClassScreen}
 					options={({ route }) => ({ title: route?.params?.title })}
 				/>
 			</DatabaseStack.Group>
