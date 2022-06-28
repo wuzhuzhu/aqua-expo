@@ -70,8 +70,10 @@ export type LectureType = {
 	id: string;
 	title: string;
 	imgUrl?: string;
+	createdAt: number;
 	updatedAt: number;
-	videos: VideoType[];
+	videoCount: number;
+	// videos?: VideoType[];
 };
 
 export type VideoType = {

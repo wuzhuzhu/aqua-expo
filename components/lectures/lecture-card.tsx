@@ -20,12 +20,13 @@ export default function MasonryCard(lecture: LectureType): JSX.Element {
   const onPressCard = useCallback(function () {
     navigation.navigate('Lecture', { id: lecture?.id, title: lecture?.title })
   },[lecture])
-  const lastUpdatedStr = lecture?.updatedAt ?
+  const lastUpdatedStr = (lecture?.updatedAt || lecture.createdAt) ?
     useMemo(() => {
-      const updatedAt = lecture?.updatedAt as number
+      const updatedAt = lecture?.updatedAt || lecture?.createdAt as number
       return formatDistanceToNow(new Date(updatedAt))
     }, []) : 'never'
-  const videoCount = (Array.isArray(lecture?.videos) && (lecture?.videos.length !== 0)) ? lecture?.videos.length : 'no'
+  // const videoCount = (Array.isArray(lecture?.videos) && (lecture?.videos.length !== 0)) ? lecture?.videos.length : 'no'
+  const videoCount = lecture?.videoCount ?? 'no'
   return <BetterButton onPressBtn={onPressCard}>
     <Box
       // shadow={1}

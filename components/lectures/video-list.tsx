@@ -1,7 +1,7 @@
 import {memo, useEffect, useMemo} from 'react'
 import {Column, Icon, Row, Stagger, Text, FlatList, Box, Avatar, VStack, HStack, Spacer} from 'native-base'
 import {TouchableOpacity} from "react-native"
-import {formatDistanceToNow} from "date-fns"
+import {formatDistanceToNow, parseJSON} from "date-fns"
 import {Feather} from "@expo/vector-icons"
 import {COLOR_SCHEME} from "../../constants/Colors"
 import {VideoType} from "../../types"
@@ -40,7 +40,7 @@ const VideoRow = memo(function ({v, i, handleVideoClick, onPlayingIndex, current
         >{`${i + 1}. ${v.title}`}</Text>
         <Text
           color="muted.400"
-        >{formatDistanceToNow(new Date(v.createdAt), {addSuffix: true})}</Text>
+        >{formatDistanceToNow(v.createdAt ? parseJSON(v.createdAt) : new Date(), {addSuffix: true})}</Text>
       </Column>
       <Icon as={<Feather name={iconName}/>} size="md" mr="2"
             color={currentIndex === i ? COLOR_SCHEME.NARA_GREEN : 'muted.400'}/>

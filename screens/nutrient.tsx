@@ -9,7 +9,7 @@ import SubHeaderText from "../components/common/sub-header-text";
 
 export default function NutrientScreen({ route, navigation }) {
 	const { nutrientId, title } = route.params;
-	const { nutrients = {}, isLoading, error } = useNutrient({ nutrientId });
+	const { nutrient = {}, isLoading, error } = useNutrient({ nutrientId });
 	const mockNutrient = {
 		id: "9",
 		name: "Proteins",
@@ -43,9 +43,27 @@ export default function NutrientScreen({ route, navigation }) {
 					{
 						id: "1",
 						name: "Double tail flag fish",
+						linkType: "pdf",
+						link: MOCK_PDF, // 目标是pdf，么有页数 https://www.example.com/sample.pdf
 					},
-					{ id: "2", name: "Double tail bite fish" },
-					{ id: "3", name: "Double tail Brazil fish" },
+					{
+						id: "2",
+						name: "Double tail bite fish",
+						linkType: "pdf",
+						link: MOCK_PDF, // 目标是pdf,页数拼接规则 https://www.example.com/sample.pdf#page=1
+					},
+					{
+						id: "3",
+						name: "Double tail Brazil fish",
+						linkType: "node",
+						link: ["Nutrient", { id: 2 }], // 目标是详情，带参数情况
+					},
+					{
+						id: "4",
+						name: "Double tail Brazil fish",
+						linkType: "node",
+						link: ["Nutrients", {}], // 目标是列表，不带参数情况
+					},
 				],
 			},
 			{
@@ -131,11 +149,12 @@ export default function NutrientScreen({ route, navigation }) {
 		],
 	};
 
-	const { name, descriptions, classes = [] } = mockNutrient;
-	const sections = classes.map(classItem => ({
+	const { name, details = [] } = nutrient;
+	const sections = details.map(classItem => ({
 		title: classItem.name,
-		data: classItem.fishes,
+		data: classItem.categories,
 	}));
+	debugger
 
 	if (isLoading) return <ListCardsLoading />;
 	return (
@@ -148,21 +167,6 @@ export default function NutrientScreen({ route, navigation }) {
 				ListHeaderComponent={() => (
 					<Box mb={6}>
 						<HeaderText navigation={navigation}>{name}</HeaderText>
-						<Button.Group
-							px={2}
-							direction="column"
-							alignItems="flex-start"
-							colorScheme="muted"
-						>
-							{descriptions &&
-								descriptions.map((d, index) => {
-									return (
-										<Button key={index} variant="ghost" size="md" p={1}>
-											{d.title}
-										</Button>
-									);
-								})}
-						</Button.Group>
 					</Box>
 				)}
 				sections={sections}
