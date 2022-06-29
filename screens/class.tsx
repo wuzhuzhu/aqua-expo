@@ -11,13 +11,13 @@ import ClassCard from "../components/database/class-card"
 
 export default function ClassesScreen({navigation, route}) {
   const {data = {}, isLoading} = useClasses({id: route?.params?.id})
-  const {classes = []} = data
+  const {classes = [], title} = data
   if (isLoading) return <ListCardsLoading />;
   return <ScreenHead navigation={navigation}>
     <HeaderText navigation={navigation}>{route?.params?.title}</HeaderText>
     <StaggeredList>
       {classes && classes.map(classItem => {
-        return <ClassCard key={classItem.id} classItem={classItem} />
+        return <ClassCard key={classItem.id} classesName={title} classItem={classItem} />
       })}
     </StaggeredList>
   </ScreenHead>
