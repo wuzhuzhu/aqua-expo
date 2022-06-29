@@ -154,7 +154,7 @@ function DatabaseNavigator() {
 	return (
 		<DatabaseStack.Navigator>
 			<DatabaseStack.Group screenOptions={{ headerShown: false }}>
-				<DatabaseStack.Screen name="Nutrients" component={DatabaseScreen} />
+				<DatabaseStack.Screen name="Nutrients" component={FishScreen} />
 				<DatabaseStack.Screen name="Nutrient" component={NutrientScreen}/>
 				<DatabaseStack.Screen name="Classes" component={ClassesScreen}/>
 				<DatabaseStack.Screen name="Fish" component={FishScreen}/>
