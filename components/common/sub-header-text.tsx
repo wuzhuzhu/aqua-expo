@@ -20,7 +20,7 @@ const SubHeaderText = function ({ children }: SubHeaderTextProps) {
 			fontWeight="normal"
 			color="trueGray.600"
 		>
-			for Nutrient and Digestibility and Growth Trails
+			{children}
 		</Heading>
 	);
 };

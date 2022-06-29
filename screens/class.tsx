@@ -6,14 +6,19 @@ import ScreenHead from "../components/common/screen-head"
 import {isLoading} from "expo-font"
 import {ListCardsLoading} from "../components/common/loading"
 import {useClasses} from "../api/database"
+import StaggeredList from "../components/common/staggered-list"
+import ClassCard from "../components/database/class-card"
 
-export default function ClassScreen({navigation, route}) {
-  const {data: classes, isLoading} = useClasses({id: route?.params?.id})
+export default function ClassesScreen({navigation, route}) {
+  const {data = {}, isLoading} = useClasses({id: route?.params?.id})
+  const {classes = []} = data
   if (isLoading) return <ListCardsLoading />;
   return <ScreenHead navigation={navigation}>
     <HeaderText navigation={navigation}>{route?.params?.title}</HeaderText>
-    <SubHeaderText>
-      {classes?.title}
-    </SubHeaderText>
+    <StaggeredList>
+      {classes && classes.map(classItem => {
+        return <ClassCard key={classItem.id} classItem={classItem} />
+      })}
+    </StaggeredList>
   </ScreenHead>
 }
