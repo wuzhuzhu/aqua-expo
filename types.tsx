@@ -128,6 +128,28 @@ export type ClassType = {
 	updatedAt?: string;
 }
 
+export type FishAPIType = {
+	name: string;
+	subname: string;
+	cover: string;
+	data: FishDataType[];
+}
+
+export type FishDataAPIType = {
+	name: string;
+	type: 'pic' | 'text'
+	title?: string;
+	text?: string;
+	data_pic?: string;
+	data_table?: FishDataTableType[];
+}
+
+export type FishDataTableType = {
+	name: string;
+	pageNumber: number;
+	url: string;
+}
+
 export type paginationType = {
 	pageSize?: number;
 	pageNumber?: number;

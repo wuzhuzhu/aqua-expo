@@ -1,16 +1,16 @@
 import {Box, Text} from 'native-base'
 import HeaderText from "../components/common/header-text"
-import React from "react"
+import React, {memo} from "react"
 import SubHeaderText from "../components/common/sub-header-text"
 import ScreenHead from "../components/common/screen-head"
 import {isLoading} from "expo-font"
 import {ListCardsLoading} from "../components/common/loading"
-import {useClasses} from "../api/database"
+import {useClass} from "../api/database"
 import StaggeredList from "../components/common/staggered-list"
 import ClassCard from "../components/database/class-card"
 
-export default function ClassesScreen({navigation, route}) {
-  const {data = {}, isLoading} = useClasses({id: route?.params?.id})
+const ClassesScreen = ({navigation, route}) => {
+  const {data = {}, isLoading} = useClass({id: route?.params?.id})
   const {classes = [], title} = data
   if (isLoading) return <ListCardsLoading />;
   return <ScreenHead navigation={navigation}>
@@ -22,3 +22,5 @@ export default function ClassesScreen({navigation, route}) {
     </StaggeredList>
   </ScreenHead>
 }
+
+export default memo(ClassesScreen)

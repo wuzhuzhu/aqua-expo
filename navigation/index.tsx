@@ -26,6 +26,10 @@ import Lectures from "../screens/lectures";
 import Lecture from "../screens/lecture";
 import PublicationsScreen from "../screens/publications";
 import WebModal from "../screens/modals/web-modal";
+import DatabaseScreen from "../screens/database";
+import NutrientScreen from "../screens/nutrient";
+import ClassesScreen from "../screens/classes"
+import FishScreen from "../screens/fish"
 
 import {
 	DatabaseStackParamList,
@@ -34,9 +38,7 @@ import {
 	RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import DatabaseScreen from "../screens/database";
-import NutrientScreen from "../screens/nutrient";
-import ClassScreen from "../screens/class"
+
 
 export default function Navigation({
 	colorScheme,
@@ -68,7 +70,10 @@ function RootNavigator() {
 				<Stack.Screen
 					name="Lecture"
 					component={Lecture}
-					options={({ route }) => ({ title: route?.params?.title })}
+					options={({ route }) => ({
+						title: `Videos: ${route?.params?.title}`,
+						headerShown: true
+					})}
 				/>
 			</Stack.Group>
 			<Stack.Group>{/*{有header的页面}*/}</Stack.Group>
@@ -150,16 +155,9 @@ function DatabaseNavigator() {
 		<DatabaseStack.Navigator>
 			<DatabaseStack.Group screenOptions={{ headerShown: false }}>
 				<DatabaseStack.Screen name="Nutrients" component={DatabaseScreen} />
-				<DatabaseStack.Screen
-					name="Nutrient"
-					component={NutrientScreen}
-					options={({ route }) => ({ title: route?.params?.title })}
-				/>
-				<DatabaseStack.Screen
-					name="Class"
-					component={ClassScreen}
-					options={({ route }) => ({ title: route?.params?.title })}
-				/>
+				<DatabaseStack.Screen name="Nutrient" component={NutrientScreen}/>
+				<DatabaseStack.Screen name="Classes" component={ClassesScreen}/>
+				<DatabaseStack.Screen name="Fish" component={FishScreen}/>
 			</DatabaseStack.Group>
 		</DatabaseStack.Navigator>
 	);

@@ -65,7 +65,7 @@ export default function Lecture({
 
 	if (isLoading) return <LectureLoading />;
 	return (
-		<Box safeAreaTop flex={1}>
+		<Box flex={1}>
 			<StatusBar style={hasSelectedIndex ? "dark" : "light"} />
 			<AspectRatio
 				maxHeight={0.6 * windowHeight}
