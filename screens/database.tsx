@@ -21,6 +21,7 @@ import logoImg from "../assets/images/logo.png";
 import useOverscollImageStyle from "../hooks/useOverscollImageStyle";
 import { useRef, useState } from "react";
 import SubHeaderText from "../components/common/sub-header-text";
+import BottomTabSpacer from "../components/common/bottom-tab-spacer"
 // const AnimatFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function DatabaseScreen() {

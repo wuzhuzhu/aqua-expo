@@ -122,6 +122,6 @@ export const fetchFishById = async (
 	return fish;
 };
 
-export const useFish = ({ id }: { id: string }): any =>
+export const useFish = ({ id }: { id: string }) =>
 	useQuery(["fish", id], () => fetchFishById(id));
 

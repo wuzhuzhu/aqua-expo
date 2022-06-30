@@ -8,6 +8,7 @@ import ScreenHead from "../components/common/screen-head";
 import SubHeaderText from "../components/common/sub-header-text";
 import {useNavigation} from "@react-navigation/native"
 import {generatePdfUrl} from "../utils/helper"
+import BottomTabSpacer from "../components/common/bottom-tab-spacer"
 
 export default function NutrientScreen({ route, navigation }) {
 	const { nutrientId, title } = route.params;
@@ -73,6 +74,7 @@ export default function NutrientScreen({ route, navigation }) {
 					<Button onPress={() => onPressNode(section)} colorScheme="muted">{section.title}</Button>
 				)}
 			/>
+			<BottomTabSpacer />
 		</VStack>
 	);
 }

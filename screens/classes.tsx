@@ -8,6 +8,7 @@ import {ListCardsLoading} from "../components/common/loading"
 import {useClass} from "../api/database"
 import StaggeredList from "../components/common/staggered-list"
 import ClassCard from "../components/database/class-card"
+import BottomTabSpacer from "../components/common/bottom-tab-spacer"
 
 const ClassesScreen = ({navigation, route}) => {
   const {data = {}, isLoading} = useClass({id: route?.params?.id})
@@ -20,6 +21,7 @@ const ClassesScreen = ({navigation, route}) => {
         return <ClassCard key={classItem.id} classesName={title} classItem={classItem} />
       })}
     </StaggeredList>
+    <BottomTabSpacer />
   </ScreenHead>
 }
 

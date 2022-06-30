@@ -6,22 +6,22 @@ import MaskedView from "@react-native-masked-view/masked-view";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type HeaderTextProps = {
-	children: React.ReactChildren | string;
+	children: React.ReactChildren | string | undefined;
 	navigation: NativeStackNavigationProp<any>;
+	size?: "sm" | "md" | "lg" | 'xl' | '2xl';
 };
 
-const HeaderText = function ({ children, navigation }: HeaderTextProps) {
+const HeaderText = function ({ children, navigation, size = 'xl', mb = 6, ml = 2, pb = 2 }: HeaderTextProps) {
 	return (
 		<MaskedView
 			maskElement={
 				<Heading
 					onPress={() => navigation.navigate("Home")}
 					mt={2}
-					ml={2}
-					mb={6}
-					size="xl"
-					pb={2}
-					maxWidth="70%"
+					ml={ml}
+					mb={mb}
+					size={size}
+					pb={pb}
 					fontWeight="semibold"
 					color="trueGray.900"
 				>
