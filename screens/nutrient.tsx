@@ -3,12 +3,12 @@ import { useNutrient } from "../api/database";
 import { MOCK_PDF } from "../constants/Basic";
 import { ListCardsLoading } from "../components/common/loading";
 import HeaderText from "../components/common/header-text";
-import React, {useCallback} from "react"
+import React, { useCallback } from "react";
 import ScreenHead from "../components/common/screen-head";
 import SubHeaderText from "../components/common/sub-header-text";
-import {useNavigation} from "@react-navigation/native"
-import {generatePdfUrl} from "../utils/helper"
-import BottomTabSpacer from "../components/common/bottom-tab-spacer"
+import { useNavigation } from "@react-navigation/native";
+import { generatePdfUrl } from "../utils/helper";
+import BottomTabSpacer from "../components/common/bottom-tab-spacer";
 
 export default function NutrientScreen({ route, navigation }) {
 	const { nutrientId, title } = route.params;
@@ -20,26 +20,18 @@ export default function NutrientScreen({ route, navigation }) {
 		data: classItem.categories,
 	}));
 
-	const onPressNode = useCallback(
-		(item) => {
-			if (item?.link?.url) {
-				const path = generatePdfUrl(item?.link || {})
-				navigation.navigate("WebModal", {title, url: path})
-			}
-		},
-		[],
-	);
+	const onPressNode = useCallback(item => {
+		if (item?.link?.url) {
+			const path = generatePdfUrl(item?.link || {});
+			navigation.navigate("WebModal", { title, url: path });
+		}
+	}, []);
 
-	const onPressItem = useCallback(
-		(item) => {
-			if (item?.id) {
-				navigation.navigate("Classes", {id: item.id, title: item.name})
-			}
-		},
-		[],
-	);
-
-
+	const onPressItem = useCallback(item => {
+		if (item?.id) {
+			navigation.navigate("Classes", { id: item.id, title: item.name });
+		}
+	}, []);
 
 	if (isLoading) return <ListCardsLoading />;
 	return (
@@ -51,11 +43,11 @@ export default function NutrientScreen({ route, navigation }) {
 				px={4}
 				ListHeaderComponent={() => (
 					<Box mb={6}>
-						<HeaderText navigation={navigation}>{name}</HeaderText>
+						<HeaderText showGoBack>{name}</HeaderText>
 					</Box>
 				)}
 				sections={sections}
-				renderSectionFooter= {() => <Box mb={4} />}
+				renderSectionFooter={() => <Box mb={4} />}
 				renderItem={({ item }) => {
 					return (
 						<Button
@@ -63,7 +55,7 @@ export default function NutrientScreen({ route, navigation }) {
 							variant="ghost"
 							colorScheme="tertiary"
 							onPress={() => {
-								onPressItem(item)
+								onPressItem(item);
 							}}
 						>
 							{item.name}
@@ -71,7 +63,9 @@ export default function NutrientScreen({ route, navigation }) {
 					);
 				}}
 				renderSectionHeader={({ section }) => (
-					<Button onPress={() => onPressNode(section)} colorScheme="muted">{section.title}</Button>
+					<Button onPress={() => onPressNode(section)} colorScheme="muted">
+						{section.title}
+					</Button>
 				)}
 			/>
 			<BottomTabSpacer />

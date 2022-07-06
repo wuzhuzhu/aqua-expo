@@ -1,25 +1,25 @@
-import React, {memo} from "react"
-import {AspectRatio, Box, Text, Image} from "native-base"
-import {StyleSheet} from "react-native"
-import {useNavigation} from "@react-navigation/native"
-import Animated from "react-native-reanimated"
-import {NativeStackNavigationProp} from "@react-navigation/native-stack"
-import {useClass, useFish} from "../api/database"
-import {ListCardsLoading} from "../components/common/loading"
-import ScreenHead from "../components/common/screen-head"
-import HeaderText from "../components/common/header-text"
-import StaggeredList from "../components/common/staggered-list"
-import ClassCard from "../components/database/class-card"
-import SubHeaderText from "../components/common/sub-header-text"
-import {FishAPIType} from "../types"
-import {windowHeight} from "../utils/helper"
-import {ImageBackground} from "../utils/motify"
-import ResearchCard from "../components/database/research-card"
-import BottomTabSpacer from "../components/common/bottom-tab-spacer"
+import React, { memo } from "react";
+import { AspectRatio, Box, Text, Image } from "native-base";
+import { StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import Animated from "react-native-reanimated";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useClass, useFish } from "../api/database";
+import { ListCardsLoading } from "../components/common/loading";
+import ScreenHead from "../components/common/screen-head";
+import HeaderText from "../components/common/header-text";
+import StaggeredList from "../components/common/staggered-list";
+import ClassCard from "../components/database/class-card";
+import SubHeaderText from "../components/common/sub-header-text";
+import { FishAPIType } from "../types";
+import { windowHeight } from "../utils/helper";
+import { ImageBackground } from "../utils/motify";
+import ResearchCard from "../components/database/research-card";
+import BottomTabSpacer from "../components/common/bottom-tab-spacer";
 
 type IFishesPropsType = {
-  navigation: NativeStackNavigationProp<any>;
-  children: React.ReactNode;
+	navigation: NativeStackNavigationProp<any>;
+	children: React.ReactNode;
 };
 
 /*const mockData = {
@@ -130,44 +130,45 @@ type IFishesPropsType = {
   ]
 }*/
 
-const FishScreen = ({navigation, route}: IFishesPropsType) => {
-  const {data: fish = {} as FishAPIType, isLoading} = useFish({id: route?.params?.id || 23})
+const FishScreen = ({ navigation, route }: IFishesPropsType) => {
+	const { data: fish = {} as FishAPIType, isLoading } = useFish({
+		id: route?.params?.id || 23,
+	});
 
-  const {name, subname, cover, data: researches = []} = fish
-  if (isLoading) return <ListCardsLoading />;
-  return <Box safeAreaBottom>
-    <Box>
-      <AspectRatio
-        ShadowBottomHeight="80"
-        w="100%"
-        ratio={16/9}
-      >
-        <Image
-          alt={name}
-          source={{
-            uri: cover
-          }}
-        >
-        </Image>
-      </AspectRatio>
-     {/* <Box position='absolute' bottom={4} left={4} py={1} px={3} borderRadius={20} backgroundColor='coolGray.50' borderColor='trueGray.200' >
+	const { name, subname, cover, data: researches = [] } = fish;
+	if (isLoading) return <ListCardsLoading />;
+	return (
+		<Box safeAreaBottom>
+			<Box>
+				<AspectRatio ShadowBottomHeight="80" w="100%" ratio={16 / 9}>
+					<Image
+						alt={name}
+						source={{
+							uri: cover,
+						}}
+					></Image>
+				</AspectRatio>
+				{/* <Box position='absolute' bottom={4} left={4} py={1} px={3} borderRadius={20} backgroundColor='coolGray.50' borderColor='trueGray.200' >
         <Text fontSize='sm' color='coolGray.700'>Todo: Nutrient Info here</Text> // Todo: Nutrient Info here
       </Box>*/}
-    </Box>
-    <Animated.ScrollView>
-      <Box pt={6} px={4} backgroundColor="coolGray.50" mb={2}>
-        <Text color={"coolGray.700"}>{subname}</Text>
-        <HeaderText size='lg' pb={0} mb={0} ml={0}>{name}</HeaderText>
-      </Box>
-      <StaggeredList>
-        {researches && researches.map(research => {
-            return <ResearchCard key={research.id} research={research}/>
-          }
-        )}
-      </StaggeredList>
-      <BottomTabSpacer />
-    </Animated.ScrollView>
-  </Box>
-}
+			</Box>
+			<Animated.ScrollView>
+				<Box pt={6} px={4} backgroundColor="coolGray.50" mb={2}>
+					<Text color={"coolGray.700"}>{subname}</Text>
+					<HeaderText showGoBack size="lg" pb={0} mb={0} ml={0}>
+						{name}
+					</HeaderText>
+				</Box>
+				<StaggeredList>
+					{researches &&
+						researches.map(research => {
+							return <ResearchCard key={research.id} research={research} />;
+						})}
+				</StaggeredList>
+				<BottomTabSpacer />
+			</Animated.ScrollView>
+		</Box>
+	);
+};
 
-export default memo(FishScreen)
+export default memo(FishScreen);
