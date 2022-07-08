@@ -38,6 +38,7 @@ import {
 	RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import MemberScreen from "../screens/member"
 
 
 export default function Navigation({
@@ -67,6 +68,14 @@ function RootNavigator() {
 			<Stack.Group screenOptions={{ headerShown: false }}>
 				<Stack.Screen name="Home" component={HomeScreen} />
 				<Stack.Screen name="Tab" component={BottomTabNavigator} />
+				<Stack.Screen
+					name="Member"
+					component={MemberScreen}
+					options={({ route }) => ({
+						title: route?.params?.title,
+						headerShown: true
+					})}
+				/>
 				<Stack.Screen
 					name="Lecture"
 					component={Lecture}

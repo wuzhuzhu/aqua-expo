@@ -24,6 +24,12 @@ export type RootStackParamList = {
 		  }
 		| undefined;
 	Members: undefined;
+	Member: {
+		name?: string;
+		url?: string;
+		description?: string;
+		logo?: string;
+	}
 	Lectures: undefined;
 	Lecture: {
 		lecture: LectureType;
@@ -65,6 +71,7 @@ export type MemberType = {
 	name: string;
 	logo?: string;
 	url?: string;
+	description?: string;
 };
 
 export type LectureType = {
