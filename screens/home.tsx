@@ -5,20 +5,22 @@ import {
 	Center,
 	Text,
 	Image,
+	ImageBackground,
 	Input,
 	AspectRatio,
 	Icon,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import Carousel from "react-native-snap-carousel";
+import React, { useRef, useState } from "react";
 
+import {useBanners} from '../api/members';
 import { HOMEPAGE_BTNS } from "../constants/Basic";
 import { RootStackScreenProps } from "../types";
 import logoImg from "../assets/images/logo.png";
 import HomeScreenCard from "../components/home/card-btn";
 import Logo from "../components/home/logo";
 import { windowWidth } from "../utils/helper";
-import React, { useRef, useState } from "react";
 
 type ICarouselType = {
 	id: number;
@@ -30,13 +32,13 @@ type ICarouselType = {
 function CarouselItem({ item, index }: { item: ICarouselType; index: number }) {
 	return (
 		<AspectRatio w="300" ratio={2 / 1}>
-			<Image
-				source={{
-					uri: item?.img,
-				}}
-				borderRadius={8}
-				alt={item?.title || "img"}
-			/>
+				<Image
+					source={{
+						uri: item?.img,
+					}}
+					borderRadius={8}
+					alt={item?.title || "img"}
+				/>
 		</AspectRatio>
 	);
 }

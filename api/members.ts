@@ -31,3 +31,10 @@ const fetchMembers = async () => {
 };
 
 export const useMembers = (): any => useQuery('members', fetchMembers);
+
+const fetchBanners = async () => {
+  const {data} = await axios.get(`${API_ENDPOINT}/banners`);
+  return data?.data || [];
+}
+
+export const useBanners = (): any => useQuery('bannners', fetchBanners);
