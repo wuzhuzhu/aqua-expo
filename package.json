@@ -2,7 +2,8 @@
   "name": "aqua-expo",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start --dev-client APP_VARIANT=development",
+    "start-go": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",

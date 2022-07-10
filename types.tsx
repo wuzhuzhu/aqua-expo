@@ -28,7 +28,7 @@ export type RootStackParamList = {
 		name?: string;
 		url?: string;
 		description?: string;
-		logo?: string;
+		img?: string;
 	}
 	Lectures: undefined;
 	Lecture: {
