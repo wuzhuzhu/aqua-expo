@@ -4,7 +4,7 @@ export default {
 	expo: {
 		name: IS_DEV ? "aqua-expo(dev)" : "aqua-expo",
 		slug: "aqua-expo",
-		version: "1.0.2",
+		version: "1.0.3",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
