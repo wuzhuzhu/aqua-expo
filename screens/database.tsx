@@ -76,9 +76,8 @@ export default function DatabaseScreen() {
 						<ListFooter {...{ hasMore, isLoading, isFetching, isRefetching }} />
 					}
 					onEndReachedThreshold={0.5}
-					onScroll={scrollHandler}
 					renderItem={({ item: nutrient, index }) => {
-						return <NutrientListItem {...{ nutrient, translationY }} />;
+						return <NutrientListItem {...{ nutrient }} />;
 					}}
 					scrollEventThrottle={16}
 				/>
