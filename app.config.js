@@ -2,9 +2,9 @@ const IS_DEV = process.env.APP_VARIANT === "development";
 
 export default {
 	expo: {
-		name: IS_DEV ? "aqua-expo(dev)" : "aqua-expo",
+		name: IS_DEV ? "nara4aqua(dev)" : "nara4aqua",
 		slug: "aqua-expo",
-		version: "1.0.5",
+		version: "1.0.6",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
