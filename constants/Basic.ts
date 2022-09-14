@@ -11,7 +11,7 @@ Directory`,
 	{
 		bg: COLOR_SCHEME.NARA_GREEN,
 		targetName: "Lectures",
-		title: `Lecture,
+		title: `Lecture 
 Videos`,
 	},
 	{
@@ -22,7 +22,7 @@ Videos`,
 	{
 		bg: COLOR_SCHEME.NARA_BLUE,
 		targetName: "Database",
-		title: `Database for,
+		title: `Database for 
 Nutrient 
 Digestibility
 and Growth Trials`,
