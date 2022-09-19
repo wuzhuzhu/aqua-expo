@@ -46,7 +46,7 @@ const MemberScreen = ({ navigation, route }: IMemberScreenType) => {
 				/>
 			</AspectRatio>
 			<ScrollView w="100%">
-				<Column px={4} space={4} w="100%">
+				<Column bgColor="red.200" px={4} pb={12} space={4} w="100%">
 					<Heading color="coolGray.700">{name}</Heading>
 					<Text color="coolGray.700" fontSize="md">
 						{description}
