@@ -16,6 +16,7 @@ export default function NutrientScreen({ route, navigation }) {
 
 	const { name, details = [] } = nutrient;
 	const sections = details.map(classItem => ({
+		...classItem,
 		title: classItem.name,
 		data: classItem.categories,
 	}));
