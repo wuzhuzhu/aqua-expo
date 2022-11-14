@@ -155,7 +155,7 @@ export default function HomeScreen({
 							maxWidth="60%"
 							color="trueGray.600"
 						>
-							Premium Rendered Proteins for Sustainable Aquaculture in the World
+							Premium US Rendered Proteins for World Aquaculture
 						</MotifiedText>
 					)}
 				</Center>
