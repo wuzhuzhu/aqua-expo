@@ -4,7 +4,7 @@ export default {
 	expo: {
 		name: IS_DEV ? "nara4aqua(dev)" : "nara4aqua",
 		slug: "aqua-expo",
-		version: "1.0.6",
+		version: "1.0.7",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
